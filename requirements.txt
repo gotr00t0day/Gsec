@@ -1,0 +1,4 @@
+argparse
+requests
+colorama
+urllib3
