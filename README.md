@@ -30,7 +30,9 @@ cd Gsec
 
 pip3 install -r requirements.txt
 
-python3 /core/nuclei_install.py
+cd core
+
+python3 nuclei_install.py
 
 ```
 
