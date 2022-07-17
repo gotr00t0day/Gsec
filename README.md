@@ -42,13 +42,15 @@ python3 gsec.py -t https://domain.com
 
 ```
 
-## 🙏 Support
+<h3 align="left">Connect with me:</h3>
+<p align="left">
+<a href="https://instagram.com/gotr00t0day" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="gotr00t0day" height="30" width="40" /></a>
+</p>
 
-```bash
+<h3 align="left">Languages and Tools:</h3>
+<p align="left"> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> </p>
 
-Follow me on instagram.
+<p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=g0tr00t0day&show_icons=true&locale=en&layout=compact" alt="g0tr00t0day" /></p>
 
-Instagram: gotr00t0day
 
-```
 
