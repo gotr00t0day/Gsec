@@ -1,6 +1,3 @@
-<h1> Follow me on Instagram </h1>
-<a href="https://instagram.com/gotr00t0day" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="gotr00t0day" height="30" width="40" /></a>
-</p>
 
 # Description
 
