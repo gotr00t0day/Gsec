@@ -30,7 +30,7 @@ cd Gsec
 
 pip3 install -r requirements.txt
 
-python3 install.py
+python3 /core/install.py
 
 ```
 
