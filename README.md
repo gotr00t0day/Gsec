@@ -41,3 +41,14 @@ python3 install.py
 python3 gsec.py -t https://domain.com
 
 ```
+
+## 🙏 Support
+
+```bash
+
+Follow me on instagram.
+
+Instagram: gotr00t0day
+
+```
+
