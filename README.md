@@ -36,4 +36,8 @@ python3 install.py
 
 # Usage
 
+```bash
+
 python3 gsec.py -t https://domain.com
+
+```
