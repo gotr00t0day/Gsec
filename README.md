@@ -20,7 +20,7 @@ Web Security Scanner
      |\|\   /| |\
 ```
 
-# Installation
+# 🛠️ Installation
 
 ```bash
 
