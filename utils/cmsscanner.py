@@ -123,6 +123,7 @@ def Jira(url: str) -> str:
         jira_main.append("Jira")
     if jira or jira_subdomain or jira_dashboard or jira_main:
         CMS.append("Jira")
+        vuln_scan.jira_vuln_scan(url)
 
 
 def main(url: str) -> str:
