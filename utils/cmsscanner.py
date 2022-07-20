@@ -125,6 +125,22 @@ def Jira(url: str) -> str:
         CMS.append("Jira")
         vuln_scan.jira_vuln_scan(url)
 
+def Magento(url: str) -> str:
+    magento = []
+    magentodownloader = []
+    magentoinstall = []
+    sessions = requests.Session()
+    magentoscan = sessions.get(f"{url}/magento/admin", verify=False, headers=header)
+    if magentoscan.status_code == 200 and "Magento" in magentoscan.text and "404" not in magentoscan.text:
+        magento.append("Magento")
+    magento_downloader = sessions.get(f"{url}/downloader", verify=False, headers=header)
+    if magento_downloader.status_code == 200 and "magento connect login page" in magento_downloader.text and "404" not in magento_downloader.text:
+        magentodownloader.append("Magento")
+    magento_install = sessions.get(f"{url}/install.php", verify=False, headers=header)
+    if magento_install.status_code == 200 and "Magento is already installed" in magento_install.text and "404" not in magento_install.text:
+        magento.append("Magento")
+    if magento or magentodownloader or magentoinstall:
+        CMS.append("Magento")
 
 def main(url: str) -> str:
     Joomla(url)
