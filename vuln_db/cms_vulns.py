@@ -20,7 +20,7 @@ def apache_vuln_scan(url: str):
         pass
 
 def joomla_vuln_scan(url: str):
-    cmd = "~/nuclei-templates/vulnerabilities/joomla/ -u {url} -silent"
+    cmd = "nuclei -t ~/nuclei-templates/vulnerabilities/joomla/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
@@ -31,7 +31,7 @@ def joomla_vuln_scan(url: str):
         pass
 
 def drupal_vuln_scan(url: str):
-    cmd = "~/nuclei-templates/vulnerabilities/drupal/ -u {url} -silent"
+    cmd = "nuclei -t ~/nuclei-templates/vulnerabilities/drupal/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
@@ -42,7 +42,7 @@ def drupal_vuln_scan(url: str):
         pass
 
 def jira_vuln_scan(url: str):
-    cmd = "~/nuclei-templates/vulnerabilities/jira/ -u {url} -silent"
+    cmd = "nuclei -t ~/nuclei-templates/vulnerabilities/jira/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
