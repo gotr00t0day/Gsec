@@ -34,7 +34,7 @@ git clone https://github.com/jaeles-project/jaeles-signatures.git
 
 cd core
 
-python3 nuclei_install.py
+python3 install.py
 
 ```
 
