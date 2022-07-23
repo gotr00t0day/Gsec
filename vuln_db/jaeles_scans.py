@@ -10,7 +10,7 @@ def commands(cmd):
 
 def fuzz(url: str):
     jaeles_path = os.getcwd()
-    cmd = f"{jaeles_path}/tools/jaeles scan -s {jaeles_path}/jaeles_signatures/fuzz/ -u {url}"
+    cmd = f"{jaeles_path}/tools/jaeles scan -s {jaeles_path}/jaeles_signatures/fuzz/ -u {url} -q"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
