@@ -30,8 +30,6 @@ cd Gsec
 
 pip3 install -r requirements.txt
 
-git clone https://github.com/jaeles-project/jaeles-signatures.git
-
 cd core
 
 python3 install.py
