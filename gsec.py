@@ -75,6 +75,7 @@ if args.target:
     phpcheck.php_ident(args.target)
     techscanner.Tech(args.target)
     nginx_vulns.nginx_vulnscan(args.target)
+    jaeles_scans.fuzz(args.target)
     loginscanner.admin_list(args.target)
     hostheader_injection.host_header_injection(args.target)
     print("\n")
