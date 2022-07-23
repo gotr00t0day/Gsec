@@ -9,7 +9,8 @@ def commands(cmd):
         pass
 
 def fuzz(url: str):
-    cmd = f"nuclei -t ~/nuclei-templates/vulnerabilities/apache/ -u {url} -silent"
+    jaeles_path = os.getcwd()
+    cmd = f"{jaeles_path}/tools/jaeles scan -s {jaeles_path}/jaeles_signatures/fuzz/ -u {url}"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
