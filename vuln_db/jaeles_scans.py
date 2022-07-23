@@ -1,5 +1,6 @@
 from colorama import Fore
 import subprocess
+import os
 
 def commands(cmd):
     try:
