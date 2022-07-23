@@ -30,6 +30,7 @@ cd Gsec
 
 pip3 install -r requirements.txt
 
+# Make sure that nuclei-templates is cloned in the / directory. Gsec fetches the templates from ~/nuclei-templates
 python3 install.py
 
 ```
