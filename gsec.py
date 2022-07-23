@@ -2,7 +2,7 @@ from colorama import Fore
 from modules import fetch_requests, urltoip
 from utils import portscanner, securityheaders, loginscanner, techscanner, cmsscanner
 from plugins import phpcheck, optionscheck
-from vuln_db import hostheader_injection
+from vuln_db import hostheader_injection, nginx_vulns
 import argparse
 import subprocess
 import os
@@ -21,7 +21,7 @@ banner = f"""
 {Fore.RESET}
 
               ,~,
-             ((()-                   - GSec v1.0
+             ((()-                   - GSec beta-v0.1
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\\
@@ -74,6 +74,7 @@ if args.target:
     cmsscanner.main(args.target)
     phpcheck.php_ident(args.target)
     techscanner.Tech(args.target)
+    nginx_vulns.nginx_vulnscan(args.target)
     loginscanner.admin_list(args.target)
     hostheader_injection.host_header_injection(args.target)
     print("\n")

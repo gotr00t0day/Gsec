@@ -1,5 +1,6 @@
 from colorama import Fore
 import subprocess
+import os
 
 def commands(cmd):
     try:
@@ -8,7 +9,8 @@ def commands(cmd):
         pass
 
 def apache_vuln_scan(url: str):
-    cmd = f"nuclei -t ~/nuclei-templates/vulnerabilities/apache/ -u {url} -silent"
+    path_template = os.getcwd()
+    cmd = f"nuclei -t {path_template}/tools/nuclei-templates/vulnerabilities/apache/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
@@ -19,7 +21,8 @@ def apache_vuln_scan(url: str):
         pass
 
 def joomla_vuln_scan(url: str):
-    cmd = f"nuclei -t ~/nuclei-templates/vulnerabilities/joomla/ -u {url} -silent"
+    path_template = os.getcwd()
+    cmd = f"nuclei -t {path_template}/tools/nuclei-templates/vulnerabilities/joomla/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
@@ -30,7 +33,8 @@ def joomla_vuln_scan(url: str):
         pass
 
 def drupal_vuln_scan(url: str):
-    cmd = f"nuclei -t ~/nuclei-templates/vulnerabilities/drupal/ -u {url} -silent"
+    path_template = os.getcwd()
+    cmd = f"nuclei -t {path_template}/tools/nuclei-templates/vulnerabilities/drupal/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
@@ -41,7 +45,8 @@ def drupal_vuln_scan(url: str):
         pass
 
 def jira_vuln_scan(url: str):
-    cmd = f"nuclei -t ~/nuclei-templates/vulnerabilities/jira/ -u {url} -silent"
+    path_template = os.getcwd()
+    cmd = f"nuclei -t {path_template}/tools/nuclei-templates//vulnerabilities/jira/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
