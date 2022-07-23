@@ -1,0 +1,32 @@
+id: k8s-api-01
+info:
+  name: K8S API Exposed
+  risk: High
+
+params:
+  - root: '{{.BaseURL}}'
+
+replicate:
+  ports: '6443,8080,10250,10251'
+
+variables:
+  - endpoints: |
+      /
+      /api/v1/
+      /k8s/api/v1/
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+     {{.root}}{{.endpoints}}pods
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "apiVersion") && StringSearch("response", "containers")
+  - method: GET
+    redirect: false
+    url: >-
+     {{.root}}{{.endpoints}}namespaces
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "apiVersion") && StringSearch("response", "containers")

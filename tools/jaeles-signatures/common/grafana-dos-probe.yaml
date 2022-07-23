@@ -1,0 +1,36 @@
+id: grafana-ssrf-probing
+info:
+  name: Grafana DoS Probing CVE-2020-13379 (DoS POC)
+  risk: Potential
+
+params:
+  - root: "{{.BaseURL}}"
+
+
+replicate:
+  ports: '3000'
+
+variables:
+  - endpoint: |
+      /
+      /grafana/
+      /debug/grafana/
+      /-/grafana/
+      /gitlab/-/grafana/
+      /-/debug/grafana/
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}{{.endpoint}}avatar/120
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("resHeaders", "Content-Type: image/jpeg") && StringSearch("body", "IEND") && StringSearch("body", "PNG")
+
+references:
+  - link: https://grafana.com/blog/2020/06/03/grafana-6.7.4-and-7.0.2-released-with-important-security-fix/
+  - note: |
+      Patched instance will show 404 code. Real DoS POC is http://target.com/avatar/%25anything

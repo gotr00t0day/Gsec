@@ -1,0 +1,16 @@
+id: tech-fin-wordpress
+level: 3
+noutput: true # disable store output as a file
+info:
+  name: WordPress Detect
+  risk: Info
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+     {{.BaseURL}}/
+    detections:
+      - >-
+        StatusCode() == 200 && ( StringSearch("response", "/content/dam/") || StringSearch("response", "/etc/clientlibs/") )
+

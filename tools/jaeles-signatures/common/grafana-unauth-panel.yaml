@@ -1,0 +1,25 @@
+id: grafana-unauth-panel
+info:
+  name: Grafana Unauth Panel
+  risk: High
+
+params:
+  - root: "{{.BaseURL}}"
+
+replicate:
+  ports: '3000'
+  prefixes: 'grafana'
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/api/user
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+      - Content-Type: application/json
+      - Referer: "{{.BaseURL}}/login"
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "isGrafanaAdmin") && StringSearch("resHeaders", "application/json") && StringSearch("body", 'isExternal":true') && StringSearch("body", '"isDisabled":false')
+

@@ -1,0 +1,45 @@
+id: swaggerui-probing
+level: 2
+info:
+  name: Swagger UI Probing
+  risk: Potential
+
+params:
+  - root: '{{.BaseURL}}'
+
+variables:
+  - swagger: |
+      /
+      /api/
+      /api-docs/
+      /api/static/
+      /api/static/swagger-ui/
+      /swagger/
+      /swagger-ui/
+      /__swagger__/
+      /spec/
+      /docs/
+      /apidocs/
+      /api/v1/
+      /v1/api/
+      /api/v2/
+      /swagger/v1/
+      /swagger/v2/
+      /swagger-resources/restservices/v2/api-docs/
+  - index: |
+      swagger-ui.html
+      index.html
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}{{.swagger}}{{.index}}
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "window.swaggerUi") && StringSearch("response", "localSwaggerJsons")
+
+references:
+  - xss_poc: |
+      https://example.com/swagger-ui/index.html?url=a%3Cscript%3Ealert(document.domain)%3C/script%3E

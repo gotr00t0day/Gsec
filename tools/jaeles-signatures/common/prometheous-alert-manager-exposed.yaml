@@ -1,0 +1,32 @@
+id: prometheous-alert-manager-exposed
+info:
+  name: Prometheus Alertmanager Exposure
+  risk: Medium
+
+params:
+  - root: '{{.BaseURL}}'
+
+replicate:
+  ports: '9090,8080'
+  prefixes: 'alertmanager'
+
+requests:
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "<title>Alertmanager</title>") && StringSearch("body", "Elm")
+
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/api/v2/status
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "cluster") && StringSearch("body", "goVersion") && StringSearch("resHeaders", "application/json")

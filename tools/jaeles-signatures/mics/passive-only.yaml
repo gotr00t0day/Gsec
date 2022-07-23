@@ -1,0 +1,20 @@
+id: passive-only
+passive: true
+info:
+  name: Passive only
+
+params:
+  - root: '{{.Raw}}'
+  - me: 'GET'
+
+# Useful for use only passive mode
+requests:
+  - method: '{{.me}}'
+    url: >-
+      {{.root}}
+    headers:
+      - User-Agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55'
+    # No detections
+    # detections:
+    #   - >-
+    #     1 == 2

@@ -1,0 +1,33 @@
+# info to search signature
+id: TPL-Injection
+type: fuzz
+level: 4
+info:
+  name: Template Injection
+  risk: High
+  Author: Gocha Okradze
+
+# origin: gonna come from Burp
+payloads:
+  - >-
+    <%= 123 * 421 %>inject
+  - >-
+    #{ 123 * 421 }inject
+  - >-
+    {{123*421}}inject
+  - >-
+    ${123*421}inject
+  - >-
+    ${{123*421}}inject
+
+      
+requests:
+  - generators:
+      # Change exist content type or adding new one
+      - Query("{{.payload}}")
+      - Path("{{.payload}}", "*")
+      - Body("{{.payload}}")
+      - Cookie("[[.original]]{{.payload}}")
+    detections:
+      - >-
+        StringSearch("response", "51783inject")

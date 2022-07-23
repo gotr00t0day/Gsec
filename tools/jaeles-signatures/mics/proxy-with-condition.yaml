@@ -1,0 +1,25 @@
+id: proxy-with-condition
+single: true
+info:
+  name: Proxy with condition
+  risk: Info
+  confidence: Tentative
+
+# Used for 
+requests:
+  - method: GET
+    redirect: true
+    headers:
+      - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3984.0 Safari/537.36
+    url: >-
+      {{.Raw}}
+    conclusions:
+      - SetValue("match", StatusCode() == 200 && !RegexSearch("body", "(?i)(Oops!|Whoops!|not\sfound|Request\sRejected|Access\sDenied|a\sbad\sURL|has\sbeen\slocked)") && ContentLength('body') > 100)
+
+  # pass to proxy if pass condition
+  - conditions:
+      - ValueOf("match") == "true"
+    method: GET
+    proxy: 'http://127.0.0.1:8080'
+    url: >-
+      {{.Raw}}

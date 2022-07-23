@@ -1,0 +1,23 @@
+id: phpinfo-exposed
+info:
+  name: PHPInfo Page disclosure
+  risk: Medium
+
+params:
+  - root: "{{.BaseURL}}"
+
+variables:
+  - endpoint: |
+      /
+      /info
+      /info.php
+      /phpinfo.php
+      /pinfo.php
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}{{.endpoint}}
+    detections:
+      - >-
+        StatusCode() == 200 && (StringSearch("body", 'Build Date') && StringSearch("body", 'PHP Extension') || StringSearch("body", 'phpinfo()</title>'))

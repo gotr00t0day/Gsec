@@ -1,0 +1,28 @@
+id: harbor-registry-unauthentication
+info:
+  name: Harbor Registry Unauthentication
+  risk: Low
+
+params:
+  - root: '{{.BaseURL}}'
+
+requests:
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/api/v2.0/search
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("resHeaders", "application/json") && StringSearch("body", "project_id") && StringSearch("body", "artifact_count")
+
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/api/search
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("resHeaders", "application/json") && StringSearch("body", "project_id") && StringSearch("body", "artifact_count")

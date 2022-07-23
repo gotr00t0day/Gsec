@@ -1,0 +1,24 @@
+id: cockroach-console-unauth
+info:
+  name: Cockroach Console Unauth
+  risk: High
+
+params:
+  - root: "{{.BaseURL}}"
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/_admin/v1/events?
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+      - Grpc-Timeout: 30000m
+      - Content-Type: application/x-protobuf
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("resHeader", 'application/x-protobuf') && StringSearch("response", 'Descriptor') && StringSearch("response", 'ClusterID')
+
+references:
+  - repo: https://github.com/cockroachdb/cockroach
+  - link: https://www.cockroachlabs.com/docs/stable/admin-ui-access-and-navigate.html

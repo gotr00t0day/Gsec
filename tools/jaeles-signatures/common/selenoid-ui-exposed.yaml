@@ -1,0 +1,25 @@
+id: selenoid-ui-exposed
+info:
+  name: Selenoid UI Exposed
+  risk: Medium
+
+params:
+  - root: '{{.BaseURL}}'
+
+variables:
+  - infos: |
+      /
+      :8081/
+      /selenoid/
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+     {{.root}}{{.infos}}
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "Selenoid UI</title>")
+
+

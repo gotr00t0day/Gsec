@@ -1,0 +1,44 @@
+id: prometheus-misconfig
+info:
+  name: Prometheus Misconfigured
+  risk: Medium
+
+params:
+  - root: '{{.BaseURL}}'
+
+replicate:
+  ports: '9090,8080'
+  prefixes: 'prometheus'
+
+requests:
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/status
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "Runtime Information") && StringSearch("body", "Revision")
+      - >-
+        StatusCode() == 200 && StringSearch("body", "<title>Prometheus") && StringSearch("body", "Status")
+
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/api/v1/status/runtimeinfo
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "reloadConfigSuccess") && StringSearch("body", "corruptionCount") && StringSearch("resHeaders", "application/json")
+
+  - method: GET
+    redirect: true
+    url: >-
+      {{.root}}/api/v2/status
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", '{"cluster":{"name":') && StringSearch("body", "versionInfo") && StringSearch("resHeaders", "application/json")

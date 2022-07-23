@@ -1,0 +1,27 @@
+name: "common pattern"
+desc: "grep for common interesting pattern"
+risk: "Medium"
+level: 3
+rules:
+  - id: directory-listing-01
+    reason: "Directory Listing"
+    detections:
+      - >-
+        StatusCode() < 300 && StatusCode() >= 500 && StringSearch("body", 'Index of /') && StringSearch("body", '>Last Modified<')
+  - id: sensitive-php-01
+    reason: "PHP Info"
+    detections:
+      - >-
+        StatusCode() < 300 && StatusCode() >= 500 && StringSearch("body", 'PHP Configuration') && StringSearch("body", 'phpinfo()</title>')
+
+  - id: sensitive-debug-01
+    reason: "Debug Page"
+    detections:
+      - >-
+        StatusCode() < 300 && StatusCode() >= 500 && RegexSearch("body", "(Application-Trace|Routing Error|DEBUG\"? ?[=:] ?True|Caused by:|stack trace:|Microsoft .NET Framework|Traceback|[0-9]:in `|#!/us|WebApplicationException|java\\.lang\\.|phpinfo|swaggerUi|on line [0-9]|SQLSTATE)")
+
+  - id: sensitive-firebase-01
+    reason: "Firebase detected"
+    detections:
+      - >-
+        StatusCode() < 300 && StatusCode() >= 500 && RegexSearch("response", "firebaseio.com")

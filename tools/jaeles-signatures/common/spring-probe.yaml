@@ -1,0 +1,71 @@
+id: spring-boot-01
+type: list
+info:
+  name: Spring Boot Common Path
+  risk: Medium
+
+params:
+  - root: '{{.BaseURL}}'
+
+# origin:
+#   method: GET
+#   headers:
+#     - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+#   url: >-
+#     {{.root}}
+
+variables:
+  - infos: |
+      admin
+      trace
+      health
+      loggers
+      logfile
+      metrics
+      autoconfig
+      heapdump
+      httptrace
+      env
+      info
+      dump
+      configprops
+      cloudfoundryapplication
+      features
+      flyway
+      liquibase
+      mappings
+      version
+      auditevents
+      beans
+      actuator
+      actuator/dump
+      actuator/httptrace
+      actuator/trace
+      actuator/logfile
+      actuator/mappings
+      actuator/env
+      jolokia
+      jolokia/list
+      /monitoring/json/
+      list
+  - prefix: |
+      /
+      /api/
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+     {{.root}}{{.prefix}}{{.infos}}
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 404 && StringSearch("response", 'Whitelabel Error Page')
+      - >-
+        StatusCode() == 200 && StringSearch("response", '{"_links":{"self"') && !StringSearch("response", 'Autodiscover')
+      - >-
+        StatusCode() == 200 && (StringSearch("response", "org.springframework.") || StringSearch("response", "spring.cloud."))
+      - >-
+        StatusCode() == 200 && StringSearch("response", "java.util.")
+
+

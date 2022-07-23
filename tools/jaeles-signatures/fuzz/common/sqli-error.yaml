@@ -1,0 +1,25 @@
+# info to search signature
+id: SQLi-Error
+type: fuzz
+level: 4
+info:
+  name: SQLi Error detection
+  risk: High
+
+# origin: gonna come from Burp
+payloads:
+    - "'"
+    - '"'
+    - "`"	
+      
+requests:
+  - generators:
+      # Change exist content type or adding new one
+      - Query("[[.original]]{{.payload}}")
+      - Path("[[.original]]{{.payload}}", "*")
+      - Body("{{.payload}}")
+      - Cookie("[[.original]]{{.payload}}")
+      
+    detections:
+      - >-
+        RegexSearch("response", "com\.sybase\.jdbc|SQLite3::SQLException|org\.sqlite\.JDBC|Pdo[./_\\]Sqlite|SQLiteException|Warning.*?\Wsybase_|Sybase message|Sybase.*?Server message|SybSQLException|Sybase\.Data\.AseClient|(Microsoft|System)\.Data\.SQLite\.SQLiteException|Warning.*?\W(sqlite_|SQLite3::)|\[SQLITE_ERROR\]|SQLite error \d+:|sqlite3.OperationalError:|PSQLException|SQL error.*?POS([0-9]+)|Warning.*?\Wmaxdb_|DriverSapDB|com\.sap\.dbtech\.jdbc|SQLite/JDBCDriver|SQLite\.Exception|org\.postgresql\.util\.PSQLException|ERROR:\s\ssyntax error at or near|ERROR: parser: parse error at or near|PostgreSQL query failed|org\.postgresql\.jdbc|Pdo[./_\\]Pgsql|quoted string not properly terminated|SQL command not properly ended|macromedia\.jdbc\.oracle|oracle\.jdbc|Zend_Db_(Adapter|Statement)_Oracle_Exception|Pdo[./_\\](Oracle|OCI)|OracleException|PostgreSQL.*?ERROR|Warning.*?\Wpg_|valid PostgreSQL result|Npgsql\.|PG::SyntaxError:|MySqlClient\.|com\.mysql\.jdbc|Zend_Db_(Adapter|Statement)_Mysqli_Exception|Pdo[./_\\]Mysql|MySqlException|\bORA-\d{5}|Oracle error|Oracle.*?Driver|Warning.*?\W(oci|ora)_|MySQLSyntaxErrorException|valid MySQL result|check the manual that corresponds to your (MySQL|MariaDB) server version|Unknown column '[^ ]+' in 'field list'|SQL(Srv|Server)Exception|SQL syntax.*?MySQL|Warning.*?\Wmysqli?_|Zend_Db_(Adapter|Statement)_Sqlsrv_Exception|com\.microsoft\.sqlserver\.jdbc|Pdo[./_\\](Mssql|SqlSrv)|SQLServer JDBC Driver|com\.jnetdirect\.jsql|macromedia\.jdbc\.sqlserver|\[SQL Server\]|ODBC SQL Server Driver|ODBC Driver \d+ for SQL Server|Microsoft SQL Native Client error '[0-9a-fA-F]{8}|System\.Data\.SqlClient\.SqlException|(?s)Exception.*?\bRoadhouse\.Cms\.|SQL Server.*[0-9a-fA-F]{8}|Warning.*?\W(mssql|sqlsrv)_|JET Database Engine|Access Database Engine|ODBC Microsoft Access|Syntax error \(missing operator\) in query expression|Driver.*? SQL.*Server|OLE DB.*? SQL Server|Dynamic SQL Error|Warning.*?\Wibase_|org\.firebirdsql\.jdbc|Firebird|Microsoft Access (\d+ )?Driver|Informix|IfxException|Warning.*?\Wingres_|Ingres SQLSTATE|Ingres\W.*?Driver|com\.ingres\.gcf\.jdbc|com\.informix\.jdbc|weblogic\.jdbc\.informix|Exception.*?Informix|Informix ODBC Driver|ODBC Informix driver|Warning.*?\Wifx_|DB2Exception|Pdo|com\.ibm\.db2\.jcc|Zend_Db_(Adapter|Statement)_Db2_Exception|SQLSTATE.+SQLCODE|\bdb2_\w+|CLI Driver.*?DB2|org\.hsqldb\.jdbc|Unexpected token.*?in statement|Unexpected end of command in statement|org\.h2\.jdbc|com\.frontbase\.jdbc|Exception (condition )?\d+\. Transaction rollback|System\.Data\.SqlClient\.SqlException|DB2 SQL error")

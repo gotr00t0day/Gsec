@@ -1,0 +1,22 @@
+id: common-jaeger-misconfig
+info:
+  name: Jaeger UI Misconfig
+  risk: High
+
+params:
+  - root: "{{.BaseURL}}"
+
+replicate:
+  ports: '8080,16686'
+  prefixes: 'jaeger'
+
+requests:
+  - method: GET
+    redirect: false
+    url: >-
+      {{.root}}/api/services
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    detections:
+      - >-
+        StatusCode() == 200 && StringSearch("resHeader", 'application/json') && StringSearch("response", '{"data":[') && StringSearch("response", '"errors":null}')
