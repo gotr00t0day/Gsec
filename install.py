@@ -12,4 +12,4 @@ def commands(cmd):
 commands("go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest")
 
 # Make sure nuclei-templates is in the / directory
-commands("git clone https://github.com/projectdiscovery/nuclei-templates.git")
+commands("cd ~ | git clone https://github.com/projectdiscovery/nuclei-templates.git")

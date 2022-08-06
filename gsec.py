@@ -1,6 +1,6 @@
 from colorama import Fore
 from modules import fetch_requests, urltoip
-from utils import portscanner, securityheaders, loginscanner, techscanner, cmsscanner
+from utils import portscanner, loginscanner, techscanner, cmsscanner
 from plugins import phpcheck, optionscheck
 from vuln_db import hostheader_injection, nginx_vulns
 import argparse
@@ -45,14 +45,19 @@ def commands(cmd):
         pass
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
 
 parser.add_argument('-t', '--target',
                    help="target to scan",
                    metavar="https://www.domain.com")
 
+parser.add_argument('-u', '--updatetemplates', action='store_true',
+                   help="update nuclei templates")
 
 args = parser.parse_args()
+
+
+if args.updatetemplates:
+    commands("nuclei -ut")
 
 
 if args.target:
