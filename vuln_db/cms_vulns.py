@@ -9,7 +9,7 @@ def commands(cmd):
         pass
 
 def apache_vuln_scan(url: str):
-    cmd = "~/nuclei-templates/vulnerabilities/apache/ -u {url} -silent"
+    cmd = "nuclei -t ~/nuclei-templates/vulnerabilities/apache/ -u {url} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
