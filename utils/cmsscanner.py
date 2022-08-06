@@ -41,6 +41,7 @@ def Wp(url: str) -> str:
     if wp or wp_readme or wp_meta:
         CMS.append("Wordpress")
         vuln_scan.apache_vuln_scan(url)
+        vuln_scan.wordpress_vuln_scan(url)
 
 # Check for Joomla
 
@@ -105,25 +106,32 @@ def Jira(url: str) -> str:
     jira_subdomain = []
     jira_dashboard = []
     jira_main = []
-    sessions = requests.Session()
-    jirascan = sessions.get(f"{url}/jira", verify=False, headers=header)
-    if jirascan.status_code == 200 and "Jira" in jirascan.text and "404" not in jirascan.text:
-        jira.append("Jira")
-    split_url = url.split(".")
-    split_url.insert(1, "jira")
-    split_url = ".".join(split_url)
-    jirascan2 = sessions.get(f"{split_url}", verify=False, headers=header)
-    if jirascan2.status_code == 200:
-        jira_subdomain.append("Jira")
-    jirascan3 = sessions.get(f"{split_url}/secure/Dashboard.jspa", verify=False, headers=header)
-    if jirascan3 == 200 and "404" not in jirascan3.text:
-        jira_dashboard.append("Jira")
-    jirascan4 = sessions.get(f"{split_url}/jira", verify=False, headers=header)
-    if jirascan4 == 200 and "404" not in jirascan4.text:
-        jira_main.append("Jira")
-    if jira or jira_subdomain or jira_dashboard or jira_main:
-        CMS.append("Jira")
-        vuln_scan.jira_vuln_scan(url)
+    try:
+        sessions = requests.Session()
+        jirascan = sessions.get(f"{url}/jira", verify=False, headers=header)
+        if jirascan.status_code == 200 and "Jira" in jirascan.text and "404" not in jirascan.text:
+            jira.append("Jira")
+        split_url = url.split(".")
+        split_url.insert(1, "jira")
+        split_url = ".".join(split_url)
+        if "https://www." in split_url:
+            split_url = split_url.replace("www.", "")
+        if "http://www." in split_url:
+            split_url = split_url.replace("www.", "")
+        jirascan2 = sessions.get(f"{split_url}", verify=False, headers=header)
+        if jirascan2.status_code == 200:
+            jira_subdomain.append("Jira")
+        jirascan3 = sessions.get(f"{split_url}/secure/Dashboard.jspa", verify=False, headers=header)
+        if jirascan3 == 200 and "404" not in jirascan3.text:
+            jira_dashboard.append("Jira")
+        jirascan4 = sessions.get(f"{split_url}/jira", verify=False, headers=header)
+        if jirascan4 == 200 and "404" not in jirascan4.text:
+            jira_main.append("Jira")
+        if jira or jira_subdomain or jira_dashboard or jira_main:
+            CMS.append("Jira")
+            vuln_scan.jira_vuln_scan(url)
+    except requests.exceptions.ConnectionError:
+        pass
 
 def Magento(url: str) -> str:
     magento = []
