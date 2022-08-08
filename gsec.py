@@ -67,6 +67,7 @@ if args.updatetemplates:
 if args.target:
     if args.passive_recon:
         passive_recon.whois_scan(args.target)
+        passive_recon.dns_info(args.target)
     else:
         fetch_requests.do_requests(args.target)
         ip = urltoip.get_ip(args.target)
