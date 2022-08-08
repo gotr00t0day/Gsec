@@ -8,7 +8,7 @@ import subprocess
 import os
 
 ##################################################################################
-#                          Good Security Scanner v1.0 
+#                          Good Security Scanner
 ##################################################################################
 #
 # Gsec Scans a target to look for security issues and misconfigurations
