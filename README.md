@@ -38,7 +38,12 @@ python3 install.py
 ## Usage
 
 ```bash
+# normal (passive and aggresive scans)
 
 python3 gsec.py -t https://domain.com
+
+# Passive Recon
+
+python3 gsec.py -t https://domain.com --passive_recon
 
 ```
