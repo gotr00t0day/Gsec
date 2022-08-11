@@ -21,7 +21,7 @@ banner = f"""
 {Fore.RESET}
 
               ,~,
-             ((()-                   - GSec beta-v0.5
+             ((()-                   - GSec beta-v0.6
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\\
@@ -68,6 +68,7 @@ if args.target:
     if args.passive_recon:
         passive_recon.whois_scan(args.target)
         passive_recon.dns_info(args.target)
+        passive_recon.shodan_search(args.target)
     else:
         fetch_requests.do_requests(args.target)
         ip = urltoip.get_ip(args.target)

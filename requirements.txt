@@ -3,3 +3,5 @@ requests
 colorama
 urllib3
 python-whois
+dnspython
+shodan

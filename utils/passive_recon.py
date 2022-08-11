@@ -1,6 +1,9 @@
 from colorama import Fore
 import whois
 import dns.resolver
+import shodan
+import socket
+
 
 def whois_scan(domain: str) -> str:
     w = whois.whois(domain)
@@ -10,10 +13,40 @@ def whois_scan(domain: str) -> str:
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Registrar: {Fore.GREEN}{registrar}")
 
 def dns_info(domain: str) -> str:
+    mx = []
     if "https://" in domain:
         domain = domain.replace("https://", "")
+        if "www." in domain:
+            domain = domain.replace("www.", "")
     if "http://" in domain:
         domain = domain.replace("http://", "")
+        if "www." in domain:
+            domain = domain.replace("www.", "")
+
     mail_exchange = dns.resolver.resolve(domain, "MX")
+    soa = dns.resolver.resolve(domain, "SOA")
     for mail_info in mail_exchange:
-        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} MX: {Fore.GREEN}{mail_info.to_text()}")
+        mx.append(mail_info.to_text())
+    for state_of_authority in soa:
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SOA: {Fore.GREEN}{state_of_authority.to_text()}")
+    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} MX: {Fore.GREEN}{', '.join(map(str,mx))}")
+
+def shodan_search(domain: str) -> str:
+    Shodan_Key = input(f"{Fore.GREEN}Shodan key: ")
+    if Shodan_Key == "":
+        pass
+    else:
+        api = shodan.Shodan(Shodan_Key)
+        try:
+            results = api.search(domain)
+            results_ = []
+            results_5 = []
+            for result in results['matches']:
+                results_.append(result['ip_str'])
+            results_5.append(results_[0:9])
+            print(results_5)
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Shodan IPs: {Fore.GREEN}{', '.join(map(str,results_5))}")
+        except shodan.APIError as e:
+            print('Error: {}'.format(e))
+        except socket.herror:
+            pass
