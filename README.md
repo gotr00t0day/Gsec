@@ -16,8 +16,8 @@ Web Security Scanner
      \ \      / |
      |\|\   /| |\
 ```
-![Python Version](https://img.shields.io/badge/python-3.9.12-green)](https://www.python.org)
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Python Version](https://img.shields.io/badge/python-3.9.12-green)
+![Issues](https://img.shields.io/github/issues/gotr00t0day/Gsec)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 
