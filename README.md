@@ -35,18 +35,6 @@ python3 install.py
 
 ```
 
-## 🔑 Keys
-
-```bash
-
-GSec uses shodan for the passive recon scans, please save your key in core/.shodan or the shodan
-scan will not work.
-
-All keys will be fecthed from the core directory.
-
-
-```
-
 ## Usage
 
 ```bash
