@@ -35,6 +35,16 @@ python3 install.py
 
 ```
 
+## 🔑 Keys
+
+```bash
+
+Gsec will fetch the shodan API key from the core directory, the passive recon script supports scanning with shodan,
+please save your shodan key in core/.shodan for the scan to be able to work.
+
+
+```
+
 ## Usage
 
 ```bash
