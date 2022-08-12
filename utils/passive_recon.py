@@ -32,11 +32,9 @@ def dns_info(domain: str) -> str:
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} MX: {Fore.GREEN}{', '.join(map(str,mx))}")
 
 def shodan_search(domain: str) -> str:
-    Shodan_Key = input(f"{Fore.GREEN}Shodan key: ")
-    if Shodan_Key == "":
-        pass
-    else:
-        api = shodan.Shodan(Shodan_Key)
+    with open(f"core/.shodan", "r") as f:
+        key = f.readlines()
+        api = shodan.Shodan(key)
         try:
             results = api.search(domain)
             results_ = []
@@ -46,7 +44,7 @@ def shodan_search(domain: str) -> str:
             results_5.append(results_[0:9])
             print(results_5)
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Shodan IPs: {Fore.GREEN}{', '.join(map(str,results_5))}")
-        except shodan.APIError as e:
-            print('Error: {}'.format(e))
+        except shodan.APIError:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.YELLOW} Shodan Key: {Fore.GREEN} Invalid Key")
         except socket.herror:
             pass
