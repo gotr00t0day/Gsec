@@ -2,10 +2,12 @@ from colorama import Fore
 from modules import fetch_requests, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck
-from vuln_db import hostheader_injection, nginx_vulns
+from vuln_db import hostheader_injection, nginx_vulns, nuclei_cves
 import argparse
 import subprocess
 import os
+
+import vuln_db
 
 ##################################################################################
 #                          Good Security Scanner
@@ -90,6 +92,7 @@ if args.target:
         techscanner.Tech(args.target)
         commands(f"python3 {os.path.abspath(os.getcwd())}/utils/subdomainscanner.py {args.target}")
         nginx_vulns.nginx_vulnscan(args.target)
+        nuclei_cves.nuclei_cve_scan(args.target)
         loginscanner.admin_list(args.target)
         hostheader_injection.host_header_injection(args.target)
         print("\n")
