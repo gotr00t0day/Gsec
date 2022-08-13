@@ -49,7 +49,6 @@ def shodan_search(domain: str) -> str:
             for result in results['matches']:
                 results_.append(result['ip_str'])
             results_5.append(results_[0:9])
-            print(results_5)
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Shodan IPs: {Fore.GREEN}{', '.join(map(str,results_5))}")
         except shodan.APIError:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.YELLOW} Shodan Key: {Fore.GREEN} Invalid Key")
