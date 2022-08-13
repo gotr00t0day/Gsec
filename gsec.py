@@ -2,7 +2,7 @@ from colorama import Fore
 from modules import fetch_requests, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck
-from vuln_db import hostheader_injection, nginx_vulns, nuclei_cves
+from vuln_db import hostheader_injection, nuclei_vulns
 import argparse
 import subprocess
 import os
@@ -90,8 +90,8 @@ if args.target:
         cmsscanner.main(args.target)
         phpcheck.php_ident(args.target)
         techscanner.Tech(args.target)
-        nginx_vulns.nginx_vulnscan(args.target)
-        nuclei_cves.nuclei_cve_scan(args.target)
+        nuclei_vulns.nuclei_nginx_scan(args.target)
+        nuclei_vulns.nuclei_cve_scan(args.target)
         loginscanner.admin_list(args.target)
         hostheader_injection.host_header_injection(args.target)
         print("\n")
