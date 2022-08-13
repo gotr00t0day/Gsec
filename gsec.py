@@ -90,7 +90,6 @@ if args.target:
         cmsscanner.main(args.target)
         phpcheck.php_ident(args.target)
         techscanner.Tech(args.target)
-        commands(f"python3 {os.path.abspath(os.getcwd())}/utils/subdomainscanner.py {args.target}")
         nginx_vulns.nginx_vulnscan(args.target)
         nuclei_cves.nuclei_cve_scan(args.target)
         loginscanner.admin_list(args.target)
