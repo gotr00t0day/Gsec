@@ -3,6 +3,13 @@ import whois
 import dns.resolver
 import shodan
 import socket
+import subprocess
+
+def commands(cmd):
+    try:
+        subprocess.check_call(cmd, shell=True)
+    except:
+        pass
 
 
 def whois_scan(domain: str) -> str:
@@ -48,3 +55,16 @@ def shodan_search(domain: str) -> str:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.YELLOW} Shodan Key: {Fore.GREEN} Invalid Key")
         except socket.herror:
             pass
+
+def waybackurls_scan(domain: str) -> str:
+    cmd = f"waybackpy --url {domain} --user_agent 'my-user-agent' --known_urls | head -10000"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    check, err = p.communicate()
+    check = check.decode()
+    with open("output/waybackurls.txt", "a") as f:
+        f.writelines(check)
+    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Waybackurls: {Fore.GREEN} Saved to /output/waybackurls.txt")
+    
+
+
+

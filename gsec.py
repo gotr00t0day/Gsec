@@ -71,6 +71,7 @@ if args.target:
         passive_recon.whois_scan(args.target)
         passive_recon.dns_info(args.target)
         passive_recon.shodan_search(args.target)
+        passive_recon.waybackurls_scan(args.target)
     else:
         fetch_requests.do_requests(args.target)
         ip = urltoip.get_ip(args.target)

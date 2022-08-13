@@ -6,7 +6,7 @@ Web Security Scanner
 
 
               ,~,
-             ((()-                   - GSec v0.8
+             ((()-                   - GSec v0.9
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\
@@ -41,6 +41,15 @@ python3 install.py
 
 Gsec will fetch the shodan API key from the core directory, the passive recon script supports scanning with shodan,
 please save your shodan key in core/.shodan for the scan to be able to work.
+
+
+```
+
+## 📁 OUTPUT
+
+```bash
+
+Some outputs that are too large will be saved in a file in the output folder / directory.
 
 
 ```
