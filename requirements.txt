@@ -5,3 +5,4 @@ urllib3
 python-whois
 dnspython
 shodan
+waybackpy
