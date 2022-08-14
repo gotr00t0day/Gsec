@@ -10,7 +10,7 @@ def commands(cmd):
         pass
 
 
-def nginx_nginx_scan(url: str) -> str:
+def nuclei_nginx_scan(url: str) -> str:
     sessions = requests.Session()
     res = sessions.get(f"{url}", verify=False)
     for item, value in res.headers.items():
