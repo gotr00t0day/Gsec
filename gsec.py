@@ -3,7 +3,7 @@ from modules import fetch_requests, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck
 from vuln_db import hostheader_injection, nuclei_vulns
-from exploits import shellshock
+from plugins import shellshock
 import argparse
 import subprocess
 import os
