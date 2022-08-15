@@ -3,6 +3,7 @@ from modules import fetch_requests, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck
 from vuln_db import hostheader_injection, nuclei_vulns
+from exploits import shellshock
 import argparse
 import subprocess
 import os
@@ -23,7 +24,7 @@ banner = f"""
 {Fore.RESET}
 
               ,~,
-             ((()-                   - GSec beta-v0.9
+             ((()-                   - GSec beta-v0.10
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\\
@@ -93,6 +94,7 @@ if args.target:
         techscanner.Tech(args.target)
         nuclei_vulns.nuclei_nginx_scan(args.target)
         nuclei_vulns.nuclei_cve_scan(args.target)
+        shellshock.shellshock_scan(args.target)
         loginscanner.admin_list(args.target)
         hostheader_injection.host_header_injection(args.target)
         print("\n")
