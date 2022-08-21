@@ -1,8 +1,8 @@
 from colorama import Fore
 from modules import fetch_requests, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
-from plugins import phpcheck, optionscheck, shellshock, robots
-from vuln_db import hostheader_injection, nuclei_vulns
+from plugins import phpcheck, optionscheck, shellshock, robots, favicon
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig
 import argparse
 import subprocess
 import os
@@ -21,7 +21,7 @@ banner = f"""
 {Fore.RESET}
 
               ,~,
-             ((()-                   - GSec beta-v0.11
+             ((()-                   - GSec beta-v0.12
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\\
@@ -70,6 +70,7 @@ if args.target:
         passive_recon.dns_info(args.target)
         passive_recon.shodan_search(args.target)
         passive_recon.waybackurls_scan(args.target)
+        passive_recon.certsh(args.target)
     else:
         fetch_requests.do_requests(args.target)
         ip = urltoip.get_ip(args.target)
@@ -90,9 +91,11 @@ if args.target:
         phpcheck.php_ident(args.target)
         techscanner.Tech(args.target)
         robots.robots_scan(args.target)
+        favicon.favicon_hash(args.target)
         nuclei_vulns.nuclei_nginx_scan(args.target)
         nuclei_vulns.nuclei_cve_scan(args.target)
         shellshock.shellshock_scan(args.target)
+        corsmisconfig.cors_scan(args.target)
         loginscanner.admin_list(args.target)
         hostheader_injection.host_header_injection(args.target)
         print("\n")

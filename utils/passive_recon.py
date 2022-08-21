@@ -4,6 +4,7 @@ import dns.resolver
 import shodan
 import socket
 import subprocess
+import os
 
 def commands(cmd):
     try:
@@ -65,5 +66,29 @@ def waybackurls_scan(domain: str) -> str:
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Waybackurls: {Fore.GREEN} Saved to /output/waybackurls.txt")
     
 
+def certsh(site: str) -> str:
+    if "https://" in site:
+        site = site.replace("https://", "")
+    if "http://" in site:
+        site = site.replace("http://", "")
+    subdomainpath = os.path.abspath(os.getcwd())
+    cmd = f"bash {subdomainpath}/utils/subdomainscanners/certsh.sh {site}"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out, err = p.communicate()
+    out = out.decode()
+    with open("output/subdomains.txt", "w") as f:
+        f.writelines(out)
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Subdomains: {Fore.GREEN} Saved to /output/subdomains.txt")
 
-
+def rapiddns(site: str) -> str:
+    if "https://" in site:
+        site = site.replace("https://", "")
+    if "http://" in site:
+        site = site.replace("http://", "")
+    subdomainpath = os.path.abspath(os.getcwd())
+    cmd = f"bash {subdomainpath}/utils/subdomainscanners/rapiddns.sh {site}"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out, err = p.communicate()
+    out = out.decode()
+    with open("output/subdomains.txt", "a") as f:
+        f.writelines(out)       
