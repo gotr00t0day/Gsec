@@ -17,6 +17,7 @@ Web Security Scanner
      |\|\   /| |\
 ```
 ![Python Version](https://img.shields.io/badge/python-3.9.12-green)
+![Python Version](https://img.shields.io/badge/python-3.10.6-green)
 ![Issues](https://img.shields.io/github/issues/gotr00t0day/Gsec)
 ![Stars](https://img.shields.io/github/stars/gotr00t0day/Gsec)
 
