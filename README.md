@@ -22,10 +22,10 @@ Web Security Scanner
 ![Stars](https://img.shields.io/github/stars/gotr00t0day/Gsec)
 
 <p align="center">
-  <a href="#Kesy">Keys</a> •
-  <a href="#Installation">Install</a> •
+  <a href="#keys">Keys</a> •
+  <a href="#installation">Install</a> •
   <a href="#usage">Usage</a> •
-  <a href="discord.gg/59cKfqNNHq">Join Discord</a>
+  <a href="https://discord.gg/59cKfqNNHq">Join Discord</a>
 </p>
 
 ## 🛠️ Installation
