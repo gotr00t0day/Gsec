@@ -95,7 +95,7 @@ if args.target:
         favicon.favicon_hash(args.target)
         nuclei_vulns.nuclei_nginx_scan(args.target)
         nuclei_vulns.nuclei_cve_scan(args.target)
-        nuclei_vulns.nucei_headercommandinjection_scan(args.target)
+        nuclei_vulns.nuclei_headercommandinjection_scan(args.target)
         shellshock.shellshock_scan(args.target)
         corsmisconfig.cors_scan(args.target)
         loginscanner.admin_list(args.target)
