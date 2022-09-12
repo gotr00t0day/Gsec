@@ -35,8 +35,8 @@ def nuclei_cve_scan(domain: str) -> str:
     else:
         pass
 
-def nucei_headercommandinjection_scan(domain: str) -> str:
-    cmd = "nuclei -t ~/nuclei-templates/vulnerabilities/fuzzing/header-command-injection.yaml -u {url} -silent"
+def nuclei_headercommandinjection_scan(domain: str) -> str:
+    cmd = "nuclei -t fuzzing/ -u {domain} -silent"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
