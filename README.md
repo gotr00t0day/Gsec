@@ -6,7 +6,7 @@ Web Security Scanner
 
 
               ,~,
-             ((()-                   - GSec v0.12
+             ((()-                   - GSec v0.13
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\
@@ -16,6 +16,8 @@ Web Security Scanner
      \ \      / |
      |\|\   /| |\
 ```
+<h4 align="center">Fast and customisable vulnerability scanner based on simple YAML based DSL.</h4>
+
 ![Python Version](https://img.shields.io/badge/python-3.9.12-green)
 ![Python Version](https://img.shields.io/badge/python-3.10.6-green)
 ![Issues](https://img.shields.io/github/issues/gotr00t0day/Gsec)

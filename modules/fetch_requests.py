@@ -1,13 +1,14 @@
 from bs4 import BeautifulSoup
 from colorama import Fore
+from plugins import agent_list
 import requests
 import urllib3
 import sys
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-user_agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.4) Gecko/2008102920 Firefox/3.0.4"
-header = {"User-Agent": user_agent}
+user_agent_ = agent_list.get_useragent()
+header = {"User-Agent": user_agent_}
 
 def do_requests(url: str) -> str:
     sessions = requests.Session()

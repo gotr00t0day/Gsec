@@ -1,7 +1,7 @@
 from colorama import Fore
 from modules import fetch_requests, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
-from plugins import phpcheck, optionscheck, shellshock, robots, favicon
+from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig
 import argparse
 import subprocess
@@ -21,7 +21,7 @@ banner = f"""
 {Fore.RESET}
 
               ,~,
-             ((()-                   - GSec beta-v0.12
+             ((()-                   - GSec beta-v0.13
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\\
@@ -91,9 +91,11 @@ if args.target:
         phpcheck.php_ident(args.target)
         techscanner.Tech(args.target)
         robots.robots_scan(args.target)
+        auth_tokens.auth_tokens(args.target)
         favicon.favicon_hash(args.target)
         nuclei_vulns.nuclei_nginx_scan(args.target)
         nuclei_vulns.nuclei_cve_scan(args.target)
+        nuclei_vulns.nucei_headercommandinjection_scan(args.target)
         shellshock.shellshock_scan(args.target)
         corsmisconfig.cors_scan(args.target)
         loginscanner.admin_list(args.target)

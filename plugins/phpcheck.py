@@ -1,9 +1,10 @@
 from builtwith import builtwith
 from colorama import Fore
+from plugins import agent_list
 import requests
 
-user_agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.4) Gecko/2008102920 Firefox/3.0.4"
-header = {"User-Agent": user_agent}
+user_agent_ = agent_list.get_useragent()
+header = {"User-Agent": user_agent_}
 
 def php_ident(url: str) -> str:
     php_index = []

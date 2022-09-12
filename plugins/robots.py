@@ -1,11 +1,12 @@
 from colorama import Fore
 from urllib.request import urlopen
+from plugins import agent_list
 import urllib
 import requests
 import io
 
-user_agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.4) Gecko/2008102920 Firefox/3.0.4"
-header = {"User-Agent": user_agent}
+user_agent_ = agent_list.get_useragent()
+header = {"User-Agent": user_agent_}
 
 def robots_scan(domain: str) -> str:
     res = requests.get(f"{domain}/robots.txt", verify=False, headers=header)

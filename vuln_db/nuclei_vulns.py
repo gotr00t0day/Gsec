@@ -34,3 +34,14 @@ def nuclei_cve_scan(domain: str) -> str:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.GREEN}{check}")
     else:
         pass
+
+def nucei_headercommandinjection_scan(domain: str) -> str:
+    cmd = "nuclei -t ~/nuclei-templates/vulnerabilities/fuzzing/header-command-injection.yaml -u {url} -silent"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    check, err = p.communicate()
+    check = check.decode()
+    
+    if check:
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.GREEN}{check}")
+    else:
+        pass    

@@ -6,3 +6,6 @@ python-whois
 dnspython
 shodan
 waybackpy
+bs4
+builtwith
+mmh3

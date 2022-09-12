@@ -62,3 +62,13 @@ def wordpress_vuln_scan(url: str):
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.GREEN}{check}")
     else:
         pass
+
+    cmd2 = "nuclei -t ~/nuclei-templates/vulnerabilities/fuzzing/wordpress-weak-credentials.yaml -u {url} -silent"
+    p = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    check2, err = p.communicate()
+    check2 = check2.decode()
+
+    if check2:
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.GREEN}{check2}")
+    else:
+        pass

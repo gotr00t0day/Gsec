@@ -1,11 +1,14 @@
 from vuln_db import cms_vulns as vuln_scan
 from colorama import Fore
 from bs4 import BeautifulSoup
+from plugins import agent_list
 import requests
 import re
 
-user_agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.4) Gecko/2008102920 Firefox/3.0.4"
-header = {"User-Agent": user_agent}
+requests.packages.urllib3.disable_warnings()
+
+user_agent_ = agent_list.get_useragent()
+header = {"User-Agent": user_agent_}
 
 CMS = []
 
