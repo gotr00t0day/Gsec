@@ -16,10 +16,12 @@ Web Security Scanner
 ```
 <h4 align="center">Web Security Scanner &amp; Exploitation.</h4>
 
+<center>
 ![Python Version](https://img.shields.io/badge/python-3.9.12-green)
 ![Issues](https://img.shields.io/github/issues/gotr00t0day/Gsec)
 ![Stars](https://img.shields.io/github/stars/gotr00t0day/Gsec)
 ![Twitter](https://img.shields.io/twitter/url?label=Twitter&style=social&url=https%3A%2F%2Ftwitter.com%2Fgotr00t0day)
+</center>
 
 <p align="center">
   <a href="#keys">Keys</a> •
