@@ -1,5 +1,3 @@
-# Web Security Scanner &amp; Exploitation.
-
 ```bash
 
 Web Security Scanner
@@ -16,7 +14,7 @@ Web Security Scanner
      \ \      / |
      |\|\   /| |\
 ```
-<h4 align="center">Fast and customisable vulnerability scanner based on simple YAML based DSL.</h4>
+<h4 align="center">Web Security Scanner &amp; Exploitation.</h4>
 
 ![Python Version](https://img.shields.io/badge/python-3.9.12-green)
 ![Python Version](https://img.shields.io/badge/python-3.10.6-green)
