@@ -28,7 +28,7 @@ Web Security Scanner
   <a href="https://discord.gg/59cKfqNNHq">Join Discord</a>
 </p>
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 
@@ -43,7 +43,7 @@ python3 install.py
 
 ```
 
-## 🔑 Keys
+## Keys
 
 ```bash
 
@@ -53,7 +53,7 @@ please save your shodan key in core/.shodan for the scan to be able to work.
 
 ```
 
-## 📁 OUTPUT
+## OUTPUT
 
 ```bash
 
