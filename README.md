@@ -28,6 +28,8 @@ Web Security Scanner
   <a href="https://discord.gg/59cKfqNNHq">Join Discord</a>
 </p>
 
+<hr>
+
 ## Installation
 
 ```bash
