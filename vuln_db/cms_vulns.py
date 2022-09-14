@@ -1,7 +1,6 @@
 from colorama import Fore
 from modules import scan
-import subprocess
-import os
+
 
 def apache_vuln_scan(url: str):
     scan.commands("nuclei -t ~/nuclei-templates/vulnerabilities/apache/ -u {url} -silent")
@@ -11,6 +10,7 @@ def joomla_vuln_scan(url: str):
 
 def drupal_vuln_scan(url: str):
     scan.commands("nuclei -t ~/nuclei-templates/vulnerabilities/drupal/ -u {url} -silent")
+    scan.commands("nuclei -t ~/nuclei-templates/misconfiguration/drupal/ -u {url} -silent")
 
 def jira_vuln_scan(url: str):
     scan.commands("nuclei -t ~/nuclei-templates/vulnerabilities/jira/ -u {url} -silent")
