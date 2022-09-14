@@ -1,10 +1,9 @@
 from colorama import Fore
-from modules import fetch_requests, urltoip
+from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig
 import argparse
-import subprocess
 import os
 
 ##################################################################################
@@ -38,12 +37,6 @@ banner = f"""
 print(f"{Fore.WHITE}{banner}")
 
 
-def commands(cmd):
-    try:
-        subprocess.check_call(cmd, shell=True)
-    except:
-        pass
-
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
@@ -61,7 +54,7 @@ args = parser.parse_args()
 
 
 if args.updatetemplates:
-    commands("nuclei -ut")
+    scan.commands("nuclei -ut")
 
 
 if args.target:
@@ -82,11 +75,11 @@ if args.target:
         optionscheck.Get_Options(args.target)
         portscanner.portscanner(args.target)
         fetch_requests.get_headers(args.target)
-        commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-XSS-Protection")
-        commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Content-Security-Policy")
-        commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Strict-Transport-Security")
-        commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-Content-Type-Options")
-        commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-Frame-Options")
+        scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-XSS-Protection")
+        scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Content-Security-Policy")
+        scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Strict-Transport-Security")
+        scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-Content-Type-Options")
+        scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-Frame-Options")
         cmsscanner.main(args.target)
         phpcheck.php_ident(args.target)
         techscanner.Tech(args.target)
