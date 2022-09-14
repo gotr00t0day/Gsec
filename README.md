@@ -50,7 +50,8 @@ Web Security Scanner
      - Technology scanner 
      - Programming Language check
      - Nuclei vulnerability scanning
-     
+
+<hr>
 
 ## Installation
 
