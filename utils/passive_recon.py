@@ -6,12 +6,6 @@ import socket
 import subprocess
 import os
 
-def commands(cmd):
-    try:
-        subprocess.check_call(cmd, shell=True)
-    except:
-        pass
-
 
 async def whois_scan(domain: str) -> str:
     w = whois.whois(domain)
@@ -30,14 +24,16 @@ async def dns_info(domain: str) -> str:
         domain = domain.replace("http://", "")
         if "www." in domain:
             domain = domain.replace("www.", "")
-
-    mail_exchange = dns.resolver.resolve(domain, "MX")
-    soa = dns.resolver.resolve(domain, "SOA")
-    for mail_info in mail_exchange:
-        mx.append(mail_info.to_text())
-    for state_of_authority in soa:
-        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SOA: {Fore.GREEN}{state_of_authority.to_text()}")
-    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} MX: {Fore.GREEN}{', '.join(map(str,mx))}")
+    try:
+        mail_exchange = dns.resolver.resolve(domain, "MX")
+        soa = dns.resolver.resolve(domain, "SOA")
+        for mail_info in mail_exchange:
+            mx.append(mail_info.to_text())
+        for state_of_authority in soa:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SOA: {Fore.GREEN}{state_of_authority.to_text()}")
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} MX: {Fore.GREEN}{', '.join(map(str,mx))}")
+    except dns.resolver.NoAnswer:
+        pass
 
 async def shodan_search(domain: str) -> str:
     with open(f"core/.shodan", "r") as f:
