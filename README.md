@@ -24,10 +24,12 @@ Web Security Scanner
 
 
 <p align="center">
+  <a href="#features">Features</a> •
   <a href="#keys">Keys</a> •
   <a href="#installation">Install</a> •
   <a href="#usage">Usage</a> •
   <a href="https://discord.gg/59cKfqNNHq">Join Discord</a>
+
 </p>
 
 <hr>
@@ -100,6 +102,6 @@ python3 gsec.py -t https://domain.com --passive_recon
 
 ```
 
-## ISSUES 
+## Issues
 
 In python3.10+ you might get an SSL error while running Gsec. To fix this issue just ``` pip3 install ceritifi ``` and then do ```/Applications/Python\ 3.10/Install\ Certificates.command``` and the issue will be fixed.
