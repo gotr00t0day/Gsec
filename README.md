@@ -99,3 +99,7 @@ python3 gsec.py -t https://domain.com
 python3 gsec.py -t https://domain.com --passive_recon
 
 ```
+
+## ISSUES 
+
+In python3.10+ you might get an SSL error while running Gsec. To fix this issue just ``` pip3 install ceritifi ``` and then do ```/Applications/Python\ 3.10/Install\ Certificates.command``` and the issue will be fixed.

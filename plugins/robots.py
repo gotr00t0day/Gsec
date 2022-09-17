@@ -18,6 +18,4 @@ def robots_scan(domain: str) -> str:
                 f.writelines(data.read())
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Robots: {Fore.MAGENTA}Content of robots.txt saved to /output")
     except urllib.error.HTTPError:
-        pass
-    
-
+         pass
