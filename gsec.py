@@ -1,7 +1,7 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
-from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
+from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, versioncheck
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig
 import argparse
 import os
