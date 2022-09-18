@@ -1,7 +1,7 @@
 from vuln_db import cms_vulns as vuln_scan
 from colorama import Fore
 from bs4 import BeautifulSoup
-from plugins import agent_list
+from plugins import agent_list, versioncheck
 import requests
 import re
 
@@ -43,6 +43,7 @@ def Wp(url: str) -> str:
             print(gen)
     if wp or wp_readme or wp_meta:
         CMS.append("Wordpress")
+        versioncheck.wordpress_version(url)
         vuln_scan.apache_vuln_scan(url)
         vuln_scan.wordpress_vuln_scan(url)
 

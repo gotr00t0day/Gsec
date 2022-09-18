@@ -1,13 +1,12 @@
 from colorama import Fore, Back, Style
-from fake_useragent import UserAgent
+from plugins import agent_list
 import concurrent.futures
 import requests
-import time
 import argparse
 import sys
-import datetime
-import socket
 
+user_agent_ = agent_list.get_useragent()
+header = {"User-Agent": user_agent_}
 
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -26,8 +25,6 @@ parser.add_argument('-d', '--domain', action='store',
 
 args = parser.parse_args()
 
-ua = UserAgent()
-header = {'User-Agent':str(ua.chrome)}
 
 try:
     with open(f"{args.wordlist}", "r") as f:
