@@ -33,17 +33,16 @@ def Wp(url: str) -> str:
     if wordpress3.status_code == 200 and "Wordpress" in wordpress.text:
         soup = BeautifulSoup(wordpress3.content, 'html.parser')
         meta_tag = soup.find_all("meta")
-        print(meta_tag)
         if "Wordpress" in meta_tag:
             wp_meta.append(meta_tag)
         gen = soup.find_all("meta", attrs={'name':'generator'})
         if gen == None:
             pass
         else:
-            print(gen)
+            print(gen[0].get_text())
     if wp or wp_readme or wp_meta:
         CMS.append("Wordpress")
-        versioncheck.wordpress_version(url)
+        versioncheck.wordpress_version()
         vuln_scan.apache_vuln_scan(url)
         vuln_scan.wordpress_vuln_scan(url)
 
@@ -154,11 +153,30 @@ def Magento(url: str) -> str:
     if magento or magentodownloader or magentoinstall:
         CMS.append("Magento")
 
+def PhpBB(url: str) -> str:
+    cookies = []
+    source = []
+    tech = []
+    res = requests.get(url, verify=False, headers=header)
+    for item, value in res.headers.items():
+        if "phpbb_" in value:
+            cookies.append("phpbb")
+    res2 = requests.get(url, verify=False, headers=header)
+    if "phpBB" in res2.text and "404" not in res2.text:
+        source.append("phpbb")
+    technologies = techscanner.builtwith(url)
+    if "phpBB" in technologies:
+        tech.append("phpBB")
+    if cookies or source or tech:
+        CMS.append("phpBB")
+        
+
 def main(url: str) -> str:
     Joomla(url)
     Wp(url)
     Drupal(url)
     Jira(url)
+    PhpBB(url)
     if CMS:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} CMS: {Fore.GREEN}{Fore.GREEN}{', '.join(map(str,CMS))}")
     else:
