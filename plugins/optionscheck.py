@@ -1,28 +1,14 @@
 from colorama import Fore
-import http.client
-import socket
-import time
+from plugins import agent_list
+import requests
+
+user_agent_ = agent_list.get_useragent()
+header = {"User-Agent": user_agent_}
 
 def Get_Options(url: str) -> str:
-    try:
-        if "https://" in url:
-            url = url.replace("https://", "")
-        if "http://" in url:
-            url = url.replace("http://", "")
-        conn = http.client.HTTPConnection(url)
-        conn.connect()
-        conn.request('OPTIONS', '/')
-        response = conn.getresponse()
-        check = response.getheader('allow')
-        if check is None:
-            pass
-            conn.close()
+    r = requests.options(f"{url}", verify=False, headers=header)
+    for item, value in r.headers.items():
+        if "Allow" in item:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OPTIONS: {Fore.GREEN}{value}")
         else:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OPTIONS: {Fore.GREEN}{check}")
-    except socket.gaierror:
-        pass
-        time.sleep(2)
-    except http.client.InvalidURL:
-        print (Fore.RED + "Please use: site.com or www.site.com")
-    except ValueError:
-        print(Fore.RED + "Enter valid port")
+            pass

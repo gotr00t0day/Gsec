@@ -1,7 +1,8 @@
 from vuln_db import cms_vulns as vuln_scan
 from colorama import Fore
 from bs4 import BeautifulSoup
-from plugins import agent_list, versioncheck
+from plugins import agent_list
+from utils import techscanner
 import requests
 import re
 
@@ -42,7 +43,6 @@ def Wp(url: str) -> str:
             print(gen[0].get_text())
     if wp or wp_readme or wp_meta:
         CMS.append("Wordpress")
-        versioncheck.wordpress_version()
         vuln_scan.apache_vuln_scan(url)
         vuln_scan.wordpress_vuln_scan(url)
 
@@ -169,7 +169,7 @@ def PhpBB(url: str) -> str:
         tech.append("phpBB")
     if cookies or source or tech:
         CMS.append("phpBB")
-        
+
 
 def main(url: str) -> str:
     Joomla(url)
