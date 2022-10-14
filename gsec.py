@@ -2,7 +2,7 @@ from colorama import Fore
 from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain
 import argparse
 import os
 import asyncio
@@ -51,11 +51,19 @@ parser.add_argument('-t', '--target',
 parser.add_argument('-u', '--updatetemplates', action='store_true',
                    help="update nuclei templates")
 
+parser.add_argument('-us', '--ultimatescan',
+                   help="target to scan",
+                   metavar="https://www.domain.com")
+
 args = parser.parse_args()
 
 
 if args.updatetemplates:
     scan.commands("nuclei -ut")
+
+if args.ultimatescan:
+    nuclei_vulns.nuclei_ultimate_scan(args.target)
+
 
 async def main():
     if args.target:
@@ -67,7 +75,6 @@ async def main():
                 passive_recon.waybackurls_scan(args.target),
                 passive_recon.certsh(args.target),
             )
-
         else:
             fetch_requests.do_requests(args.target)
             ip = urltoip.get_ip(args.target)
@@ -95,8 +102,9 @@ async def main():
             nuclei_vulns.nuclei_headercommandinjection_scan(args.target)
             shellshock.shellshock_scan(args.target)
             corsmisconfig.cors_scan(args.target)
-            loginscanner.admin_list(args.target)
+            crossdomain.crossdomain_misconfig(args.target)
             hostheader_injection.host_header_injection(args.target)
+            loginscanner.admin_list(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")
 

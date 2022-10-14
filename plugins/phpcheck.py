@@ -33,7 +33,7 @@ def php_ident(url: str) -> str:
         print(f"{Fore.MAGENTA}False Positive: {Fore.WHITE}Programming Language could be PHP, doing a thorough scan..")
     if php_header or php_language:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Language: {Fore.GREEN}{php_language}")
-        php_info = sessions.get(f"{url}/phpinfo", verify=False, headers=header)
+        php_info = sessions.get(f"{url}/phpinfo.php", verify=False, headers=header)
         if php_info.status_code == 200 and "404" not in php_info.text:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Found: {Fore.GREEN} {url}/phpinfo.php")
     else:

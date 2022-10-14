@@ -57,6 +57,8 @@ Web Security Scanner
 
 ## Installation
 
+Make sure you have GoLang installed, with out it you won't be able to install nuclei.
+
 ```bash
 
 git clone https://github.com/gotr00t0day/Gsec.git
