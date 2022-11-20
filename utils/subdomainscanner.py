@@ -1,7 +1,6 @@
 from colorama import Fore
 import subprocess 
 
-target = sys.argv[0]
 
 def spotter(site: str) -> str:
     if "https://" in site:

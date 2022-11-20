@@ -16,7 +16,7 @@ def admin_list(url: str) -> str:
         for admin_links in admin_paths:
             links = f"{url}/{admin_links}"
             r =  requests.get(links, verify=False)
-            if r.status_code == 200:
+            if r.status_code == 200 and "404" not in r.text:
                 found_adminlinks.append(links)
         if found_adminlinks:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Login: {Fore.GREEN} {', '.join(map(str,found_adminlinks))}") 
