@@ -53,8 +53,12 @@ parser.add_argument('-u', '--updatetemplates', action='store_true',
 
 parser.add_argument('-us', '--ultimatescan', help="target to scan")
 
+parser.add_argument('-ug', '--updategsec', help="target to scan")
+
 args = parser.parse_args()
 
+if args.updategsec:
+    scan.command("git pull")
 
 if args.updatetemplates:
     scan.commands("nuclei -ut")
