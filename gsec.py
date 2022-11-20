@@ -51,9 +51,7 @@ parser.add_argument('-t', '--target',
 parser.add_argument('-u', '--updatetemplates', action='store_true',
                    help="update nuclei templates")
 
-parser.add_argument('-us', '--ultimatescan',
-                   help="target to scan",
-                   metavar="https://www.domain.com")
+parser.add_argument('-us', '--ultimatescan', help="target to scan")
 
 args = parser.parse_args()
 

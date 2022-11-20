@@ -1,6 +1,7 @@
 from colorama import Fore
 from modules import scan
 import requests
+import subprocess
 
 
 def nuclei_nginx_scan(url: str) -> str:
@@ -11,8 +12,17 @@ def nuclei_nginx_scan(url: str) -> str:
             scan.commands(f"nuclei -u {url} -t ~/nuclei-templates/misconfiguration/nginx/ -silent")
 
 def nuclei_cve_scan(domain: str) -> str:
-    scan.commands(f"nuclei -u {domain} -tags cve -severity critical,high -silent")
-    scan.commands(f"nuclei -u {domain} -t cves/ -silent")
+    cmd = f"nuclei -u {domain} -tags cve -severity critical,high -silent"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out, err = p.communicate()
+    out = out.decode() 
+    print(out)
+
+    cmd = f"nuclei -u {domain} -t cves/ -silent"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out2, err = p.communicate()
+    out2 = out2.decode() 
+    print(out2)
 
 def nuclei_headercommandinjection_scan(domain: str) -> str:
     scan.commands(f"nuclei -t ~/nuclei-templates/fuzzing/ -u {domain} -silent")
