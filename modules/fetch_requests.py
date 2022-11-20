@@ -18,7 +18,7 @@ def do_requests(url: str) -> str:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.GREEN}200")
         elif res.status_code == 403:
             soup = BeautifulSoup(res.text, 'html.parser')
-            title = soup.find_all("title")
+            title = soup.find("title")
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} Forbidden ({title.get_text()})")
         elif res.status_code == 404:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} 404")
