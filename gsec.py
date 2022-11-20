@@ -58,7 +58,7 @@ parser.add_argument('-ug', '--updategsec', action='store_true', help="target to 
 args = parser.parse_args()
 
 if args.updategsec:
-    scan.command("git pull")
+    scan.commands("git pull")
 
 if args.updatetemplates:
     scan.commands("nuclei -ut")
