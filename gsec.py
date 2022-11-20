@@ -21,7 +21,7 @@ banner = f"""
 {Fore.RESET}
 
               ,~,
-             ((()-                   - GSec beta-v0.16
+             ((()-                   - GSec beta-v0.17
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\\
