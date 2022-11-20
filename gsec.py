@@ -97,7 +97,7 @@ async def main():
             favicon.favicon_hash(args.target)
             nuclei_vulns.nuclei_nginx_scan(args.target)
             nuclei_vulns.nuclei_cve_scan(args.target)
-            nuclei_vulns.nuclei_headercommandinjection_scan(args.target)
+            nuclei_vulns.nuclei_fuzzing_scan(args.target)
             shellshock.shellshock_scan(args.target)
             corsmisconfig.cors_scan(args.target)
             crossdomain.crossdomain_misconfig(args.target)

@@ -24,8 +24,12 @@ def nuclei_cve_scan(domain: str) -> str:
     out2 = out2.decode() 
     print(out2)
 
-def nuclei_headercommandinjection_scan(domain: str) -> str:
-    scan.commands(f"nuclei -t ~/nuclei-templates/fuzzing/ -u {domain} -silent")
+def nuclei_fuzzing_scan(domain: str) -> str:
+    cmd = f"nuclei -t ~/nuclei-templates/fuzzing/ -u {domain} -silent"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out, err = p.communicate()
+    out = out.decode() 
+    print(out)
 
 def nuclei_ultimate_scan(domain: str) -> str:
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}Task{Fore.CYAN}:{Fore.LIGHTBLUE_EX} CVE{Fore.WHITE} Status: {Fore.GREEN}Running...")
