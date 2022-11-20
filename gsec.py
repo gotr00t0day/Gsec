@@ -2,7 +2,7 @@ from colorama import Fore
 from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln
 import argparse
 import os
 import asyncio
@@ -104,6 +104,7 @@ async def main():
             corsmisconfig.cors_scan(args.target)
             crossdomain.crossdomain_misconfig(args.target)
             hostheader_injection.host_header_injection(args.target)
+            head_vuln.head_auth_bypass(args.target)
             loginscanner.admin_list(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")

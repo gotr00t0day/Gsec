@@ -18,6 +18,8 @@ def php_ident(url: str) -> str:
     indexphp = sessions.get(f"{url}/index.php", verify=False, headers=header)
     if indexphp.status_code == 200 and "404" not in indexphp.text:
         php_index.append("index.php")
+    if indexphp.status_code == 429:
+        pass
     try:
         info = builtwith(f"{url}")
         for key, value in info.items():
@@ -29,12 +31,13 @@ def php_ident(url: str) -> str:
         pass
     except AttributeError:
         pass   
+
     if php_index:
         print(f"{Fore.MAGENTA}False Positive: {Fore.WHITE}Programming Language could be PHP, doing a thorough scan..")
     if php_header or php_language:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Language: {Fore.GREEN}{php_language}")
         php_info = sessions.get(f"{url}/phpinfo.php", verify=False, headers=header)
-        if php_info.status_code == 200 and "404" not in php_info.text:
+        if php_info.status_code == 200 and "404" not in php_info.text and "PHP Version" in php_info.text:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Found: {Fore.GREEN} {url}/phpinfo.php")
     else:
         pass

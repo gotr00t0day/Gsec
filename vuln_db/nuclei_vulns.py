@@ -8,14 +8,14 @@ def nuclei_nginx_scan(url: str) -> str:
     res = sessions.get(f"{url}", verify=False)
     for item, value in res.headers.items():
         if "nginx" in value:
-            scan.commands(f"nuclei -t ~/nuclei-templates/misconfiguration/nginx/ -u {url} -silent")
+            scan.commands(f"nuclei -u {url} -t ~/nuclei-templates/misconfiguration/nginx/ -silent")
 
 def nuclei_cve_scan(domain: str) -> str:
     scan.commands(f"nuclei -u {domain} -tags cve -severity critical,high -silent")
-    scan.commands(f"nuclei -u {domain} -t cve/ -silent")
+    scan.commands(f"nuclei -u {domain} -t cves/ -silent")
 
 def nuclei_headercommandinjection_scan(domain: str) -> str:
-    scan.commands(f"nuclei -t fuzzing/ -u {domain} -silent")
+    scan.commands(f"nuclei -t ~/nuclei-templates/fuzzing/ -u {domain} -silent")
 
 def nuclei_ultimate_scan(domain: str) -> str:
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}Task{Fore.CYAN}:{Fore.LIGHTBLUE_EX} CVE{Fore.WHITE} Status: {Fore.GREEN}Running...")

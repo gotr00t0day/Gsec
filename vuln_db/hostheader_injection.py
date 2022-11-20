@@ -27,7 +27,7 @@ def host_header_injection(url: str):
         for value2, key2 in resp2.headers.items():
             for pos, web in enumerate(url):
                 if pos == 0:
-                    if payload in resp2_content or key == payload:
+                    if payload in resp2_content or key2 == payload:
                         vuln_domain.append(url)
                 else:
                     pass
@@ -36,6 +36,6 @@ def host_header_injection(url: str):
             duplicates_none = ", ".join(duplicates_none)
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Host Header Injection: {Fore.MAGENTA}POSSIBLE DETECTION!")
         else:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Host Header Injection: {Fore.RED}Not Vulnerable")
+            pass
     except requests.exceptions.TooManyRedirects:
         pass
