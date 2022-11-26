@@ -4,7 +4,7 @@ Web Security Scanner
 
 
               ,~,
-             ((()-                   - GSec v0.17
+             ((()-                   - GSec v0.18
              -''-.                   - by c0deninja 
             (\  /\)                  - @gotr00t0day (Instagram)
       ~______\) | `\
