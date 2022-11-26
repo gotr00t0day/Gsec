@@ -108,6 +108,7 @@ async def main():
             hostheader_injection.host_header_injection(args.target)
             head_vuln.head_auth_bypass(args.target)
             loginscanner.admin_list(args.target)
+            path_traversal.path_traversal_scan(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")
 
