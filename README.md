@@ -51,6 +51,7 @@ Web Security Scanner
      - CMS security identifier / misconfiguration scanner
      - Technology scanner 
      - Programming Language check
+     - Path Traversal scan
      - Nuclei vulnerability scanning
 
 <hr>
