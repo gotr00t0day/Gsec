@@ -1,49 +1,45 @@
-from colorama import Fore
 from utils import logins
 from plugins import agent_list
-import requests, urllib3
-import concurrent.futures
+from colorama import Fore
+import httpx
+import asyncio
+import requests
+
 
 adminlist = logins.login_list()
 
 user_agent_ = agent_list.get_useragent()
 header = {"User-Agent": user_agent_}
 
-def admin_list(url: str) -> str:
+async def get_responses(client, link_paths: str):
     try:
         found_adminlinks = []
-        admin_paths = [x.strip() for x in adminlist]
-        for admin_links in admin_paths:
-            links = f"{url}/{admin_links}"
-            with requests.Session() as s:
-                r =  s.get(links, verify=False)
-                if r.status_code == 200 and "404" not in r.text:
-                    found_adminlinks.append(links)
-        if found_adminlinks:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Login: {Fore.GREEN} {', '.join(map(str,found_adminlinks))}") 
-            options = []
-            r1 = requests.options(url, verify=False, headers=header)
-            for item, value in r1.headers.items():
-                if "Allow" in item:
-                    options.append(value)
-            if "HEAD" in options:
-                found_link = []
-                login_paths = [x.strip() for x in adminlist ]
-                for login_links in login_paths:
-                    r2 = requests.head(f"{url}/{login_links}", verify=False, headers=header)
-                    if r2.status_code == 200:
-                        options.append(f"{url}/{login_links}")
-                if found_link:
-                    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Potential Auth Bypass: {Fore.GREEN}{', '.join(map(str,found_link))}") 
-        
-    except requests.exceptions.MissingSchema:
-        print (Fore.RED + "Please use http:// or https://")
+        r = await client.get(link_paths)
+        if r.status_code == 200 and "404" not in r.text and "Page Not Found" not in r.text:
+            found_adminlinks.append(link_paths)
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Login: {Fore.GREEN} {', '.join(map(str,found_adminlinks))}")
+    except RuntimeError:
         pass
-    except urllib3.exceptions.ProtocolError:
+    except ValueError:
         pass
     except requests.exceptions.ConnectionError:
         pass
 
+async def main(url: str):
+    try:
+        async with httpx.AsyncClient(verify=False, headers=header) as client:
+            task = []
+            admin_paths = [x.strip() for x in adminlist]
+            for admin_links in admin_paths:
+                links = f"{url}/{admin_links}"
+                task.append(asyncio.create_task(get_responses(client, links)))
+            await asyncio.gather(*task)
+            return task
+    except RuntimeError:
+        pass
+    except requests.exceptions.ConnectionError:
+        pass
+
+
 if __name__=='__main__':
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.map(admin_list, adminlist)
+    asyncio.run(main())
