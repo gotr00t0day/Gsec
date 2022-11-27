@@ -44,9 +44,6 @@ def admin_list(url: str) -> str:
     except requests.exceptions.ConnectionError:
         pass
 
-
-
-
 if __name__=='__main__':
     with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(admin_list, adminlist)

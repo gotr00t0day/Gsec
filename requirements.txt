@@ -9,3 +9,4 @@ waybackpy
 bs4
 builtwith
 mmh3
+httpx

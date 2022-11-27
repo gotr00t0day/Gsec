@@ -53,8 +53,6 @@ def path_traversal_scan(domain: str) -> str:
                 r_traversal = requests.get(f"{parameterslist}{path_list}", verify=False, headers=header)
                 if r_traversal.status_code == 200 and "root:x:" in r_traversal.text:
                     vulnerable.append(f"{parameterslist}{path_list}")
-                else:
-                    print(f"{parameterslist}{path_list} [{r_traversal.status_code}]")
         if vulnerable:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Path_Traversal: {Fore.GREEN}{', '.join(map(str,vulnerable))}")
 
