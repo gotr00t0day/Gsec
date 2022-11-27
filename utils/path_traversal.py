@@ -29,7 +29,8 @@ by c0deninja
 
 def path_traversal_scan(domain: str) -> str:
     try:
-        r = requests.get(domain, verify=False, headers=header)
+        s = requests.Session()
+        r = s.get(domain, verify=False, headers=header)
         content = r.content
         links = re.findall('(?:href=")(.*?)"', content.decode('utf-8'))
         duplicatelinks = set(links)
