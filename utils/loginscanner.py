@@ -3,7 +3,7 @@ from plugins import agent_list
 from colorama import Fore
 import httpx
 import asyncio
-import requests
+
 
 
 adminlist = logins.login_list()
