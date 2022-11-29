@@ -23,7 +23,7 @@ def do_requests(url: str) -> str:
         sys.exit()
     sessions = requests.Session()
     try:
-        res = sessions.get(url, verify=False, headers=header)
+        res = sessions.get(url, verify=False, headers=header, allow_redirects=True)
         if res.status_code == 200:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.GREEN}200")
         elif res.status_code == 403:
@@ -37,9 +37,9 @@ def do_requests(url: str) -> str:
         elif res.history == 301 or 302:
             location = []
             for key, desc in res.headers.items():
-                if key == "Location" or "location":
+                if "Location" in key or "location" in key:
                     location.append(desc)
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} seems to be redirecting to {location}")
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} seems to be redirecting to {Fore.CYAN}{res.url}")
             pass
         else:
             print(f"{url} {res.status_code}")

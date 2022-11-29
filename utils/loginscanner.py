@@ -22,8 +22,7 @@ async def get_responses(client, link_paths: str):
         pass
     except ValueError:
         pass
-    except requests.exceptions.ConnectionError:
-        pass
+
 
 async def main(url: str):
     try:
@@ -36,8 +35,6 @@ async def main(url: str):
             await asyncio.gather(*task)
             return task
     except RuntimeError:
-        pass
-    except requests.exceptions.ConnectionError:
         pass
 
 
