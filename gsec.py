@@ -17,20 +17,24 @@ import asyncio
 
 banner = f"""
 
-{Fore.YELLOW}Web Security Scanner
-{Fore.RESET}
 
-              ,~,
-             ((()-                   - GSec beta-v0.19
-             -''-.                   - by c0deninja 
-            (\  /\)                  - @gotr00t0day (Instagram)
-      ~______\) | `\\
-   ~~~(         |  ')                {Fore.CYAN}Happy Hacking{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}
-      | )____(  |                    
-     /|/     ` /|
-     \ \      / |
-     |\|\   /| |\\
-
+    .__________________________.              
+    | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
+    | | ................. | |  |            
+    | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET} 
+    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.19{Fore.RESET}
+    | | :1337 bugs found!:| |  |            {Fore.YELLOW}Instagram:  {Fore.MAGENTA}gotr00t0day{Fore.RESET}
+    | | ::::::::::::::::: | |  |
+    | | ::::::::::::::::: | |  |           
+    | | ::::::::::::::::: | | ,|            {Fore.CYAN}Happy Hacking{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}
+    | !___________________! |(c|
+    !_______________________!__!
+   /                            \\
+  /  [][][][][][][][][][][][][]  \\
+ /  [][][][][][][][][][][][][][]  \\
+(  [][][][][____________][][][][]  )
+ \ ------------------------------ /
+  \______________________________/ 
 
 
 """
