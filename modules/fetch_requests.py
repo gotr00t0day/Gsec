@@ -12,17 +12,8 @@ user_agent_ = agent_list.get_useragent()
 header = {"User-Agent": user_agent_}
 
 def do_requests(url: str) -> str:
-    if "http" in url:
-        url2 = url.replace("http://", "")
-    if "https" in url:
-        url2 = url.replace("https://", "")
-    response = os.system("ping -c 1 " + url2 + " > /dev/null")
-    if response == 0:
-        pass
-    else:
-        sys.exit()
-    sessions = requests.Session()
     try:
+        sessions = requests.Session()      
         res = sessions.get(url, verify=False, headers=header, allow_redirects=True)
         if res.status_code == 200:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.GREEN}200")
