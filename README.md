@@ -1,18 +1,23 @@
 ```bash
 
-Web Security Scanner
+    .__________________________.              
+    | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
+    | | ................. | |  |            
+    | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET} 
+    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.19{Fore.RESET}
+    | | :1337 bugs found!:| |  |            {Fore.YELLOW}Instagram:  {Fore.MAGENTA}gotr00t0day{Fore.RESET}
+    | | ::::::::::::::::: | |  |
+    | | ::::::::::::::::: | |  |           
+    | | ::::::::::::::::: | | ,|            {Fore.CYAN}Happy Hacking{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}
+    | !___________________! |(c|
+    !_______________________!__!
+   /                            \\
+  /  [][][][][][][][][][][][][]  \\
+ /  [][][][][][][][][][][][][][]  \\
+(  [][][][][____________][][][][]  )
+ \ ------------------------------ /
+  \______________________________/ 
 
-
-              ,~,
-             ((()-                   - GSec v0.19
-             -''-.                   - by c0deninja 
-            (\  /\)                  - @gotr00t0day (Instagram)
-      ~______\) | `\
-   ~~~(         |  ')                Happy Hacking!!!
-      | )____(  |                    
-     /|/     ` /|
-     \ \      / |
-     |\|\   /| |\
 ```
 <h4 align="center">Web Security Scanner &amp; Exploitation.</h4>
 
