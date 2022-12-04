@@ -22,7 +22,7 @@ banner = f"""
     | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
     | | ................. | |  |            
     | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET} 
-    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.19{Fore.RESET}
+    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.20{Fore.RESET}
     | | :1337 bugs found!:| |  |            {Fore.YELLOW}Instagram:  {Fore.MAGENTA}gotr00t0day{Fore.RESET}
     | | ::::::::::::::::: | |  |
     | | ::::::::::::::::: | |  |           
@@ -112,6 +112,7 @@ async def main():
             hostheader_injection.host_header_injection(args.target)
             head_vuln.head_auth_bypass(args.target)
             path_traversal.path_traversal_scan(args.target)
+            crawler.scan(args.target)
             await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")
