@@ -108,7 +108,7 @@ python3 gsec.py -t https://domain.com
 
 python3 gsec.py -t https://domain.com --passive_recon
 
-# Ultimate Scan (Scan for High and Severe vulnerabilities with  nuclei)
+# Ultimate Scan (Scan for High and Severe CVEs and Vulnerabilities with nuclei)
 
 python3 gsec.py --ultimatescan https://target.com
 
