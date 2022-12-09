@@ -100,9 +100,9 @@ Some outputs that are too large will be saved in a file in the output folder / d
 ## Usage
 
 ```bash
-# normal (passive and aggresive scans)
+# normal (passive and aggresive scans) it needs to be run as root.
 
-python3 gsec.py -t https://domain.com
+sudo python3 gsec.py -t https://domain.com
 
 # Passive Recon
 
