@@ -16,4 +16,5 @@ def scan(url: str) -> str:
         page_links = urljoin(url, page_links)
         link_list.append(page_links + "\n")
         with open("output/spider.txt", "w") as f:
-            f.writelines(link_list)
+            f.writelines(page_links)
+        
