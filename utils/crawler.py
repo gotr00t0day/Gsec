@@ -11,10 +11,13 @@ def scan(url: str) -> str:
     r = s.get(url, verify=False, headers=header)
     content = r.content
     links = re.findall('(?:href=")(.*?)"', content.decode('utf-8'))
-    link_list = []
+    duplicate_links = set(links)
+    links_l = []
     for page_links in links:
         page_links = urljoin(url, page_links)
-        link_list.append(page_links + "\n")
-        with open("output/spider.txt", "w") as f:
-            f.writelines(page_links)
+        if page_links not in duplicate_links:
+            links_l.append(page_links)
+    for link in links_l:
+        with open("output/spider.txt", "a") as f:
+            f.writelines(link)
         

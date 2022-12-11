@@ -60,7 +60,7 @@ async def waybackurls_scan(domain: str) -> str:
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     check, err = p.communicate()
     check = check.decode()
-    with open("output/waybackurls.txt", "a") as f:
+    with open("output/waybackurls.txt", "w") as f:
         f.writelines(check)
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Waybackurls: {Fore.GREEN} Saved to /output/waybackurls.txt")
     
@@ -89,5 +89,26 @@ async def rapiddns(site: str) -> str:
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     out, err = p.communicate()
     out = out.decode()
-    with open("output/subdomains.txt", "a") as f:
+    with open("output/subdomains.txt", "w") as f:
         f.writelines(out)       
+
+async def domains(site: str) -> str:
+    if "https://" in site:
+        site = site.replace("https://", "")
+    if "http://" in site:
+        site = site.replace("http://", "")
+    if "https://www." in site:
+        site = site.replace("https://www.", "")
+    if "http://www." in site:
+        site = site.replace("http://www.", "")
+    if ".com" in site:
+        site = site.replace(".com", "")
+    domainspath = os.path.abspath(os.getcwd())
+    cmd = f"bash {domainspath}/utils/scripts/domains.sh {site}"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out, err = p.communicate()
+    out = out.decode()
+    print(site)
+    with open("output/domains.txt", "w") as f:
+        f.writelines(out)
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Domains: {Fore.GREEN} Saved to /output/domains.txt")

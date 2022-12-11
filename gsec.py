@@ -80,6 +80,7 @@ async def main():
                 passive_recon.shodan_search(args.target),
                 passive_recon.waybackurls_scan(args.target),
                 passive_recon.certsh(args.target),
+                passive_recon.domains(args.target)
             )
         else:
             fetch_requests.do_requests(args.target)
