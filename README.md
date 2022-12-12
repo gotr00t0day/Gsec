@@ -45,6 +45,7 @@
      - Certsh to enumerate subdomains
      - DNS enumeration
      - Waybackurls to fetch old links
+     - Find domains belonging to your target
    
    * Normal / Agressive Scan
      - Domain http code
@@ -55,6 +56,8 @@
      - Technology scanner 
      - Programming Language check
      - Path Traversal scan
+     - Web Crawler
+     - OS detection
      - Nuclei vulnerability scanning
 
 <hr>

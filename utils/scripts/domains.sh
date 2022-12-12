@@ -1,0 +1,1 @@
+curl -s https://crt.sh/\?o\=$1\&output\=json | jq -r '.[].common_name' | sed 's/\*//g' | sort -u | rev | cut -d "." -f 1,2 | rev | sort -u

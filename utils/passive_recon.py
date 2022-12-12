@@ -108,7 +108,6 @@ async def domains(site: str) -> str:
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     out, err = p.communicate()
     out = out.decode()
-    print(site)
     with open("output/domains.txt", "w") as f:
         f.writelines(out)
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Domains: {Fore.GREEN} Saved to /output/domains.txt")
