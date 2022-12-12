@@ -4,7 +4,7 @@
     | .___________________. |==|            Web Security Scanner      
     | | ................. | |  |            
     | | :::GSec Running!::| |  |            Author:    c0d3ninja 
-    | | ::::::::::::::::: | |  |            Version:   beta-v0.20
+    | | ::::::::::::::::: | |  |            Version:   beta-v0.22
     | | :1337 bugs found!:| |  |            Instagram: gotr00t0day
     | | ::::::::::::::::: | |  |
     | | ::::::::::::::::: | |  |           
