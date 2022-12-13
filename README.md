@@ -1,24 +1,4 @@
-```bash
-
-    .__________________________.              
-    | .___________________. |==|            Web Security Scanner      
-    | | ................. | |  |            
-    | | :::GSec Running!::| |  |            Author:    c0d3ninja 
-    | | ::::::::::::::::: | |  |            Version:   beta-v0.22
-    | | :1337 bugs found!:| |  |            Instagram: gotr00t0day
-    | | ::::::::::::::::: | |  |
-    | | ::::::::::::::::: | |  |           
-    | | ::::::::::::::::: | | ,|            Happy Hacking!!!
-    | !___________________! |(c|
-    !_______________________!__!
-   /                            \\
-  /  [][][][][][][][][][][][][]  \\
- /  [][][][][][][][][][][][][][]  \\
-(  [][][][][____________][][][][]  )
- \ ------------------------------ /
-  \______________________________/ 
-
-```
+![Gsec](https://media.discordapp.net/attachments/700021958896648242/1052043841919778836/GSec_Banner.png)
 <h4 align="center">Web Security Scanner &amp; Exploitation.</h4>
 
 ![Python Version](https://img.shields.io/badge/python-3.9.12-green)
