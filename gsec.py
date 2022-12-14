@@ -22,7 +22,7 @@ banner = f"""
     | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
     | | ................. | |  |            
     | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET} 
-    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.22{Fore.RESET}
+    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.23{Fore.RESET}
     | | :1337 bugs found!:| |  |            {Fore.YELLOW}Instagram:  {Fore.MAGENTA}gotr00t0day{Fore.RESET}
     | | ::::::::::::::::: | |  |
     | | ::::::::::::::::: | |  |           
