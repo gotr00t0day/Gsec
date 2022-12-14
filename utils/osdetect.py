@@ -8,6 +8,7 @@ with warnings.catch_warnings():
     warnings.filterwarnings('ignore', category=CryptographyDeprecationWarning)
     from scapy.all import sr1
     from scapy.layers.inet import IP, ICMP
+import scapy
 
 
 def osdetection_scan(url: str):
@@ -19,16 +20,19 @@ def osdetection_scan(url: str):
         url = url.replace("https://www.", "")
     if "http://www." in url:
         url = url.replace("http://www.", "")
-    os = ''
-    pack = IP(dst=url)/ICMP()
-    resp = sr1(pack, timeout=3, verbose=0)
-    if resp:
-        if IP in resp:
-            ttl = resp.getlayer(IP).ttl
-            if ttl <= 64: 
-                os = 'Linux'
-            elif ttl > 64:
-                os = 'Windows'
-            else:
-                print('Not Found')
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OS: {Fore.GREEN} {os}")
+    try:
+        os = ''
+        pack = IP(dst=url)/ICMP()
+        resp = sr1(pack, timeout=3, verbose=0)
+        if resp:
+            if IP in resp:
+                ttl = resp.getlayer(IP).ttl
+                if ttl <= 64: 
+                    os = 'Linux'
+                elif ttl > 64:
+                    os = 'Windows'
+                else:
+                    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OS: {Fore.RED} Not Detected!")
+                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OS: {Fore.GREEN} {os}")
+    except scapy.error.Scapy_Exception:
+        pass
