@@ -16,8 +16,9 @@ async def get_responses(client, link_paths: str):
         found_adminlinks = []
         r = await client.get(link_paths)
         if r.status_code == 200 and "404" not in r.text and "Page Not Found" not in r.text:
-            found_adminlinks.append(link_paths)
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Login: {Fore.GREEN} {', '.join(map(str,found_adminlinks))}")
+            found_adminlinks.append(link_paths + "\n")
+        with open("output/loginpages.txt") as f:
+            f.writelines(found_adminlinks)
     except RuntimeError:
         pass
     except ValueError:

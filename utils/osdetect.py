@@ -36,3 +36,5 @@ def osdetection_scan(url: str):
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OS: {Fore.GREEN} {os}")
     except scapy.error.Scapy_Exception:
         pass
+    except PermissionError:
+        pass

@@ -18,6 +18,9 @@ def scan(url: str) -> str:
         if page_links not in duplicate_links:
             links_l.append(page_links)
     for link in links_l:
-        with open("output/spider.txt", "a") as f:
-            f.writelines(link)
+        try:
+            with open("output/spider.txt", "w") as f:
+                f.writelines(link)
+        except PermissionError:
+            pass
         
