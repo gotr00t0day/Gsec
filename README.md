@@ -85,12 +85,6 @@ Some outputs that are too large will be saved in a file in the output folder / d
 
 python3 gsec.py -t https://domain.com
 
-# For GSec to detect the OS you will need to run it as root. Just make sure to install requirements as root as well.
-
-sudo pip3 install -r requirements.txt
-
-sudo python3 gsec.py -t https://domain.com
-
 # Passive Recon
 
 python3 gsec.py -t https://domain.com --passive_recon

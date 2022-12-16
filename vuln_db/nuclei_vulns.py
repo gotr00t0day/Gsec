@@ -13,6 +13,7 @@ def nuclei_nginx_scan(url: str) -> str:
 def nuclei_cve_scan(domain: str) -> str:
     sub_output.subpro_scan(f"nuclei -u {domain} -tags cve -severity critical,high -silent")
     sub_output.subpro_scan(f"nuclei -u {domain} -t cves/ -silent")
+    sub_output.subpro_scan(f"nuclei -u {domain} -t vulnerabilities/ -silent")
 
 def nuclei_fuzzing_scan(domain: str) -> str:
     sub_output.subpro_scan(f"nuclei -t ~/nuclei-templates/fuzzing/ -u {domain} -silent")

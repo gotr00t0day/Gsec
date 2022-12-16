@@ -1,6 +1,6 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip
-from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, path_traversal, crawler, osdetect
+from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, path_traversal, crawler
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln
 import argparse
@@ -92,7 +92,6 @@ async def main():
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PROTOCOL: {Fore.GREEN}http")
             optionscheck.Get_Options(args.target)
             portscanner.portscanner(args.target)
-            osdetect.osdetection_scan(args.target)
             fetch_requests.get_headers(args.target)
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-XSS-Protection")
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Content-Security-Policy")

@@ -38,3 +38,5 @@ def osdetection_scan(url: str):
         pass
     except PermissionError:
         pass
+    except OSError:
+        pass
