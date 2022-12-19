@@ -102,7 +102,6 @@ def Umbraco(url: str) -> str:
         umbraco.append("Umbraco")
     if umbraco:
         CMS.append("Umbraco")
-        vuln_scan.umbraco_vuln_scan(url)
 
 def Jira(url: str) -> str:
     jira = []
@@ -177,6 +176,7 @@ def main(url: str) -> str:
     Drupal(url)
     Jira(url)
     PhpBB(url)
+    Umbraco(url)
     if CMS:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} CMS: {Fore.GREEN}{Fore.GREEN}{', '.join(map(str,CMS))}")
     else:
