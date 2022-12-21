@@ -48,6 +48,9 @@ group = parser.add_mutually_exclusive_group()
 group.add_argument('-p', '--passive_recon', action='store_true',
                    help="passive recon on the target")
 
+group.add_argument('-os', '--osdetection', action='store_true',
+                   help="OS detection, make sure you run it as sudo.")
+
 parser.add_argument('-t', '--target',
                    help="target to scan",
                    metavar="https://www.domain.com")
@@ -82,6 +85,8 @@ async def main():
                 passive_recon.certsh(args.target),
                 passive_recon.domains(args.target)
             )
+        if args.osdetection:
+            osdetect.osdetection_scan(args.target)
         else:
             fetch_requests.do_requests(args.target)
             ip = urltoip.get_ip(args.target)

@@ -29,8 +29,10 @@ def osdetection_scan(url: str):
                 ttl = resp.getlayer(IP).ttl
                 if ttl <= 64: 
                     os = 'Linux'
-                elif ttl > 64:
+                elif ttl == 128:
                     os = 'Windows'
+                elif ttl == 255:
+                    os = "FreeBSD"
                 else:
                     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OS: {Fore.RED} Not Detected!")
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OS: {Fore.GREEN} {os}")
