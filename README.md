@@ -1,5 +1,6 @@
 ![Gsec](https://media.discordapp.net/attachments/700021958896648242/1052049111978889226/GSec_Banner_Transparente.png)
 <h4 align="center">Web Security Scanner &amp; Exploitation.</h4>
+<h4 align="center">Based on custom vulnerability scanners &amp; Nuclei</h4>
 
 ![Python Version](https://img.shields.io/badge/python-3.9.12-green)
 ![Issues](https://img.shields.io/github/issues/gotr00t0day/Gsec)
