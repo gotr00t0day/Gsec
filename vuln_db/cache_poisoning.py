@@ -13,7 +13,3 @@ def cache_dos_scan(url: str) -> str:
         for key, description in r.headers.items():
             if "Location" in key and url in description:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Cache Poisoning: {Fore.GREEN}POSSIBLE!")
-    
-
-
-
