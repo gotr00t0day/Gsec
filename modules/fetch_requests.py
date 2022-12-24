@@ -49,6 +49,7 @@ def get_headers(url: str) -> str:
     sessions = requests.Session()
     server_output = []
     via_output = []
+    x_poweredby_output = []
     try:
         res = sessions.get(url, verify=False, headers=header)
         if res.status_code == 200:
@@ -57,6 +58,9 @@ def get_headers(url: str) -> str:
                     server_output.append(desc)
                 if value  == "Via":
                     via_output.append(desc)
+                if value == "X-Powered-By":
+                    x_poweredby_output.append(desc)
+
             if server_output:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SERVER: {Fore.GREEN}{', '.join(map(str,server_output))}")
             else:
@@ -65,6 +69,8 @@ def get_headers(url: str) -> str:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} VIA: {Fore.GREEN}{', '.join(map(str,via_output))}")
             else:
                 pass
+            if x_poweredby_output:
+                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} X-Powered-By: {Fore.GREEN}{', '.join(map(str,x_poweredby_output))}")
             
     except requests.exceptions.InvalidSchema:
         print("Please use https://www.target.com")

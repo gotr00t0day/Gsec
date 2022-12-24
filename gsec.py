@@ -2,7 +2,7 @@ from colorama import Fore
 from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, path_traversal, crawler
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning
 import argparse
 import os
 import asyncio
