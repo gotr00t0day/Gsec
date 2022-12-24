@@ -113,6 +113,7 @@ async def main():
             crossdomain.crossdomain_misconfig(args.target)
             hostheader_injection.host_header_injection(args.target)
             head_vuln.head_auth_bypass(args.target)
+            cache_poisoning.cache_dos_scan(args.target)
             path_traversal.path_traversal_scan(args.target)
             crawler.scan(args.target)
             await loginscanner.main(args.target)

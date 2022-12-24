@@ -137,9 +137,13 @@ def Jira(url: str) -> str:
 
 def Magento(url: str) -> str:
     magento = []
+    magento_scan = []
     magentodownloader = []
     magentoinstall = []
     sessions = requests.Session()
+    m_scan = sessions.get(f"{url}", verify=False, headers=header)
+    if "magento" in m_scan.text or "Magento" in m_scan.text:
+        magento_scan.append("Magento")
     magentoscan = sessions.get(f"{url}/magento/admin", verify=False, headers=header)
     if magentoscan.status_code == 200 and "Magento" in magentoscan.text and "404" not in magentoscan.text:
         magento.append("Magento")
@@ -177,6 +181,7 @@ def main(url: str) -> str:
     Jira(url)
     PhpBB(url)
     Umbraco(url)
+    Magento(url)
     if CMS:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} CMS: {Fore.GREEN}{Fore.GREEN}{', '.join(map(str,CMS))}")
     else:
