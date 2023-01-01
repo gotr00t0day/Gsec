@@ -46,7 +46,7 @@ def path_traversal_scan(domain: str) -> str:
             parameters = params2.split("=")[0]
             parameters_list.append(f"{parameters}=")
         cdir = os.getcwd()
-        with open(f"{cdir}/payloads/traversal.txt", "r") as f:
+        with open(f"{cdir}/utils/payloads/traversal.txt", "r") as f:
             path_traversal_list = [x.strip() for x in f.readlines()]
         for parameterslist in parameters_list:
             for path_list in path_traversal_list:
