@@ -4,6 +4,7 @@ import requests
 
 user_agent_ = agent_list.get_useragent()
 header = {"User-Agent": user_agent_, "X-Forawarded-Scheme": "http"}
+header2 = {"X-Forwarded-Host": "evil.com"}
 
 
 def cache_dos_scan(url: str) -> str:
