@@ -14,7 +14,6 @@ def nuclei_cve_scan(domain: str) -> str:
     sub_output.subpro_scan(f"nuclei -u {domain} -tags cve -severity critical,high -silent")
     sub_output.subpro_scan(f"nuclei -u {domain} -t cves/ -silent")
     sub_output.subpro_scan(f"nuclei -u {domain} -t vulnerabilities/ -silent")
-    sub_output.subpro_scan(f"nuclei -u {domain} -t misconfiguration/ -silent")
 
 def nuclei_fuzzing_scan(domain: str) -> str:
     sub_output.subpro_scan(f"nuclei -u {domain} -t fuzzing/ -silent")
