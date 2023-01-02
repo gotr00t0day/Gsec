@@ -61,7 +61,3 @@ def path_traversal_scan(domain: str) -> str:
         print (Fore.RED + "Connection Error")
     except requests.exceptions.MissingSchema:
         print (Fore.RED + "Please use: http://site.com")
-
-
-if __name__ == "__main__":
-    path_traversal_scan(sys.argv[1])
