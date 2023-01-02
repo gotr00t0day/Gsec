@@ -46,19 +46,19 @@ parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
 group.add_argument('-p', '--passive_recon', action='store_true',
-                   help="passive recon on the target")
+                   help="Passive recon on the target")
 
 
 parser.add_argument('-t', '--target',
-                   help="target to scan",
+                   help="Target to scan",
                    metavar="https://www.domain.com")
 
 parser.add_argument('-u', '--updatetemplates', action='store_true',
-                   help="update nuclei templates")
+                   help="Update nuclei templates")
 
-parser.add_argument('-us', '--ultimatescan', help="target to scan")
+parser.add_argument('-us', '--ultimatescan', help="Target to scan")
 
-parser.add_argument('-ug', '--updategsec', action='store_true', help="target to scan")
+parser.add_argument('-ug', '--updategsec', action='store_true', help="Update GSec")
 
 args = parser.parse_args()
 
