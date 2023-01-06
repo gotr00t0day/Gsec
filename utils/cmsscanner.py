@@ -102,6 +102,7 @@ def Umbraco(url: str) -> str:
         umbraco.append("Umbraco")
     if umbraco:
         CMS.append("Umbraco")
+        vuln_scan.umbraco_vuln_scan(url)
 
 def Jira(url: str) -> str:
     jira = []
@@ -155,6 +156,7 @@ def Magento(url: str) -> str:
         magento.append("Magento")
     if magento or magentodownloader or magentoinstall:
         CMS.append("Magento")
+        vuln_scan.magento_vuln_scan(url)
 
 def PhpBB(url: str) -> str:
     cookies = []
@@ -172,6 +174,7 @@ def PhpBB(url: str) -> str:
         tech.append("phpBB")
     if cookies or source or tech:
         CMS.append("phpBB")
+        vuln_scan.phpbb_vuln_scan(url)
 
 
 def main(url: str) -> str:

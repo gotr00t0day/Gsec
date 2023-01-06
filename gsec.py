@@ -2,7 +2,7 @@ from colorama import Fore
 from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, path_traversal
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, path_traversal, webservers_vulns
 import argparse
 import os
 import asyncio
@@ -105,15 +105,14 @@ async def main():
             robots.robots_scan(args.target)
             auth_tokens.auth_tokens(args.target)
             favicon.favicon_hash(args.target)
-            nuclei_vulns.nuclei_nginx_scan(args.target)
             nuclei_vulns.nuclei_cve_scan(args.target)
-            nuclei_vulns.nuclei_fuzzing_scan(args.target)
             shellshock.shellshock_scan(args.target)
             corsmisconfig.cors_scan(args.target)
             crossdomain.crossdomain_misconfig(args.target)
             hostheader_injection.host_header_injection(args.target)
             head_vuln.head_auth_bypass(args.target)
             cache_poisoning.cache_dos_scan(args.target)
+            webservers_vulns.Servers_scan(args.target)
             path_traversal.path_traversal_scan(args.target)
             crawler.scan(args.target)
             await loginscanner.main(args.target)

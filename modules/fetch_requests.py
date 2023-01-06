@@ -31,7 +31,6 @@ def do_requests(url: str) -> str:
                 if "Location" in key or "location" in key:
                     location.append(desc)
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} seems to be redirecting to {Fore.CYAN}{res.url}")
-            pass
         else:
             print(f"{url} {res.status_code}")
     except requests.exceptions.InvalidSchema:
