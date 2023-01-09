@@ -1,7 +1,7 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
-from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens
+from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, path_traversal, webservers_vulns
 import argparse
 import os
@@ -103,6 +103,7 @@ async def main():
             phpcheck.php_ident(args.target)
             techscanner.Tech(args.target)
             robots.robots_scan(args.target)
+            cookies_check.phpsessid_session(args.target)
             auth_tokens.auth_tokens(args.target)
             favicon.favicon_hash(args.target)
             nuclei_vulns.nuclei_cve_scan(args.target)
