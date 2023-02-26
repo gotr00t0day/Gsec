@@ -42,6 +42,7 @@
      - Web Crawler
      - OS detection
      - Nuclei vulnerability scanning
+     - SSRF, XSS, Host header injection and Cors Misconfiguration Scanners.
 
 <hr>
 
