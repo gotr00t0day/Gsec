@@ -2,6 +2,7 @@ from builtwith import builtwith
 from colorama import Fore
 from plugins import agent_list
 import requests
+import ssl
 
 user_agent_ = agent_list.get_useragent()
 header = {"User-Agent": user_agent_}
@@ -10,15 +11,18 @@ def php_ident(url: str) -> str:
     php_index = []
     php_header = []
     php_language = []
-    sessions = requests.Session()
-    res = sessions.get(url, verify=False, headers=header)
-    for value, key in res.headers.items():
-        if "X-Powered-By" in value and "PHP" in key:
-            php_header.append(f"PHP")
-    indexphp = sessions.get(f"{url}/index.php", verify=False, headers=header)
-    if indexphp.status_code == 200 and "404" not in indexphp.text:
-        php_index.append("index.php")
-    if indexphp.status_code == 429:
+    try:
+        sessions = requests.Session()
+        res = sessions.get(url, verify=False, headers=header)
+        for value, key in res.headers.items():
+            if "X-Powered-By" in value and "PHP" in key:
+                php_header.append(f"PHP")
+        indexphp = sessions.get(f"{url}/index.php", verify=False, headers=header)
+        if indexphp.status_code == 200 and "404" not in indexphp.text:
+            php_index.append("index.php")
+        if indexphp.status_code == 429:
+            pass
+    except ssl.SSLCertVerificationError:
         pass
     try:
         info = builtwith(f"{url}")

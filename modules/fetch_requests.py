@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 from colorama import Fore
 from plugins import agent_list
+from utils import webserver_scanner
 import requests
 import urllib3
 import sys
-import os 
+import ssl
+import re
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -43,6 +45,8 @@ def do_requests(url: str) -> str:
         sys.exit()
     except AttributeError:
         pass
+    except ssl.SSLCertVerificationError:
+        pass
 
 def get_headers(url: str) -> str:
     sessions = requests.Session()
@@ -64,6 +68,20 @@ def get_headers(url: str) -> str:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SERVER: {Fore.GREEN}{', '.join(map(str,server_output))}")
             else:
                 pass
+            if "Apache" in server_output:
+                apache_version = webserver_scanner.apache_version()
+                webpage_server =  re.search(r'([\d.]+)', server_output).group(1)
+                if webpage_server < apache_version:
+                    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Apache {webpage_server}: {Fore.GREEN} Is outdated, current version is {apache_version}")
+
+            if "nginx" in server_output:
+                try:
+                    nginx_version = webserver_scanner.nginx_version()
+                    webpage_server =  re.search(r'([\d.]+)', server_output).group(1)
+                    if webpage_server < nginx_version:
+                        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} nginx {webpage_server}: {Fore.GREEN} Is outdated, current version is {nginx_version}")
+                except TypeError:
+                    pass
             if via_output:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} VIA: {Fore.GREEN}{', '.join(map(str,via_output))}")
             else:
@@ -79,3 +97,5 @@ def get_headers(url: str) -> str:
     except requests.exceptions.MissingSchema:
         print("Invalid URL, please use http:// or https://")
         sys.exit()
+    except ssl.SSLCertVerificationError:
+        pass

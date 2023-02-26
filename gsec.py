@@ -1,11 +1,13 @@
 from colorama import Fore
-from modules import fetch_requests, scan, urltoip
+from modules import fetch_requests, scan, urltoip, sub_output
 from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, path_traversal, webservers_vulns
+from exploits import f5bigip_scanner
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, path_traversal, webservers_vulns, xss
 import argparse
 import os
 import asyncio
+
 
 ##################################################################################
 #                          Good Security Scanner
@@ -22,7 +24,7 @@ banner = f"""
     | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
     | | ................. | |  |            
     | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET} 
-    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v0.27{Fore.RESET}
+    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}beta-v1.0{Fore.RESET}
     | | :1337 bugs found!:| |  |            {Fore.YELLOW}Instagram:  {Fore.MAGENTA}gotr00t0day{Fore.RESET}
     | | ::::::::::::::::: | |  |
     | | ::::::::::::::::: | |  |           
@@ -92,7 +94,7 @@ async def main():
             if "http://" in args.target:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PROTOCOL: {Fore.GREEN}http")
             optionscheck.Get_Options(args.target)
-            portscanner.portscanner(args.target)
+            portscanner.main(args.target)
             fetch_requests.get_headers(args.target)
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-XSS-Protection")
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Content-Security-Policy")
@@ -114,11 +116,19 @@ async def main():
             head_vuln.head_auth_bypass(args.target)
             cache_poisoning.cache_dos_scan(args.target)
             webservers_vulns.Servers_scan(args.target)
+            xss.xss_scan(args.target)
+            sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/ssrf.py {args.target}")
             path_traversal.path_traversal_scan(args.target)
+            f5bigip_scanner.scan_vuln(args.target)
             crawler.scan(args.target)
             await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except ConnectionError:
+        pass
+    except ConnectionRefusedError:
+        pass
