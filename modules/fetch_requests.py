@@ -93,7 +93,7 @@ def get_headers(url: str) -> str:
         print("Please use https://www.target.com")
     except requests.exceptions.ConnectionError:
         print("Check the target URL and try again\n")
-        sys.exit()
+        pass
     except requests.exceptions.MissingSchema:
         print("Invalid URL, please use http:// or https://")
         sys.exit()

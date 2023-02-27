@@ -8,9 +8,7 @@ closed_ports = []
 start_port = 1
 end_port = 65000
 
-# specify the range of ports to scan
 
-# define a function to scan a single port and print the service banner
 def scan_port(port):
     try:
         # create a TCP socket and attempt to connect to the specified port
@@ -18,7 +16,6 @@ def scan_port(port):
         sock.settimeout(1)
         result = sock.connect_ex((ip_address, port))
         
-        # if the connection is successful, attempt to receive the service banner
         if result == 0:
             open_ports.append(f"{port}")
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PORTS: {Fore.GREEN}{', '.join(map(str,open_ports))}")
@@ -28,7 +25,6 @@ def scan_port(port):
     except:
         pass
 
-# create a list of threads to scan each port in the range
 def main(domain: str):
     global ip_address
     ip_address = urltoip.get_ip(domain)
