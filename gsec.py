@@ -118,6 +118,7 @@ async def main():
             webservers_vulns.Servers_scan(args.target)
             xss.xss_scan(args.target)
             sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/ssrf.py {args.target}")
+            sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/openredirect.py {args.target}")
             path_traversal.path_traversal_scan(args.target)
             f5bigip_scanner.scan_vuln(args.target)
             crawler.scan(args.target)
