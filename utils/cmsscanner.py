@@ -45,6 +45,12 @@ def Wp(url: str) -> str:
         CMS.append("Wordpress")
         vuln_scan.apache_vuln_scan(url)
         vuln_scan.wordpress_vuln_scan(url)
+        xmlrpc_file = requests.get(f"{url}/xmlrpc.php", verify=False, headers=header)
+        if xmlrpc_file.status_code == 200:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} XMLRPC: {Fore.GREEN}{url}/xmlrpc")
+        else:
+            pass
+
 
 # Check for Joomla
 
