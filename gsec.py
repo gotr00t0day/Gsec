@@ -1,9 +1,9 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip, sub_output
-from utils import portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
+from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check
 from exploits import f5bigip_scanner
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, path_traversal, webservers_vulns, xss
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, xss
 import argparse
 import os
 import asyncio
