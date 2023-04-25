@@ -1,6 +1,8 @@
 import requests, re, sys
+from colorama import Fore
 from urllib.parse import urlparse, urljoin
 from concurrent.futures import ThreadPoolExecutor
+
 
 def is_valid(url):
     """
@@ -54,6 +56,6 @@ if __name__ == "__main__":
     for result in results:
         vulnerable_links.extend(result)
 
-    print("Vulnerable Links:")
+    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}Vulnerable Links:")
     for link in vulnerable_links:
-        print(link)
+        print(f"{Fore.GREEN}{link}")

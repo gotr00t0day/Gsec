@@ -39,3 +39,5 @@ def host_header_injection(url: str):
             pass
     except requests.exceptions.TooManyRedirects:
         pass
+    except requests.exceptions.ConnectionError:
+        pass

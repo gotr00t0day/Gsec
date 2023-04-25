@@ -55,34 +55,37 @@ def Wp(url: str) -> str:
 # Check for Joomla
 
 def Joomla(url: str) -> str:
-    joomla = []
-    joomla_readme = []
-    joomla_meta = []
-    joomla_header_hint = []
-    sessions = requests.Session()
-    joomscan = sessions.get(f"{url}/administrator", verify=False, headers=header)
-    if joomscan.status_code == 200 and "Joomla" in joomscan.text and "404" not in joomscan.text:
-        joomla.append(f"{url}/administrator")
-    soup = BeautifulSoup(joomscan.content, 'html.parser')
-    meta_tag = soup.find_all("meta")
-    if "Joomla!" in meta_tag:
-        joomla_meta.append(meta_tag)
-    joomscan2 =  sessions.get(f"{url}/README.txt", verify=False, headers=header)
-    if joomscan2.status_code == 200 and "Joomla!" in joomscan2.text and "404" not in joomscan2.text:
-        joomla_readme.append(f"{url}/README.txt")
-    joomscan3 = sessions.get(f"{url}", verify=False, headers=header)
-    for item, key in joomscan3.headers.items():
-        if "Wed, 17 Aug 2005 00:00:00 GMT" in key:
-            joomla_header_hint.append(f"{item}:{key}")
-    joomscan_version = sessions.get(f"{url}", verify=False, headers=header)
-    regex_1 = re.findall(r'content=(?:\"|\')Joomla! (.*?) - Open Source Content Management(?:\"|\')', joomscan_version.text)
-    if regex_1 != []:
-        CMS.append(f"Joomla {regex_1[0]}")
-    else:
+    try:
+        joomla = []
+        joomla_readme = []
+        joomla_meta = []
+        joomla_header_hint = []
+        sessions = requests.Session()
+        joomscan = sessions.get(f"{url}/administrator", verify=False, headers=header)
+        if joomscan.status_code == 200 and "Joomla" in joomscan.text and "404" not in joomscan.text:
+            joomla.append(f"{url}/administrator")
+        soup = BeautifulSoup(joomscan.content, 'html.parser')
+        meta_tag = soup.find_all("meta")
+        if "Joomla!" in meta_tag:
+            joomla_meta.append(meta_tag)
+        joomscan2 =  sessions.get(f"{url}/README.txt", verify=False, headers=header)
+        if joomscan2.status_code == 200 and "Joomla!" in joomscan2.text and "404" not in joomscan2.text:
+            joomla_readme.append(f"{url}/README.txt")
+        joomscan3 = sessions.get(f"{url}", verify=False, headers=header)
+        for item, key in joomscan3.headers.items():
+            if "Wed, 17 Aug 2005 00:00:00 GMT" in key:
+                joomla_header_hint.append(f"{item}:{key}")
+        joomscan_version = sessions.get(f"{url}", verify=False, headers=header)
+        regex_1 = re.findall(r'content=(?:\"|\')Joomla! (.*?) - Open Source Content Management(?:\"|\')', joomscan_version.text)
+        if regex_1 != []:
+            CMS.append(f"Joomla {regex_1[0]}")
+        else:
+            pass
+        if joomla or joomla_readme or joomla_meta or joomla_header_hint:
+            CMS.append("Joomla")
+            vuln_scan.joomla_vuln_scan(url)
+    except requests.exceptions.ConnectionError:
         pass
-    if joomla or joomla_readme or joomla_meta or joomla_header_hint:
-        CMS.append("Joomla")
-        vuln_scan.joomla_vuln_scan(url)
 
 def Drupal(url: str) -> str:
     drupal = []

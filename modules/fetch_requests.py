@@ -98,3 +98,5 @@ def get_headers(url: str) -> str:
         sys.exit()
     except ssl.SSLCertVerificationError:
         pass
+    except TypeError:
+        pass
