@@ -3,7 +3,7 @@
 <h4 align="center">Based on custom vulnerability scanners &amp; Nuclei</h4>
 <h4 align="center">
 
-![Python Version](https://img.shields.io/badge/python-3.9.12-green)
+![Python Version](https://img.shields.io/badge/python-3.11.3-green)
 ![Issues](https://img.shields.io/github/issues/gotr00t0day/Gsec)
 ![Stars](https://img.shields.io/github/stars/gotr00t0day/Gsec)
 ![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fgotr00t0day)
