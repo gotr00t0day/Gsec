@@ -18,7 +18,12 @@ def scan_port(port):
         
         if result == 0:
             open_ports.append(f"{port}")
-        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PORTS: {Fore.GREEN}{', '.join(map(str,open_ports))}")
+        else:
+            pass
+        if open_ports:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PORTS: {Fore.GREEN}{', '.join(map(str,open_ports))}")
+        else:
+            pass
         
         # close the socket
         sock.close()
