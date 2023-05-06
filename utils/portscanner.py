@@ -18,9 +18,6 @@ def scan_port(port):
         
         if result == 0:
             open_ports.append(f"{port}")
-        else:
-            pass
-        if open_ports:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PORTS: {Fore.GREEN}{', '.join(map(str,open_ports))}")
         else:
             pass
