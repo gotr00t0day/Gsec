@@ -3,7 +3,7 @@ from modules import fetch_requests, scan, urltoip, sub_output
 from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check
 from exploits import f5bigip_scanner
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, xss
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, xss, blind_sqli
 import argparse
 import os
 import asyncio

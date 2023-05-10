@@ -7,34 +7,27 @@ import urllib3
 import sys
 import ssl
 import re
+import test
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 user_agent_ = agent_list.get_useragent()
 header = {"User-Agent": user_agent_}
 
-def do_requests(url: str) -> str:
+def do_requests(url: str, proxy = None) -> str:
     try:
-        sessions = requests.Session()      
-        res = sessions.get(url, verify=False, headers=header, allow_redirects=True)
-        if res.status_code == 200:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.GREEN}200")
-        elif res.status_code == 403:
-            soup = BeautifulSoup(res.text, 'html.parser')
-            title = soup.find("title")
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} Forbidden ({title.get_text()})")
-        elif res.status_code == 404:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} 404")
-            print(f"{Fore.RED} EXITING!!")
-            sys.exit()
-        elif res.history == 301 or 302:
-            location = []
-            for key, desc in res.headers.items():
-                if "Location" in key or "location" in key:
-                    location.append(desc)
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.RED} seems to be redirecting to {Fore.CYAN}{res.url}")
+        if proxy is None:
+            sessions = requests.Session()      
+            res = sessions.get(url, verify=False, headers=header, allow_redirects=True)
+            test.get_response(url, res)
         else:
-            print(f"{url} {res.status_code}")
+            sessions = requests.Session()      
+            proxies = {
+                'sock5': "199.229.254.129"
+            }
+            res = sessions.get(url, verify=False, headers=header, allow_redirects=True, proxies=proxies)
+            test.get_response(url, res)
+
     except requests.exceptions.InvalidSchema:
         print("Please use https://www.target.com")
     except requests.exceptions.ConnectionError:

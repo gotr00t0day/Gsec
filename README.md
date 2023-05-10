@@ -99,9 +99,9 @@ python3 gsec.py --ultimatescan https://target.com
 
 ```
 
-## Anonimity
+# Anonimity
 
-# ProxyChains
+## ProxyChains
 
 You can use Proxychains with tor for anonimity.
 
