@@ -17,6 +17,8 @@ import asyncio
 # 
 ##################################################################################
 
+
+
 banner = f"""
     .__________________________.              
     | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
@@ -118,7 +120,8 @@ async def main():
             path_traversal.path_traversal_scan(args.target)
             f5bigip_scanner.scan_vuln(args.target)
             crawler.scan(args.target)
-            await loginscanner.main(args.target)
+            blind_sqli.main(args.target)
+            #await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")
 

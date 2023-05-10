@@ -54,4 +54,4 @@ def xss_scan(domain: str) -> str:
     # Iterate over all script tags
     for script in scripts:
         if re.search(r"(location|document|window)\.(hash|search|referrer|pathname|name|title|cookie|getElementById|getElementsByClassName|getElementsByTagName|write|writeln|innerHTML|outerHTML|setAttribute|getAttribute)\(", str(script)):
-            print(f'{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Potential DOM XSS: {Fore.MAGENTA}{str(script)}')
+            print(f'{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Potential DOM XSS: {Fore.MAGENTA}{str(script)} {Fore.RESET}')

@@ -99,6 +99,22 @@ python3 gsec.py --ultimatescan https://target.com
 
 ```
 
+## Anonimity
+
+# ProxyChains
+
+You can use Proxychains with tor for anonimity.
+
+```bash
+
+proxychains -q python3 gsec.py -t https://target.com
+
+```
+
+# Coming Soon...
+
+I'm working on adding proxy support for Gsec, it will be added in future releases.
+
 ## Issues
 
 In python3.10+ you might get an SSL error while running Gsec. To fix this issue just ``` pip3 install ceritifi ``` and then do ```/Applications/Python\ 3.10/Install\ Certificates.command``` and the issue will be fixed.
