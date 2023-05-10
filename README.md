@@ -111,7 +111,7 @@ proxychains -q python3 gsec.py -t https://target.com
 
 ```
 
-# Coming Soon...
+## Coming Soon...
 
 I'm working on adding proxy support for Gsec, it will be added in future releases.
 
