@@ -48,6 +48,8 @@ group = parser.add_mutually_exclusive_group()
 group.add_argument('-p', '--passive_recon', action='store_true',
                    help="Passive recon on the target")
 
+group.add_argument('-px', '--proxy', action='store_true',
+                   help="Proxy support")
 
 parser.add_argument('-t', '--target',
                    help="Target to scan",
