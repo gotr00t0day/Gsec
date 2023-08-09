@@ -185,6 +185,31 @@ def PhpBB(url: str) -> str:
         CMS.append("phpBB")
         vuln_scan.phpbb_vuln_scan(url)
 
+def Shopify(url: str) -> str:
+    shopify_name = []
+    shopify_endpoint = ["/cart", "/checkout"]
+    found_endpoints = []
+    meta_tags = []
+    js_files = []
+    if "shopify" in url:
+        shopify_name.append(url)
+    for endpoints in shopify_endpoint:
+        s = requests.Session()
+        res = s.get(f"{url}{endpoints}", verify=False)
+        if res.status_code == 200 and "shopify" in res.text and "404" not in res.text:
+             found_endpoints.append(f"{url}{endpoints}")
+        else:
+            pass
+    res2 = s.get(f"{url}", verify=False)
+    if "shopify.js" in res2.text or "shop.js" in res2.text and "404" not in res2.text:
+        js_files.append("shopify javascript files")
+    soup = BeautifulSoup(res2.content, 'html.parser')
+    meta_tag = soup.find_all("meta")
+    if "shopify" in meta_tag or "Shopify" in meta_tag:
+        meta_tag.append("Shopify")
+    if shopify_name or js_files or found_endpoints or meta_tags:
+        CMS.append("Shopify")
+
 
 def main(url: str) -> str:
     Joomla(url)
@@ -194,6 +219,7 @@ def main(url: str) -> str:
     PhpBB(url)
     Umbraco(url)
     Magento(url)
+    Shopify(url)
     if CMS:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} CMS: {Fore.GREEN}{Fore.GREEN}{', '.join(map(str,CMS))}")
     else:

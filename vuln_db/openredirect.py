@@ -56,6 +56,5 @@ if __name__ == "__main__":
     for result in results:
         vulnerable_links.extend(result)
 
-    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}Vulnerable Links:")
     for link in vulnerable_links:
         print(f"{Fore.GREEN}{link}")

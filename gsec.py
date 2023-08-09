@@ -1,6 +1,6 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip, sub_output
-from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler
+from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler, api_scanner
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check
 from exploits import f5bigip_scanner
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, xss, blind_sqli
@@ -14,20 +14,20 @@ import asyncio
 ##################################################################################
 #
 # Gsec Scans a target to look for security issues and misconfigurations
-# 
+#
 ##################################################################################
 
-
+version = "v1.4"
 
 banner = f"""
-    .__________________________.              
-    | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}        
-    | | ................. | |  |            
-    | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET} 
-    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}v1.2{Fore.RESET}
+    .__________________________.
+    | .___________________. |==|            {Fore.YELLOW}Web Security Scanner{Fore.RESET}
+    | | ................. | |  |
+    | | :::GSec Running!::| |  |            {Fore.YELLOW}Author:     {Fore.MAGENTA}c0d3ninja{Fore.RESET}
+    | | ::::::::::::::::: | |  |            {Fore.YELLOW}Version:    {Fore.MAGENTA}{version}{Fore.RESET}
     | | :1337 bugs found!:| |  |            {Fore.YELLOW}Instagram:  {Fore.MAGENTA}gotr00t0day{Fore.RESET}
     | | ::::::::::::::::: | |  |
-    | | ::::::::::::::::: | |  |           
+    | | ::::::::::::::::: | |  |
     | | ::::::::::::::::: | | ,|            {Fore.CYAN}Happy Hacking{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}
     | !___________________! |(c|
     !_______________________!__!
@@ -36,7 +36,7 @@ banner = f"""
  /  [][][][][][][][][][][][][][]  \\
 (  [][][][][____________][][][][]  )
  \ ------------------------------ /
-  \______________________________/ 
+  \______________________________/
 """
 
 print(f"{Fore.WHITE}{banner}")
@@ -62,7 +62,12 @@ parser.add_argument('-us', '--ultimatescan', help="Target to scan")
 
 parser.add_argument('-ug', '--updategsec', action='store_true', help="Update GSec")
 
+parser.add_argument('-v', '--version', action='store_true', help="Gsec version")
+
 args = parser.parse_args()
+
+if args.version:
+    print(f"{Fore.YELLOW}Gsec {Fore.MAGENTA}{version}")
 
 if args.updategsec:
     scan.commands("git pull")
@@ -123,6 +128,7 @@ async def main():
             f5bigip_scanner.scan_vuln(args.target)
             crawler.scan(args.target)
             blind_sqli.main(args.target)
+            api_scanner.swagger_ui(args.target)
             #await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")
@@ -132,5 +138,5 @@ if __name__ == "__main__":
         asyncio.run(main())
     except ConnectionError:
         pass
-    except ConnectionRefusedError:
+    except TypeError:
         pass

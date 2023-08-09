@@ -11,7 +11,6 @@ end_port = 65000
 
 def scan_port(port):
     try:
-        # create a TCP socket and attempt to connect to the specified port
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)
         result = sock.connect_ex((ip_address, port))
@@ -22,7 +21,6 @@ def scan_port(port):
         else:
             pass
         
-        # close the socket
         sock.close()
     except:
         pass

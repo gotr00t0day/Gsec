@@ -25,3 +25,6 @@ def magento_vuln_scan(url: str):
 
 def phpbb_vuln_scan(url: str):
     sub_output.subpro_scan(f"nuclei -u {url} -tags phpbb -silent")
+
+def shopify_vuln_scan(url: str):
+    sub_output.subpro_scan(f"nuclei -u {url} -tags shopify -silent")
