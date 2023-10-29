@@ -1,7 +1,6 @@
 from utils import logins
 from plugins import agent_list
 from colorama import Fore
-import httpx
 import asyncio
 
 

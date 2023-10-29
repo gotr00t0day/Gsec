@@ -209,6 +209,7 @@ def Shopify(url: str) -> str:
         meta_tag.append("Shopify")
     if shopify_name or js_files or found_endpoints or meta_tags:
         CMS.append("Shopify")
+        vuln_scan.shopify_vuln_scan(url)
 
 
 def main(url: str) -> str:

@@ -1,9 +1,9 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip, sub_output
 from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler, api_scanner
-from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check
+from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check, sitemap, securitytxt
 from exploits import f5bigip_scanner
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, xss, blind_sqli
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns
 import argparse
 import os
 import asyncio
@@ -17,7 +17,7 @@ import asyncio
 #
 ##################################################################################
 
-version = "v1.4"
+version = "v1.5"
 
 banner = f"""
     .__________________________.
@@ -55,6 +55,9 @@ parser.add_argument('-t', '--target',
                    help="Target to scan",
                    metavar="https://www.domain.com")
 
+parser.add_argument('-pl', '--pluginlist', action='store_true',
+                   help="list of plugins")
+
 parser.add_argument('-u', '--updatetemplates', action='store_true',
                    help="Update nuclei templates")
 
@@ -65,6 +68,35 @@ parser.add_argument('-ug', '--updategsec', action='store_true', help="Update GSe
 parser.add_argument('-v', '--version', action='store_true', help="Gsec version")
 
 args = parser.parse_args()
+
+if args.pluginlist:
+    filenames = os.listdir("plugins")
+    filenames.remove("__init__.py")
+    file_desc = {}
+    for filename in filenames:
+        if filename.endswith(".py"):
+            if "securitytxt.py" in filename:
+                file_desc["securitytxt.py"] = " - security.txt is a proposed standard which allows websites to define security policies and contact details.\n"
+            if "auth_tokens.py" in filename:
+                file_desc["auth_token.py"] = " - Find authentication token leaks\n"
+            if "optionscheck.py" in filename:
+                file_desc["optionscheck.py"] = " - OPTIONS method determines the communication options available for a specific resource\n"
+            if "sitemap.py" in filename:
+                file_desc["sitemap.py"] = " - A sitemap is a file where a developer or organization can provide information about the pages, videos, and other files offered by the site or application\n"    
+            if "favicon.py" in filename:
+                file_desc["favicon.py"] = " - Fetches favicon.ico and calculates its hash value to find assets in shodan.\n"
+            if "phpcheck.py" in filename:
+                file_desc["phpcheck.py"] = " - Checks a domain for PHP\n"
+            if "shellshock.py" in filename:
+                file_desc["shellshock.py"] = " - Scan a domain to find the shellshock vulnerability\n"
+            if "agent_list.py" in filename:
+                file_desc["agent_list.py"] = " - A list of user agents\n" 
+            if "robots.py" in filename:
+                file_desc["robots.py"] = " - Checks fot the robots.txt file\n" 
+            if "cookies_check.py" in filename:
+                file_desc["cookies_check.py"] = " - Prints the PHP SESSID cookies\n"          
+    for k,v in file_desc.items():
+        print(f"{k}{v}")
 
 if args.version:
     print(f"{Fore.YELLOW}Gsec {Fore.MAGENTA}{version}")
@@ -99,7 +131,7 @@ async def main():
             if "http://" in args.target:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PROTOCOL: {Fore.GREEN}http")
             optionscheck.Get_Options(args.target)
-            portscanner.main(args.target)
+            portscanner.portscanner(args.target)
             fetch_requests.get_headers(args.target)
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-XSS-Protection")
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Content-Security-Policy")
@@ -110,6 +142,8 @@ async def main():
             phpcheck.php_ident(args.target)
             techscanner.Tech(args.target)
             robots.robots_scan(args.target)
+            sitemap.sitemap(args.target)
+            securitytxt.securitytxt(args.target)
             cookies_check.phpsessid_session(args.target)
             auth_tokens.auth_tokens(args.target)
             favicon.favicon_hash(args.target)
@@ -121,13 +155,11 @@ async def main():
             head_vuln.head_auth_bypass(args.target)
             cache_poisoning.cache_dos_scan(args.target)
             webservers_vulns.Servers_scan(args.target)
-            xss.xss_scan(args.target)
             sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/ssrf.py {args.target}")
             sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/openredirect.py {args.target}")
             path_traversal.path_traversal_scan(args.target)
             f5bigip_scanner.scan_vuln(args.target)
             crawler.scan(args.target)
-            blind_sqli.main(args.target)
             api_scanner.swagger_ui(args.target)
             #await loginscanner.main(args.target)
             print("\n")
