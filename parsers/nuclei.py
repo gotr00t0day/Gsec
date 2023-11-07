@@ -26,5 +26,3 @@ def parse():
                                 new_v2 = v2.split(" ")[0]
                                 results.append(f"Vulnerability: {v2}")
                                 print(f"{Fore.MAGENTA}Vulnerability: {Fore.GREEN}{v2}")
-        with open("results.txt", "w") as f:
-            f.writelines(f"{results}\n")

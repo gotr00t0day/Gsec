@@ -17,7 +17,7 @@ import asyncio
 #
 ##################################################################################
 
-version = "v1.5"
+version = "v1.6"
 
 banner = f"""
     .__________________________.
@@ -130,6 +130,7 @@ async def main():
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PROTOCOL: {Fore.GREEN}https")
             if "http://" in args.target:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} PROTOCOL: {Fore.GREEN}http")
+            geolocation.scan_ip(args.target)
             optionscheck.Get_Options(args.target)
             portscanner.portscanner(args.target)
             fetch_requests.get_headers(args.target)

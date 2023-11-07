@@ -7,7 +7,6 @@ import urllib3
 import sys
 import ssl
 import re
-import test
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -20,6 +19,9 @@ def do_requests(url: str, proxy = None) -> str:
         res = sessions.get(url, verify=False, headers=header, allow_redirects=True)
         if res.status_code == 200:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} {url} {Fore.GREEN}200")
+            soup = BeautifulSoup(res.text, 'html.parser')
+            title = soup.find("title")
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Title: {Fore.YELLOW} ({title.get_text()})")
         elif res.status_code == 403:
             soup = BeautifulSoup(res.text, 'html.parser')
             title = soup.find("title")
@@ -54,6 +56,7 @@ def get_headers(url: str) -> str:
     server_output = []
     via_output = []
     x_poweredby_output = []
+    x_generator = []
     try:
         res = sessions.get(url, verify=False, headers=header)
         if res.status_code == 200:
@@ -64,6 +67,8 @@ def get_headers(url: str) -> str:
                     via_output.append(desc)
                 if value == "X-Powered-By":
                     x_poweredby_output.append(desc)
+                if value == "X-Generator":
+                    x_generator.append(desc)
 
             if server_output:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SERVER: {Fore.GREEN}{', '.join(map(str,server_output))}")
@@ -89,6 +94,8 @@ def get_headers(url: str) -> str:
                 pass
             if x_poweredby_output:
                 print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} X-Powered-By: {Fore.GREEN}{', '.join(map(str,x_poweredby_output))}")
+            if x_generator:
+                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} X-Generator: {Fore.GREEN}{', '.join(map(str,x_generator))}")
             
     except requests.exceptions.InvalidSchema:
         print("Please use https://www.target.com")

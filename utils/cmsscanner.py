@@ -5,6 +5,7 @@ from plugins import agent_list
 from utils import techscanner
 import requests
 import re
+import urllib3
 
 requests.packages.urllib3.disable_warnings()
 
@@ -37,7 +38,7 @@ def Wp(url: str) -> str:
         if "Wordpress" in meta_tag:
             wp_meta.append(meta_tag)
         gen = soup.find_all("meta", attrs={'name':'generator'})
-        if gen == None:
+        if gen is None:
             pass
         else:
             print(gen[0].get_text())
@@ -45,12 +46,14 @@ def Wp(url: str) -> str:
         CMS.append("Wordpress")
         vuln_scan.apache_vuln_scan(url)
         vuln_scan.wordpress_vuln_scan(url)
-        xmlrpc_file = requests.get(f"{url}/xmlrpc.php", verify=False, headers=header)
+        s = requests.Session()
+        xmlrpc_file = s.get(f"{url}/xmlrpc.php", verify=False, headers=header)
         if xmlrpc_file.status_code == 200:
             print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} XMLRPC: {Fore.GREEN}{url}/xmlrpc")
         else:
             pass
-
+    if wp:
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} WP Directories: {Fore.GREEN}{', '.join(map(str,wp))}")
 
 # Check for Joomla
 
@@ -171,19 +174,25 @@ def PhpBB(url: str) -> str:
     cookies = []
     source = []
     tech = []
-    res = requests.get(url, verify=False, headers=header)
-    for item, value in res.headers.items():
-        if "phpbb_" in value:
-            cookies.append("phpbb")
-    res2 = requests.get(url, verify=False, headers=header)
-    if "phpBB" in res2.text and "404" not in res2.text:
-        source.append("phpbb")
-    technologies = techscanner.builtwith(url)
-    if "phpBB" in technologies:
-        tech.append("phpBB")
-    if cookies or source or tech:
-        CMS.append("phpBB")
-        vuln_scan.phpbb_vuln_scan(url)
+    try:
+        res = requests.get(url, verify=False, headers=header)
+        for item, value in res.headers.items():
+            if "phpbb_" in value:
+                cookies.append("phpbb")
+        res2 = requests.get(url, verify=False, headers=header)
+        if "phpBB" in res2.text and "404" not in res2.text:
+            source.append("phpbb")
+        technologies = techscanner.builtwith(url)
+        if "phpBB" in technologies:
+            tech.append("phpBB")
+        if cookies or source or tech:
+            CMS.append("phpBB")
+            vuln_scan.phpbb_vuln_scan(url)
+    except requests.exceptions.ConnectTimeout:
+        pass
+    except urllib3.exceptions.MaxRetryError:
+        pass
+
 
 def Shopify(url: str) -> str:
     shopify_name = []

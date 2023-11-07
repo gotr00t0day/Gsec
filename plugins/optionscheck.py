@@ -17,22 +17,22 @@ def Get_Options(url: str) -> str:
     if allowed:
         allowed = ", ".join(allowed)
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OPTIONS: {Fore.GREEN}{allowed}")
+        methods = []
         if "PUT" not in allowed or "DELETE" not in allowed:
             # Check for HTTP Method Override
             http_method_delete = {"X-HTTP-Method": "DELETE"}
             http_method_put = {"X-HTTP-Method": "PUT"}
             r_method_override = s.get(f"{url}", verify=False, headers=http_method_delete)
             if r_method_override.status_code == 200:
-                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OPTIONS: {Fore.GREEN}HTTP Method Override Possible for DELETE")
+                methods.append("DELETE")
             elif r_method_override.status_code == 405:
                 pass
             r_method_put = s.get(f"{url}", verify=False, headers=http_method_put)
             if r_method_put.status_code == 200:
-                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OPTIONS: {Fore.GREEN}HTTP Method Override Possible for PUT")
+                methods.append("PUT")
             elif r_method_put.status_code == 405:
                 pass
-
-
-
+        if methods:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} HTTP Method Override: {Fore.GREEN}Possible For {Fore.YELLOW}{', '.join(map(str, methods))}")
     else:
         pass
