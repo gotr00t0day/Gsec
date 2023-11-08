@@ -65,6 +65,8 @@ parser.add_argument('-us', '--ultimatescan', help="Target to scan")
 
 parser.add_argument('-ug', '--updategsec', action='store_true', help="Update GSec")
 
+parser.add_argument('-un', '--updatenuclei', action='store_true', help="Update Nuclei")
+
 parser.add_argument('-v', '--version', action='store_true', help="Gsec version")
 
 args = parser.parse_args()
@@ -92,7 +94,7 @@ if args.pluginlist:
             if "agent_list.py" in filename:
                 file_desc["agent_list.py"] = " - A list of user agents\n" 
             if "robots.py" in filename:
-                file_desc["robots.py"] = " - Checks fot the robots.txt file\n" 
+                file_desc["robots.py"] = " - Checks for the robots.txt file\n" 
             if "cookies_check.py" in filename:
                 file_desc["cookies_check.py"] = " - Prints the PHP SESSID cookies\n"          
     for k,v in file_desc.items():
@@ -106,6 +108,9 @@ if args.updategsec:
 
 if args.updatetemplates:
     scan.commands("nuclei -ut")
+
+if args.updatenuclei:
+    scan.commands("nuclei -update")
 
 if args.ultimatescan:
     nuclei_vulns.nuclei_ultimate_scan(args.target)
