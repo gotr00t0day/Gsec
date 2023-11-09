@@ -23,13 +23,14 @@ def Get_Options(url: str) -> str:
             http_method_delete = {"X-HTTP-Method": "DELETE"}
             http_method_put = {"X-HTTP-Method": "PUT"}
             r_method_override = s.get(f"{url}", verify=False, headers=http_method_delete)
-            content = r_method_override.content
+            content = r_method_override.text
             if r_method_override.status_code == 200 and "DELETE" in content:
                 methods.append("DELETE")
             elif r_method_override.status_code == 405:
                 pass
             r_method_put = s.get(f"{url}", verify=False, headers=http_method_put)
-            if r_method_put.status_code == 200:
+            content2 = r_method_put.text
+            if r_method_put.status_code == 200 and "PUT" in content2:
                 methods.append("PUT")
             elif r_method_put.status_code == 405:
                 pass
