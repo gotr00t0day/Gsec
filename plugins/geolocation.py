@@ -32,3 +32,5 @@ def scan_ip(domain: str) -> str:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} GeoLocation: {Fore.GREEN}{', '.join(map(str, info))}")
     except socket.gaierror:
         pass
+    except UnicodeError:
+        pass

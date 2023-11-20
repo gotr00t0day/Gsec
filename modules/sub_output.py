@@ -5,4 +5,4 @@ def subpro_scan(command: str) -> str:
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     out, err = p.communicate()
     out = out.decode() 
-    print(out)
+    return out

@@ -2,7 +2,7 @@ from colorama import Fore
 import requests
 
 def host_header_injection(url: str):
-    redirect = ["301", "302", "303", "307", "308"]
+    redirect = ["301", "302", "303", "307", "308"] 
     payload = b"google.com" 
     try:
         session = requests.Session()
@@ -27,7 +27,7 @@ def host_header_injection(url: str):
         for value2, key2 in resp2.headers.items():
             for pos, web in enumerate(url):
                 if pos == 0:
-                    if payload in resp2_content or key2 == payload:
+                    if payload in resp2_content and key2 == payload:
                         vuln_domain.append(f"Duplicate Host Header")
                 else:
                     pass

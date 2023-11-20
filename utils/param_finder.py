@@ -2,7 +2,7 @@ from colorama import Fore
 from urllib.parse import urljoin
 import requests
 import re
-import sys
+import os
 
 requests.packages.urllib3.disable_warnings()
 
@@ -25,14 +25,15 @@ Version: v1.0
 
 """
 
+dir = os.getcwd()
 
-with open(f"payloads/ssrf.txt", "r") as f:
+with open(f"{dir}/utils/payloads/ssrf.txt", "r") as f:
     ssrf_list = [x.strip() for x in f.readlines()]
 
-with open(f"payloads/rce.txt", "r") as f:
+with open(f"{dir}/utils/payloads/rce.txt", "r") as f:
     rce_list = [x.strip() for x in f.readlines()]
 
-with open(f"payloads/openredirect.txt", "r") as f:
+with open(f"{dir}/utils/payloads/openredirect.txt", "r") as f:
     openredirect_list = [x.strip() for x in f.readlines()]
 
 def get_params(domain: str) -> str:
@@ -78,7 +79,3 @@ def get_params(domain: str) -> str:
         print (Fore.RED + "Please use: http://site.com")
     except UnicodeDecodeError:
         pass
-
-if __name__ == "__main__":
-    print(f"{Fore.WHITE} Searching for vulnerable paramaters for {Fore.CYAN}SSRF, RCE, Open Redirect{Fore.GREEN}\n")
-    get_params(sys.argv[1])

@@ -1,6 +1,7 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip, sub_output
-from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler, api_scanner
+from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler, api_scanner, api_fuzzer
+from utils import param_finder
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check, sitemap, securitytxt, geolocation
 from exploits import f5bigip_scanner
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns
@@ -17,7 +18,7 @@ import asyncio
 #
 ##################################################################################
 
-version = "v1.6"
+version = "v1.7"
 
 banner = f"""
     .__________________________.
@@ -167,6 +168,8 @@ async def main():
             f5bigip_scanner.scan_vuln(args.target)
             crawler.scan(args.target)
             api_scanner.swagger_ui(args.target)
+            api_fuzzer.main(args.target)
+            param_finder.get_params(args.target)
             #await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")

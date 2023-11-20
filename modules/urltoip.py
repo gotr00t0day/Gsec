@@ -13,3 +13,5 @@ def get_ip(domain: str):
         return socket.gethostbyname(domain)
     except socket.gaierror: 
         pass
+    except UnicodeError:
+        pass
