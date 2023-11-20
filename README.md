@@ -14,6 +14,7 @@
   <a href="#keys">Keys</a> •
   <a href="#installation">Install</a> •
   <a href="#usage">Usage</a> •
+  <a href="#Keywords">KeyWords</a> •
   <a href="https://discord.gg/59cKfqNNHq">Join Discord</a>
 
 </p>
@@ -110,6 +111,10 @@ You can use Proxychains with tor for anonimity.
 proxychains -q python3 gsec.py -t https://target.com
 
 ```
+
+## Keywords
+
+If Gsec finds a vulnerability and it has the *POSSIBLE!* keyword in the output that means it could be a false positive and you need to manually test the vulnerability to make sure it's actually vulnerable.
 
 ## Coming Soon...
 
