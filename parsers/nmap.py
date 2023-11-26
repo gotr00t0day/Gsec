@@ -1,6 +1,4 @@
 from libnmap.parser import NmapParser
-import multiprocessing
-
 
 def parse_scan():
     nmap_info = []

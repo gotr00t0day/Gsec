@@ -14,4 +14,4 @@ def vulners_scan(domain: str) -> str:
     ip = urltoip.get_ip(domain)
     dir = os.getcwd()
     sub_output.subpro_scan(f"nmap --script vulners, vuln {ip} -v -p80,443 -T4 -Pn > {dir}/output/nmap_results.txt")
-    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Nmap Vulnerability Scan: {Fore.MAGENTA} Results saved to /output") 
+    print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Nmap Vulnerability Scan: {Fore.MAGENTA}Results saved to /output") 

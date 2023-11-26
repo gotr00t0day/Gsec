@@ -11,7 +11,6 @@ user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 header = {"User-Agent": user_agent}
 
 dir = os.getcwd()
-print(dir)
 with open(f"{dir}/utils/payloads/api.txt", "r") as f:
     api_list = (x.strip() for x in f.readlines())
 
@@ -23,7 +22,7 @@ def api_fuzzer(domain: str, api: str) -> None:
         r = s.get(url, headers=header, verify=False)
         if r.status_code == 200:
             apis.append(url)
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}API{Fore.GREEN}{', '.join(map(str,apis))}")
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}API: {Fore.GREEN}{', '.join(map(str,apis))}")
     except requests.exceptions.RequestException:
         pass
 
