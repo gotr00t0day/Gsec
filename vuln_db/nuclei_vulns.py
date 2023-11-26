@@ -3,15 +3,13 @@ from modules import sub_output
 from parsers import nuclei
 
 
-def nuclei_cve_scan(domain: str) -> str:
+def nuclei_scan(domain: str) -> str:
     sub_output.subpro_scan(f"nuclei -u {domain} -t http/cves/ -severity medium,high,critical -silent -c 100 -j -o vulnerable.json")
     nuclei.parse()
     sub_output.subpro_scan(f"nuclei -u {domain} -t http/vulnerabilities/ -severity medium,high,critical -silent -c 100 -j -o vulnerable.json")
     nuclei.parse()
     sub_output.subpro_scan(f"nuclei -u {domain} -t http/misconfiguration/ -severity high,critical -silent -c 100 -j -o vulnerable.json")
     nuclei.parse()
-
-    
 
 def nuclei_ultimate_scan(domain: str) -> str:
     print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}Task{Fore.CYAN}:{Fore.LIGHTBLUE_EX} CVE{Fore.WHITE} Status: {Fore.GREEN}Running...")

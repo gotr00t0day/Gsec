@@ -194,8 +194,6 @@
 /api/widget
 /api/widgets/events
 /application.wadl
-/doc
-/docs
 /graphql
 /swagger/
 /swagger.json

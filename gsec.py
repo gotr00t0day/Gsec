@@ -1,10 +1,10 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip, sub_output
 from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler, api_scanner, api_fuzzer
-from utils import param_finder
+from utils import param_finder, javascript_scanner
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check, sitemap, securitytxt, geolocation
 from exploits import f5bigip_scanner
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, nmap_vuln
 import argparse
 import os
 import asyncio
@@ -18,7 +18,7 @@ import asyncio
 #
 ##################################################################################
 
-version = "v1.7"
+version = "v1.8"
 
 banner = f"""
     .__________________________.
@@ -53,8 +53,7 @@ group.add_argument('-px', '--proxy', action='store_true',
                    help="Proxy support")
 
 parser.add_argument('-t', '--target',
-                   help="Target to scan",
-                   metavar="https://www.domain.com")
+                   help="Target to scan",)
 
 parser.add_argument('-pl', '--pluginlist', action='store_true',
                    help="list of plugins")
@@ -71,6 +70,7 @@ parser.add_argument('-un', '--updatenuclei', action='store_true', help="Update N
 parser.add_argument('-v', '--version', action='store_true', help="Gsec version")
 
 args = parser.parse_args()
+
 
 if args.pluginlist:
     filenames = os.listdir("plugins")
@@ -150,11 +150,10 @@ async def main():
             techscanner.Tech(args.target)
             robots.robots_scan(args.target)
             sitemap.sitemap(args.target)
-            securitytxt.securitytxt(args.target)
             cookies_check.phpsessid_session(args.target)
             auth_tokens.auth_tokens(args.target)
             favicon.favicon_hash(args.target)
-            nuclei_vulns.nuclei_cve_scan(args.target)
+            nuclei_vulns.nuclei_scan(args.target)
             shellshock.shellshock_scan(args.target)
             corsmisconfig.cors_scan(args.target)
             crossdomain.crossdomain_misconfig(args.target)
@@ -170,6 +169,8 @@ async def main():
             api_scanner.swagger_ui(args.target)
             api_fuzzer.main(args.target)
             param_finder.get_params(args.target)
+            javascript_scanner.spider(args.target)
+            nmap_vuln.vulners_scan(args.target)
             #await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")

@@ -20,8 +20,6 @@ def host_header_injection(url: str):
                     duplicates_none = []  
                     if value == "Location" and key == payload and resp.status_code in redirect:
                         vuln_domain.append(f"X-Forwarded-Host")
-                    if payload in resp_content or key == payload:
-                        vuln_domain.append(f"X-Forwarded-Host")
                 else:
                     pass
         for value2, key2 in resp2.headers.items():

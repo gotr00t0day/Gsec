@@ -23,7 +23,7 @@ def api_fuzzer(domain: str, api: str) -> None:
         r = s.get(url, headers=header, verify=False)
         if r.status_code == 200:
             apis.append(url)
-            print(f"{Fore.GREEN}[+] {Fore.WHITE} - {Fore.MAGENTA}{', '.join(map(str,apis))}")
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}- {Fore.WHITE}API{Fore.GREEN}{', '.join(map(str,apis))}")
     except requests.exceptions.RequestException:
         pass
 

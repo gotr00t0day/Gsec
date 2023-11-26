@@ -9,11 +9,16 @@ def Get_Options(url: str) -> str:
     s = requests.Session()
     r = s.options(f"{url}", verify=False, headers=header)
     allowed = []
+    http_methods = ["GET", "POST", "PUT", "DELETE", "TRACE", "PATCH", "CONNECT"]
     for item, value in r.headers.items():
         if "Allow" in item:
-            allowed.append(value)
+            if value not in http_methods:
+                pass
+            else:
+                allowed.append(value)
         else:
             pass
+        
     if allowed:
         allowed = ", ".join(allowed)
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} OPTIONS: {Fore.GREEN}{allowed}")
