@@ -1,5 +1,4 @@
 from colorama import Fore
-from time import perf_counter
 import requests
 import threading
 import urllib3

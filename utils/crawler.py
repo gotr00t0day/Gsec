@@ -17,10 +17,10 @@ def scan(url: str) -> str:
         page_links = urljoin(url, page_links)
         if page_links not in duplicate_links:
             links_l.append(page_links)
-    for link in links_l:
-        try:
-            with open("output/spider.txt", "w") as f:
-                f.write(link)
-        except PermissionError:
-            pass
+    try:
+        with open("output/spider.txt", "w") as f:
+            for link in links_l:
+                f.write(f"link\n")
+    except PermissionError:
+         pass
         

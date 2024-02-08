@@ -1,10 +1,11 @@
 from colorama import Fore
 from modules import fetch_requests, scan, urltoip, sub_output
 from utils import path_traversal, portscanner, loginscanner, techscanner, cmsscanner, passive_recon, crawler, api_scanner, api_fuzzer
-from utils import param_finder, javascript_scanner
+from utils import param_finder, javascript_scanner, headers
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check, sitemap, securitytxt, geolocation
 from exploits import f5bigip_scanner
-from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, nmap_vuln
+from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, nmap_vuln, xss, broken_links
+from vuln_db import openredirect
 import argparse
 import os
 import asyncio
@@ -18,7 +19,7 @@ import asyncio
 #
 ##################################################################################
 
-version = "v1.8"
+version = "v2.0"
 
 banner = f"""
     .__________________________.
@@ -140,6 +141,7 @@ async def main():
             optionscheck.Get_Options(args.target)
             portscanner.portscanner(args.target)
             fetch_requests.get_headers(args.target)
+            headers.get_headers(args.target)
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-XSS-Protection")
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Content-Security-Policy")
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers Strict-Transport-Security")
@@ -161,6 +163,7 @@ async def main():
             head_vuln.head_auth_bypass(args.target)
             cache_poisoning.cache_dos_scan(args.target)
             webservers_vulns.Servers_scan(args.target)
+            openredirect.scan(args.target)
             sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/ssrf.py {args.target}")
             sub_output.subpro_scan(f"python3 {os.path.abspath(os.getcwd())}/vuln_db/openredirect.py {args.target}")
             path_traversal.path_traversal_scan(args.target)
@@ -171,6 +174,9 @@ async def main():
             param_finder.get_params(args.target)
             javascript_scanner.spider(args.target)
             nmap_vuln.vulners_scan(args.target)
+            broken_links.scan(args.target)
+            xss.scan(args.target)
+            openredirect.scan(args.target)
             #await loginscanner.main(args.target)
             print("\n")
             print(f"\t\t {Fore.MAGENTA} SCAN FINISHED{Fore.LIGHTMAGENTA_EX}!{Fore.MAGENTA}!{Fore.YELLOW}!{Fore.RESET}")

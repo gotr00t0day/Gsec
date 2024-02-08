@@ -6,7 +6,7 @@ import os
 def spider(domain: str):
     directory = os.getcwd()
     sub_output.subpro_scan(f"echo {domain} | waybackurls | grep '\\.js$' | uniq >> {directory}/output/javascript")
-    sub_output.subpro_scan(f"echo {domain} | gau | grep -Eo 'https?://\\S+?\\.js' | uniq >>{directory}/output/javascript")
+    sub_output.subpro_scan(f"echo {domain} | gau | grep -Eo 'https?://\\S+?\\.js' | uniq >> {directory}/output/javascript")
     with open(f"{directory}/output/javascript", "r") as f:
         lines = [x.strip() for x in f.readlines()]
         if lines:
