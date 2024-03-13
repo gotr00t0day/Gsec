@@ -20,7 +20,7 @@ def scan(url: str) -> str:
     try:
         with open("output/spider.txt", "w") as f:
             for link in links_l:
-                f.write(f"link\n")
+                f.write(f"{link}\n")
     except PermissionError:
          pass
         

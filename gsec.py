@@ -148,6 +148,7 @@ async def main():
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-Content-Type-Options")
             scan.commands(f"python3 {os.path.abspath(os.getcwd())}/utils/securityheaders.py --target {args.target} --headers X-Frame-Options")
             source.page_source(args.target)
+            crawler.scan(args.target)
             wafscanner.main(args.target)
             cmsscanner.main(args.target)
             phpcheck.php_ident(args.target)
