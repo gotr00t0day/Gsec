@@ -31,9 +31,9 @@ async def dns_info(domain: str) -> str:
         if "www." in domain:
             domain = domain.replace("www.", "")
     try:
-        mail_exchange = dns.resolver.resolve(domain, "MX")
-        soa = dns.resolver.resolve(domain, "SOA")
-        cname = dns.resolver.resolve(domain, "CNAME")
+        mail_exchange = dns.resolver.Resolver(domain, "MX")
+        soa = dns.resolver.Resolver(domain, "SOA")
+        cname = dns.resolver.Resolver(domain, "CNAME")
         for mail_info in mail_exchange:
             mx.append(mail_info.to_text())
         for state_of_authority in soa:
