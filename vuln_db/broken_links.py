@@ -54,7 +54,7 @@ def scan(url: str) -> str:
         
         if not_found:
             no_dup = list(not_found)
-            with open(f"/Users/c0deninja/tools/Gsec/output/broken_links.txt", "w") as f:
+            with open(f"output/broken_links.txt", "w") as f:
                 for nodup in no_dup:
                     f.write(f"{nodup}\n")
     except requests.exceptions.InvalidSchema:
