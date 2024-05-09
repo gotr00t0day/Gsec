@@ -12,3 +12,4 @@ mmh3
 httpx
 scapy
 fake_useragent
+mechanize
