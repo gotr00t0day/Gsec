@@ -20,30 +20,29 @@ async def whois_scan(domain: str) -> str:
     except TypeError:
         pass
 
-async def dns_info(domain: str) -> str:
+async def dns_info(domain: str) -> None:
     mx = []
-    if "https://" in domain:
+    resolver = dns.resolver.Resolver()
+    if domain.startswith("https://"):
         domain = domain.replace("https://", "")
-        if "www." in domain:
-            domain = domain.replace("www.", "")
-    if "http://" in domain:
+    if domain.startswith("http://"):
         domain = domain.replace("http://", "")
-        if "www." in domain:
-            domain = domain.replace("www.", "")
+    if domain.startswith("www."):
+        domain = domain.replace("www.", "")
     try:
-        mail_exchange = dns.resolver.Resolver(domain, "MX")
-        soa = dns.resolver.Resolver(domain, "SOA")
-        cname = dns.resolver.Resolver(domain, "CNAME")
+        mail_exchange = resolver.resolve(domain, "MX")
+        soa = resolver.resolve(domain, "SOA")
+        cname = resolver.resolve(domain, "CNAME")
         for mail_info in mail_exchange:
             mx.append(mail_info.to_text())
         for state_of_authority in soa:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} SOA: {Fore.GREEN}{state_of_authority.to_text()}")
+            print(f"[+] - SOA: {state_of_authority.to_text()}")
         for cnames in cname:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} CNAME: {Fore.GREEN}{cnames.to_text()}")
-        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} MX: {Fore.GREEN}{', '.join(map(str,mx))}")
+            print(f"[+] - CNAME: {cnames.to_text()}")
+        print(f"[+] - MX: {', '.join(mx)}")
     except dns.resolver.NoAnswer:
         pass
-
+        
 async def shodan_search(domain: str) -> str:
     with open(f"core/.shodan", "r") as f:
         key = [x.strip() for x in f.readlines()]
