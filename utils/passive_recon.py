@@ -46,7 +46,7 @@ async def dns_info(domain: str) -> str:
 
 async def shodan_search(domain: str) -> str:
     with open(f"core/.shodan", "r") as f:
-        key = f.readline().strip() 
+        key = [x.strip() for x in f.readlines()] 
         api = shodan.Shodan(key)
         try:
             results = api.search(domain)
