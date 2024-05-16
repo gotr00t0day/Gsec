@@ -47,21 +47,19 @@ async def dns_info(domain: str) -> str:
         
 async def shodan_search(domain: str) -> str:
     with open(f"core/.shodan", "r") as f:
-        key = [x.strip() for x in f.readlines()]
+        key = [x.strip() for x in f.readlines() if x.strip()]
         api = shodan.Shodan(key)
         try:
             results = api.search(domain)
-            results_ = []
-            results_5 = []
-            for result in results['matches']:
-                results_.append(result['ip_str'])
-            results_5.append(results_[0:9])
+            results_5 = results['matches'][:9]
             if results_5:
-                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Shodan IPs: {Fore.GREEN}{', '.join(map(str,results_5))}")
-            if not results_5:
-                pass
-        except shodan.APIError:
-            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.YELLOW} Shodan Key: {Fore.GREEN} Invalid Key")
+                ips = ', '.join(result['ip_str'] for result in results_5)
+                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} Shodan IPs: {Fore.GREEN}{ips}")
+        except shodan.APIError as e:
+            if e.value == 'No information available for that IP.':
+                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.YELLOW} Shodan Key: {Fore.GREEN}Invalid Key")
+            else:
+                print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.YELLOW} Shodan Error: {Fore.RED}{e.value}")
         except socket.herror:
             pass
 
