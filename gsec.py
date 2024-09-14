@@ -10,7 +10,6 @@ import argparse
 import os
 import asyncio
 
-
 ##################################################################################
 #                          Good Security Scanner
 ##################################################################################
@@ -42,7 +41,6 @@ banner = f"""
 """
 
 print(f"{Fore.WHITE}{banner}")
-
 
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
