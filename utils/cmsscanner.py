@@ -182,9 +182,12 @@ def PhpBB(url: str) -> str:
         res2 = requests.get(url, verify=False, headers=header)
         if "phpBB" in res2.text and "404" not in res2.text:
             source.append("phpbb")
-        technologies = techscanner.builtwith(url)
-        if "phpBB" in technologies:
+        
+        # Use the safer builtwith wrapper function
+        technologies = techscanner.safe_builtwith(url)
+        if technologies and "phpBB" in str(technologies):
             tech.append("phpBB")
+            
         if cookies or source or tech:
             CMS.append("phpBB")
             vuln_scan.phpbb_vuln_scan(url)
@@ -192,7 +195,12 @@ def PhpBB(url: str) -> str:
         pass
     except urllib3.exceptions.MaxRetryError:
         pass
-
+    except UnicodeDecodeError:
+        # Handle Unicode decode errors at the function level
+        pass
+    except Exception as e:
+        # Handle any other unexpected errors
+        pass
 
 def Shopify(url: str) -> str:
     shopify_name = []
