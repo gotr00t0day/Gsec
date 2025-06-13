@@ -1,4 +1,4 @@
-![Gsec](https://cdn.discordapp.com/attachments/700021958896648242/1052049111978889226/GSec_Banner_Transparente.png)
+![Gsec](https://gsec.tech/wp-content/uploads/2023/01/gsec-logo-wobkg-1024x257.png)
 <h4 align="center">Web Security Scanner &amp; Exploitation.</h4>
 <h4 align="center">Based on custom vulnerability scanners &amp; Nuclei</h4>
 <h4 align="center">
