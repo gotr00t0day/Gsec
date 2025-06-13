@@ -220,6 +220,102 @@ def Shopify(url: str) -> str:
         CMS.append("Shopify")
         vuln_scan.shopify_vuln_scan(url)
 
+def PrestaShop(url: str) -> str:
+    prestashop = []
+    sessions = requests.Session()
+    
+    # Check for PrestaShop admin panel
+    admin_url = f"{url}/admin"
+    res = sessions.get(admin_url, verify=False, headers=header)
+    if res.status_code == 200 and "PrestaShop" in res.text:
+        prestashop.append("Admin panel found")
+
+    # Check for specific PrestaShop files
+    ps_files = ['/modules/ps_facetedsearch/ps_facetedsearch.php', '/config/smarty.config.inc.php']
+    for file in ps_files:
+        res = sessions.get(f"{url}{file}", verify=False, headers=header)
+        if res.status_code == 200:
+            prestashop.append(f"File found: {file}")
+
+    # Check for PrestaShop meta generator tag
+    res = sessions.get(url, verify=False, headers=header)
+    if 'content="PrestaShop"' in res.text:
+        prestashop.append("Meta generator tag found")
+
+    if prestashop:
+        CMS.append("PrestaShop")
+        vuln_scan.prestashop_vuln_scan(url)
+
+def OpenCart(url: str) -> str:
+    opencart = []
+    sessions = requests.Session()
+    
+    # Check for OpenCart admin panel
+    admin_url = f"{url}/admin"
+    res = sessions.get(admin_url, verify=False, headers=header)
+    if res.status_code == 200 and "OpenCart" in res.text:
+        opencart.append("Admin panel found")
+
+    # Check for specific OpenCart files
+    oc_files = ['/system/startup.php', '/catalog/view/theme/default/stylesheet/stylesheet.css']
+    for file in oc_files:
+        res = sessions.get(f"{url}{file}", verify=False, headers=header)
+        if res.status_code == 200:
+            opencart.append(f"File found: {file}")
+
+    # Check for OpenCart specific cookies
+    res = sessions.get(url, verify=False, headers=header)
+    if 'OCSESSID' in res.cookies:
+        opencart.append("OpenCart session cookie found")
+
+    if opencart:
+        CMS.append("OpenCart")
+        vuln_scan.opencart_vuln_scan(url)
+
+def Wix(url: str) -> str:
+    wix = []
+    sessions = requests.Session()
+    
+    res = sessions.get(url, verify=False, headers=header)
+    
+    # Check for Wix-specific meta tags
+    if 'X-Wix-Published-Version' in res.headers:
+        wix.append("Wix-specific header found")
+    
+    # Check for Wix-specific JavaScript
+    if 'static.wixstatic.com' in res.text or 'wix.com' in res.text:
+        wix.append("Wix-specific JavaScript found")
+    
+    # Check for Wix-specific HTML comment
+    if '<!-- RENDERED BY WIX.COM' in res.text:
+        wix.append("Wix-specific HTML comment found")
+
+    if wix:
+        CMS.append("Wix")
+        vuln_scan.wix_vuln_scan(url)
+
+def Squarespace(url: str) -> str:
+    squarespace = []
+    sessions = requests.Session()
+    
+    res = sessions.get(url, verify=False, headers=header)
+    
+    # Check for Squarespace-specific meta tags
+    if 'X-ServedBy: squarespace' in str(res.headers):
+        squarespace.append("Squarespace-specific header found")
+    
+    # Check for Squarespace-specific JavaScript
+    if 'static1.squarespace.com' in res.text or 'squarespace.com' in res.text:
+        squarespace.append("Squarespace-specific JavaScript found")
+    
+    # Check for Squarespace-specific HTML comment
+    if '<!-- This is Squarespace. -->' in res.text:
+        squarespace.append("Squarespace-specific HTML comment found")
+
+    if squarespace:
+        CMS.append("Squarespace")
+        vuln_scan.squarespace_vuln_scan(url)
+
 
 def main(url: str) -> str:
     Joomla(url)
@@ -230,6 +326,10 @@ def main(url: str) -> str:
     Umbraco(url)
     Magento(url)
     Shopify(url)
+    PrestaShop(url)
+    OpenCart(url)
+    Wix(url)        
+    Squarespace(url) 
     if CMS:
         print(f"{Fore.MAGENTA}[+] {Fore.CYAN}-{Fore.WHITE} CMS: {Fore.GREEN}{Fore.GREEN}{', '.join(map(str,CMS))}")
     else:

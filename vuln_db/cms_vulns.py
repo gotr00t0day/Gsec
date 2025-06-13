@@ -38,3 +38,21 @@ def phpbb_vuln_scan(url: str):
 def shopify_vuln_scan(url: str):
     sub_output.subpro_scan(f"nuclei -u {url} -tags shopify -silent")
     nuclei.parse()
+
+def prestashop_vuln_scan(url: str):
+    sub_output.subpro_scan(f"nuclei -u {url} -tags prestashop -silent")
+    nuclei.parse()
+
+def opencart_vuln_scan(url: str):
+    sub_output.subpro_scan(f"nuclei -u {url} -tags opencart -silent")
+    nuclei.parse()
+
+def wix_vuln_scan(url: str):
+    sub_output.subpro_scan(f"nuclei -u {url} -tags wix -silent")
+    nuclei.parse()
+
+def squarespace_vuln_scan(url: str):
+    sub_output.subpro_scan(f"nuclei -u {url} -tags squarespace -silent")
+    nuclei.parse()
+    
+    

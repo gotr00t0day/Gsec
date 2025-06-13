@@ -2,6 +2,7 @@ import requests
 from colorama import Fore
 import json
 import socket
+import urllib3
 
 def scan_ip(domain: str) -> str:
     if "https://" in domain:
@@ -33,4 +34,18 @@ def scan_ip(domain: str) -> str:
     except socket.gaierror:
         pass
     except UnicodeError:
+        pass
+    except requests.exceptions.ConnectTimeout:
+        pass
+    except requests.exceptions.ConnectionError:
+        pass
+    except requests.exceptions.ReadTimeout:
+        pass
+    except requests.exceptions.ChunkedEncodingError:
+        pass
+    except requests.exceptions.Timeout:
+        pass
+    except urllib3.exceptions.ConnectTimeoutError:
+        pass
+    except urllib3.exceptions.MaxRetryError:
         pass

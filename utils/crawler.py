@@ -1,26 +1,29 @@
-from urllib.parse import urljoin
 import requests
-import re
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+import os
 
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+HEADERS = {"User-Agent": USER_AGENT}
 
-user_agent_ = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
-header = {"User-Agent": user_agent_}
-
-def scan(url: str) -> str:
-    s = requests.Session()
-    r = s.get(url, verify=False, headers=header)
-    content = r.content
-    links = re.findall('(?:href=")(.*?)"', content.decode('utf-8'))
-    duplicate_links = set(links)
-    links_l = []
-    for page_links in links:
-        page_links = urljoin(url, page_links)
-        if page_links not in duplicate_links:
-            links_l.append(page_links)
+def scan(url: str) -> None:
     try:
-        with open("output/spider.txt", "w") as f:
-            for link in links_l:
-                f.write(f"{link}\n")
-    except PermissionError:
-         pass
+        with requests.Session() as session:
+            session.headers.update(HEADERS)
+            response = session.get(url, verify=False)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.text, 'html.parser')
+            links = {urljoin(url, a['href']) for a in soup.find_all('a', href=True)}
+
+            os.makedirs('output', exist_ok=True)
+            with open("output/spider.txt", "w") as f:
+                for link in sorted(links):
+                    f.write(f"{link}\n")
+
+        print(f"Crawler: Found {len(links)} unique links.")
+    except requests.RequestException as e:
+        print(f"Error crawling {url}: {e}")
+    except IOError as e:
+        print(f"Error writing to file: {e}")
         

@@ -8,6 +8,7 @@
 ?redirect_uri=
 ?redirect_url=
 ?redirect=
+?ReturnUrl=
 ?return=
 ?view=
 ?to=
