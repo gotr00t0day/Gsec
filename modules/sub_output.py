@@ -63,8 +63,8 @@ def subpro_scan(command: str) -> Optional[str]:
         return output
         
     except subprocess.TimeoutExpired:
-        logger.error(f"Command timed out: {command}")
-        raise
+        logger.error(f"Command timed out after 60 seconds: {command}")
+        return None  # Return None instead of raising the exception
         
     except FileNotFoundError:
         logger.error(f"Command not found: {command}")
