@@ -8,12 +8,15 @@ import subprocess
 import platform
 import os
 import sys
-import shlex
 from pathlib import Path
 
 
 def run_command(cmd_list):
     """Execute command safely using argument list instead of shell."""
+    # Basic sanitization: Ensure cmd_list contains only expected strings
+    if not all(isinstance(arg, str) for arg in cmd_list):
+        print("Error: Invalid command arguments")
+        return False
     try:
         result = subprocess.run(
             cmd_list,
@@ -65,39 +68,39 @@ def check_go():
 def install_macos():
     """Install dependencies for macOS."""
     print("Installing dependencies for macOS...")
-    
+
     # Check prerequisites
     if not check_homebrew():
         print("Error: Homebrew is not installed. Please install Homebrew first:")
         print("https://brew.sh/")
         return False
-    
+
     if not check_go():
         print("Error: Go is not installed. Please install Go first:")
         print("brew install go")
         return False
-    
+
     # Install jq using Homebrew
     print("Installing jq...")
     if not run_command(["brew", "install", "jq"]):
         print("Warning: Failed to install jq")
-    
+
     # Install Nuclei using Go
     print("Installing Nuclei...")
     nuclei_cmd = ["go", "install", "-v", "github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest"]
     if not run_command(nuclei_cmd):
         print("Error: Failed to install Nuclei")
         return False
-    
+
     # Clone nuclei-templates
     print("Cloning nuclei-templates...")
     if not clone_nuclei_templates():
         print("Warning: Failed to clone nuclei-templates")
-    
+
     # Add Go bin to PATH
     print("Adding Go binaries to PATH...")
     setup_path()
-    
+
     print("Installation complete!")
     print("Please restart your terminal or run: source ~/.zprofile")
     return True
@@ -107,11 +110,11 @@ def clone_nuclei_templates():
     """Clone nuclei-templates to home directory."""
     home = str(Path.home())
     target = os.path.join(home, "nuclei-templates")
-    
+
     if os.path.exists(target):
         print("nuclei-templates already exists in home directory.")
         return True
-    
+
     cmd = ["git", "clone", "https://github.com/projectdiscovery/nuclei-templates.git", target]
     return run_command(cmd)
 
@@ -121,7 +124,7 @@ def setup_path():
     home_dir = os.path.expanduser("~")
     zprofile_path = os.path.join(home_dir, ".zprofile")
     path_line = 'export PATH=$PATH:$HOME/go/bin'
-    
+
     try:
         # Check if PATH line already exists
         if os.path.exists(zprofile_path):
@@ -130,14 +133,14 @@ def setup_path():
                 if path_line in content:
                     print("Go bin already in PATH")
                     return True
-        
+
         # Add PATH line
         with open(zprofile_path, 'a', encoding='utf-8') as f:
             f.write(f'\n{path_line}\n')
-        
+
         print("Added Go bin to PATH in ~/.zprofile")
         return True
-        
+
     except Exception as e:
         print(f"Error setting up PATH: {e}")
         return False
@@ -148,7 +151,7 @@ def main():
     if platform.system() != "Darwin":
         print("This script is for macOS only. Use the original install.py for other systems.")
         sys.exit(1)
-    
+
     success = install_macos()
     sys.exit(0 if success else 1)
 
