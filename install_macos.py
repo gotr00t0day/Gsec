@@ -3,6 +3,7 @@ import subprocess  # nosec
 import platform
 import os
 import shlex
+from pathlib import Path
 
 
 def commands(cmd: str) -> None:
@@ -30,7 +31,7 @@ def install_macos() -> None:
     
     # Clone nuclei-templates
     print("Cloning nuclei-templates...")
-    commands("cd ~ && git clone https://github.com/projectdiscovery/nuclei-templates.git")
+    clone_nuclei_templates()
     
     # Add Go bin to PATH
     print("Adding Go binaries to PATH...")
@@ -48,6 +49,15 @@ def install_macos() -> None:
     
     print("Installation complete!")
     print("Please restart your terminal or run: source ~/.zprofile")
+
+
+def clone_nuclei_templates():
+    home = str(Path.home())
+    target = os.path.join(home, "nuclei-templates")
+    if not os.path.exists(target):
+        commands(f"git clone https://github.com/projectdiscovery/nuclei-templates.git {target}")
+    else:
+        print("nuclei-templates already exists in home directory.")
 
 
 if __name__ == "__main__":
