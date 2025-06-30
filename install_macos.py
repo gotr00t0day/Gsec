@@ -6,13 +6,9 @@ import shlex
 
 
 def commands(cmd: str) -> None:
-    """Execute command and handle errors gracefully.
-    
-    Args:
-        cmd: Command string to execute
-    """
+    """Execute command and handle errors gracefully."""
     try:
-        # nosec: B603,B607 - All subprocess commands are hardcoded, not user-supplied.
+        # All commands are hardcoded and not user-supplied. Safe from injection. (nosec)
         subprocess.check_call(shlex.split(cmd))
     except subprocess.CalledProcessError as e:
         print(f"Error executing command '{cmd}': {e}")
@@ -58,4 +54,4 @@ if __name__ == "__main__":
     if platform.system() == "Darwin":
         install_macos()
     else:
-        print("This script is for macOS only. Use the original install.py for other systems.") 
+        print("This script is for macOS only. Use the original install.py for other systems.")
