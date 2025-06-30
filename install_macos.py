@@ -37,11 +37,11 @@ def install_macos() -> None:
     print("Adding Go binaries to PATH...")
     home_dir = os.path.expanduser("~")
     zprofile_path = os.path.join(home_dir, ".zprofile")
-    path_line = "export PATH=$PATH:/Users/$(whoami)/go/bin"
+    path_line = 'export PATH=$PATH:/Users/$(whoami)/go/bin'
     
     # Check if PATH line already exists
     if os.path.exists(zprofile_path):
-        with open(zprofile_path, "r") as f:
+        with open(zprofile_path, 'r') as f:
             if path_line not in f.read():
                 commands(f"echo '{path_line}' >> {zprofile_path}")
     else:
