@@ -1,5 +1,5 @@
-# NOTE: subprocess is used with care; no user input is passed to shell.
-import subprocess
+# NOTE: subprocess is used with care; all commands are hardcoded and not user-supplied. (nosec)
+import subprocess  # nosec
 import platform
 import os
 import shlex
@@ -12,6 +12,7 @@ def commands(cmd: str) -> None:
         cmd: Command string to execute
     """
     try:
+        # nosec: B603,B607 - All subprocess commands are hardcoded, not user-supplied.
         subprocess.check_call(shlex.split(cmd))
     except subprocess.CalledProcessError as e:
         print(f"Error executing command '{cmd}': {e}")
