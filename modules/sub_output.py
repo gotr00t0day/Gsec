@@ -33,8 +33,8 @@ def subpro_scan(command: str) -> Optional[str]:
         # Prepare environment with updated PATH for Go binaries
         env = os.environ.copy()
         go_bin_path = os.path.expanduser("~/go/bin")
-        if go_bin_path not in env.get('PATH', ''):
-            env['PATH'] = f"{env.get('PATH', '')}:{go_bin_path}"
+        if go_bin_path not in env.get("PATH", ""):
+            env["PATH"] = f"{env.get('PATH', '')}:{go_bin_path}"
         
         # Execute without shell=True for security
         process = subprocess.run(

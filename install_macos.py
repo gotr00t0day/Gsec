@@ -3,8 +3,12 @@ import platform
 import os
 
 
-def commands(cmd):
-    """Execute command and handle errors gracefully."""
+def commands(cmd: str) -> None:
+    """Execute command and handle errors gracefully.
+    
+    Args:
+        cmd: Command string to execute
+    """
     try:
         subprocess.check_call(cmd, shell=True)
     except subprocess.CalledProcessError as e:
@@ -13,7 +17,7 @@ def commands(cmd):
         print(f"Unexpected error: {e}")
 
 
-def install_macos():
+def install_macos() -> None:
     """Install dependencies for macOS."""
     print("Installing dependencies for macOS...")
     
@@ -33,11 +37,11 @@ def install_macos():
     print("Adding Go binaries to PATH...")
     home_dir = os.path.expanduser("~")
     zprofile_path = os.path.join(home_dir, ".zprofile")
-    path_line = 'export PATH=$PATH:/Users/$(whoami)/go/bin'
+    path_line = "export PATH=$PATH:/Users/$(whoami)/go/bin"
     
     # Check if PATH line already exists
     if os.path.exists(zprofile_path):
-        with open(zprofile_path, 'r') as f:
+        with open(zprofile_path, "r") as f:
             if path_line not in f.read():
                 commands(f"echo '{path_line}' >> {zprofile_path}")
     else:
