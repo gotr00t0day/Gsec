@@ -6,6 +6,7 @@ Runs verification checks on Gsec scan results to filter false positives
 
 import os
 import sys
+import subprocess  # Used with hardcoded script names only - no user input
 from pathlib import Path
 
 
@@ -37,7 +38,7 @@ def main():
     print("=" * 60)
     print("🚀 GSEC POST-SCAN VERIFICATION SUITE")
     print("=" * 60)
-    print("Filtering false positives from scan results...\n")
+    print("Filtering false positives from scan reports...\n")
     
     # Change to script directory
     script_dir = Path(__file__).parent
