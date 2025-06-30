@@ -8,15 +8,15 @@ import subprocess
 import platform
 import os
 import sys
+import shlex
 from pathlib import Path
 
 
-def run_command(cmd):
-    """Execute command safely and handle errors gracefully."""
+def run_command(cmd_list):
+    """Execute command safely using argument list instead of shell."""
     try:
         result = subprocess.run(
-            cmd,
-            shell=True,
+            cmd_list,
             check=True,
             capture_output=True,
             text=True,
@@ -24,10 +24,10 @@ def run_command(cmd):
         )
         return result.returncode == 0
     except subprocess.CalledProcessError as e:
-        print(f"Error executing command '{cmd}': {e}")
+        print(f"Error executing command {' '.join(cmd_list)}: {e}")
         return False
     except subprocess.TimeoutExpired:
-        print(f"Command timed out: {cmd}")
+        print(f"Command timed out: {' '.join(cmd_list)}")
         return False
     except Exception as e:
         print(f"Unexpected error: {e}")
@@ -36,22 +36,30 @@ def run_command(cmd):
 
 def check_homebrew():
     """Check if Homebrew is installed."""
-    result = subprocess.run(
-        ["which", "brew"],
-        capture_output=True,
-        text=True
-    )
-    return result.returncode == 0
+    try:
+        result = subprocess.run(
+            ["which", "brew"],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
 
 
 def check_go():
     """Check if Go is installed."""
-    result = subprocess.run(
-        ["which", "go"],
-        capture_output=True,
-        text=True
-    )
-    return result.returncode == 0
+    try:
+        result = subprocess.run(
+            ["which", "go"],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
 
 
 def install_macos():
@@ -71,12 +79,12 @@ def install_macos():
     
     # Install jq using Homebrew
     print("Installing jq...")
-    if not run_command("brew install jq"):
+    if not run_command(["brew", "install", "jq"]):
         print("Warning: Failed to install jq")
     
     # Install Nuclei using Go
     print("Installing Nuclei...")
-    nuclei_cmd = "go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest"
+    nuclei_cmd = ["go", "install", "-v", "github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest"]
     if not run_command(nuclei_cmd):
         print("Error: Failed to install Nuclei")
         return False
@@ -104,7 +112,7 @@ def clone_nuclei_templates():
         print("nuclei-templates already exists in home directory.")
         return True
     
-    cmd = f"git clone https://github.com/projectdiscovery/nuclei-templates.git {target}"
+    cmd = ["git", "clone", "https://github.com/projectdiscovery/nuclei-templates.git", target]
     return run_command(cmd)
 
 
