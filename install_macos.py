@@ -11,12 +11,22 @@ import sys
 from pathlib import Path
 
 
-def run_command(cmd_list):
-    """Execute command safely using argument list instead of shell."""
-    # Basic sanitization: Ensure cmd_list contains only expected strings
-    if not all(isinstance(arg, str) for arg in cmd_list):
+def run_command(cmd_list, allowed_commands=None):
+    """Execute command safely using argument list with validation."""
+    if allowed_commands is None:
+        allowed_commands = {"brew", "go", "git", "which"}
+
+    # Validate command and arguments
+    if not cmd_list or not isinstance(cmd_list, list):
+        print("Error: Invalid command list")
+        return False
+    if cmd_list[0] not in allowed_commands:
+        print("Error: Unauthorized command")
+        return False
+    if not all(isinstance(arg, str) and not any(c in arg for c in '&;<>|$`') for arg in cmd_list):
         print("Error: Invalid command arguments")
         return False
+
     try:
         result = subprocess.run(
             cmd_list,
@@ -27,13 +37,13 @@ def run_command(cmd_list):
         )
         return result.returncode == 0
     except subprocess.CalledProcessError as e:
-        print(f"Error executing command {' '.join(cmd_list)}: {e}")
+        print("Error executing command")
         return False
     except subprocess.TimeoutExpired:
-        print(f"Command timed out: {' '.join(cmd_list)}")
+        print("Command timed out")
         return False
-    except Exception as e:
-        print(f"Unexpected error: {e}")
+    except Exception:
+        print("Unexpected error")
         return False
 
 
@@ -82,13 +92,13 @@ def install_macos():
 
     # Install jq using Homebrew
     print("Installing jq...")
-    if not run_command(["brew", "install", "jq"]):
+    if not run_command(["brew", "install", "jq"], {"brew"}):
         print("Warning: Failed to install jq")
 
     # Install Nuclei using Go
     print("Installing Nuclei...")
     nuclei_cmd = ["go", "install", "-v", "github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest"]
-    if not run_command(nuclei_cmd):
+    if not run_command(nuclei_cmd, {"go"}):
         print("Error: Failed to install Nuclei")
         return False
 
@@ -116,7 +126,7 @@ def clone_nuclei_templates():
         return True
 
     cmd = ["git", "clone", "https://github.com/projectdiscovery/nuclei-templates.git", target]
-    return run_command(cmd)
+    return run_command(cmd, {"git"})
 
 
 def setup_path():
