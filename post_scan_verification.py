@@ -6,7 +6,6 @@ Runs verification checks on Gsec scan results to filter false positives
 
 import os
 import sys
-import subprocess  # Used with hardcoded script names only - no user input
 from pathlib import Path
 
 
@@ -67,9 +66,9 @@ def main():
         status = "✅ COMPLETED" if success else "❌ FAILED"
         print(f"{name}: {status}")
     
-    print(f"\n📁 Check the output/ directory for detailed verification reports")
+    print("\n📁 Check the output/ directory for detailed verification reports")
     print("🎯 Verification complete!")
 
 
 if __name__ == "__main__":
-    main() 
+    main()

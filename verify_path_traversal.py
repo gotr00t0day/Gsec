@@ -8,7 +8,6 @@ import requests
 import re
 import os
 import sys
-from urllib.parse import urlparse
 import time
 
 
@@ -53,7 +52,6 @@ class PathTraversalVerifier:
             return []
         
         findings = []
-        current_vuln = {}
         
         with open(self.output_file, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
@@ -137,7 +135,7 @@ class PathTraversalVerifier:
             }
             
             if is_vulnerable:
-                print(f"   ✅ CONFIRMED VULNERABILITY")
+                print("   ✅ CONFIRMED VULNERABILITY")
                 self.verified_vulns.append(result)
             else:
                 print(f"   ❌ False positive (Status: {response.status_code})")
@@ -193,7 +191,7 @@ class PathTraversalVerifier:
                         f.write(f"   Content Preview: {vuln['content_preview'][:100]}...\n")
             
             if self.false_positives:
-                f.write(f"\n\nFALSE POSITIVES:\n")
+                f.write("\n\nFALSE POSITIVES:\n")
                 f.write("-" * 40 + "\n")
                 for i, fp in enumerate(self.false_positives, 1):
                     f.write(f"\n{i}. URL: {fp['url']}\n")
@@ -222,7 +220,7 @@ class PathTraversalVerifier:
         self.generate_report()
         
         # Summary
-        print(f"\n🎯 VERIFICATION COMPLETE")
+        print("\n🎯 VERIFICATION COMPLETE")
         print(f"   ✅ Confirmed vulnerabilities: {len(self.verified_vulns)}")
         print(f"   ❌ False positives: {len(self.false_positives)}")
         
@@ -243,4 +241,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
