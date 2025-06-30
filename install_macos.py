@@ -1,6 +1,8 @@
+# NOTE: subprocess is used with care; no user input is passed to shell.
 import subprocess
 import platform
 import os
+import shlex
 
 
 def commands(cmd: str) -> None:
@@ -10,7 +12,7 @@ def commands(cmd: str) -> None:
         cmd: Command string to execute
     """
     try:
-        subprocess.check_call(cmd, shell=True)
+        subprocess.check_call(shlex.split(cmd))
     except subprocess.CalledProcessError as e:
         print(f"Error executing command '{cmd}': {e}")
     except Exception as e:
