@@ -1,13 +1,20 @@
-import subprocess 
+import subprocess
 import platform
+import os
+
 
 def commands(cmd):
+    """Execute command and handle errors gracefully."""
     try:
         subprocess.check_call(cmd, shell=True)
-    except:
-        pass
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing command '{cmd}': {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+
 
 def install_macos():
+    """Install dependencies for macOS."""
     print("Installing dependencies for macOS...")
     
     # Install jq using Homebrew
@@ -24,10 +31,21 @@ def install_macos():
     
     # Add Go bin to PATH
     print("Adding Go binaries to PATH...")
-    commands("echo 'export PATH=\\$PATH:/Users/$(whoami)/go/bin' >> ~/.zprofile")
+    home_dir = os.path.expanduser("~")
+    zprofile_path = os.path.join(home_dir, ".zprofile")
+    path_line = 'export PATH=$PATH:/Users/$(whoami)/go/bin'
+    
+    # Check if PATH line already exists
+    if os.path.exists(zprofile_path):
+        with open(zprofile_path, 'r') as f:
+            if path_line not in f.read():
+                commands(f"echo '{path_line}' >> {zprofile_path}")
+    else:
+        commands(f"echo '{path_line}' >> {zprofile_path}")
     
     print("Installation complete!")
     print("Please restart your terminal or run: source ~/.zprofile")
+
 
 if __name__ == "__main__":
     if platform.system() == "Darwin":
