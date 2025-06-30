@@ -8,7 +8,7 @@ import requests
 import re
 import os
 import sys
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 import time
 
 
@@ -96,12 +96,12 @@ class PathTraversalVerifier:
             print(f"🔍 Verifying: {url}")
             print(f"   Payload: {payload}")
             
-            # Make request with timeout
+            # Make request with timeout and SSL verification
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
             
-            response = requests.get(url, headers=headers, timeout=10, verify=False)
+            response = requests.get(url, headers=headers, timeout=10, verify=True)
             content = response.text.lower()
             
             # Check for Unix/Linux indicators

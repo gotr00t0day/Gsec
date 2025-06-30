@@ -6,7 +6,7 @@ Runs verification checks on Gsec scan results to filter false positives
 
 import os
 import sys
-import subprocess
+import subprocess  # Used with hardcoded script names only - no user input
 from pathlib import Path
 
 
@@ -22,6 +22,7 @@ def run_path_traversal_verification():
     if check_file_exists(path_traversal_file):
         print("🔍 Path traversal results found - running verification...")
         try:
+            # Script name is hardcoded - no user input, safe from injection
             subprocess.run([sys.executable, "verify_path_traversal.py"], check=True)
             return True
         except subprocess.CalledProcessError as e:
