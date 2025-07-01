@@ -2,14 +2,17 @@
 """
 Post-Scan Verification Suite
 Runs verification checks on Gsec scan results to filter false positives
+
+Security Note: This module uses subprocess with validated, hardcoded script names only.
+No user input is passed to subprocess calls, preventing command injection attacks.
 """
 
 import os
 import sys
-import subprocess  # Used with validated hardcoded script names - no user input
+import subprocess  # nosec - Used only with validated hardcoded script names
 from pathlib import Path
 
-# Whitelist of allowed verification scripts
+# Whitelist of allowed verification scripts - prevents unauthorized script execution
 ALLOWED_SCRIPTS = {
     "verify_path_traversal.py": "Path traversal verification script"
 }
@@ -17,6 +20,12 @@ ALLOWED_SCRIPTS = {
 def check_file_exists(filepath):
     """Check if a file exists and has content."""
     return os.path.exists(filepath) and os.path.getsize(filepath) > 0
+
+def validate_script_name(script_name):
+    """Validate that the script name is in our whitelist."""
+    if script_name not in ALLOWED_SCRIPTS:
+        raise ValueError(f"Unauthorized script: {script_name}")
+    return True
 
 def run_path_traversal_verification():
     """Run path traversal verification if results exist."""
@@ -26,11 +35,13 @@ def run_path_traversal_verification():
         print("🔍 Path traversal results found - running verification...")
         try:
             script_to_run = "verify_path_traversal.py"
-            if script_to_run not in ALLOWED_SCRIPTS:
-                raise ValueError(f"Unauthorized script: {script_to_run}")
 
-            # Execute the validated script using subprocess
-            subprocess.run([sys.executable, script_to_run], check=True)
+            # Security validation: ensure script is whitelisted
+            validate_script_name(script_to_run)
+
+            # Execute the validated script using subprocess with argument list
+            # nosec - script name is validated against whitelist, no user input
+            subprocess.run([sys.executable, script_to_run], check=True)  # nosec
             return True
         except subprocess.CalledProcessError as e:
             print(f"❌ Path traversal verification failed: {e}")
