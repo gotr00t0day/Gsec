@@ -6,6 +6,9 @@ from utils import techscanner
 import requests
 import re
 import urllib3
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning, module="bs4")
 
 requests.packages.urllib3.disable_warnings()
 

@@ -95,30 +95,47 @@ class SSLScanner:
         """Check supported SSL/TLS protocols"""
         try:
             # Test different protocols
-            protocols = [
-                (ssl.PROTOCOL_TLSv1_2, 'TLSv1.2'),
-                (ssl.PROTOCOL_TLSv1_1, 'TLSv1.1'),
-                (ssl.PROTOCOL_TLSv1, 'TLSv1.0')
+            # Note: TLSv1.2 is still secure and widely used, only TLSv1.0 and TLSv1.1 are deprecated
+            protocols_to_test = [
+                (ssl.PROTOCOL_TLSv1_2, 'TLSv1.2', False),  # NOT deprecated
+                (ssl.PROTOCOL_TLSv1_1, 'TLSv1.1', True),   # Deprecated since 2020
+                (ssl.PROTOCOL_TLSv1, 'TLSv1.0', True)      # Deprecated since 2020
             ]
 
             deprecated_protocols = []
-            for protocol, name in protocols:
+            supported_secure_protocols = []
+            
+            for protocol, name, is_deprecated in protocols_to_test:
                 try:
                     context = ssl.SSLContext(protocol)
                     context.check_hostname = False
                     context.verify_mode = ssl.CERT_NONE
 
-                    with socket.create_connection((self.hostname, self.port)) as sock:
+                    with socket.create_connection((self.hostname, self.port), timeout=5) as sock:
                         with context.wrap_socket(sock, server_hostname=self.hostname) as ssock:
-                            deprecated_protocols.append(name)
+                            if is_deprecated:
+                                deprecated_protocols.append(name)
+                            else:
+                                supported_secure_protocols.append(name)
                 except:
                     pass
 
+            # Only flag if deprecated protocols are supported
             if deprecated_protocols:
                 self.findings.append({
                     'type': 'Deprecated SSL/TLS Protocols',
-                    'description': f'Supports deprecated protocols: {", ".join(deprecated_protocols)}',
+                    'description': f'Server supports deprecated protocols: {", ".join(deprecated_protocols)}. These should be disabled.',
+                    'protocols': deprecated_protocols,
                     'severity': 'Medium'
+                })
+            
+            # Add informational finding about secure protocols
+            if supported_secure_protocols:
+                self.findings.append({
+                    'type': 'Secure Protocol Support',
+                    'description': f'Server supports secure protocols: {", ".join(supported_secure_protocols)}',
+                    'protocols': supported_secure_protocols,
+                    'severity': 'Info'
                 })
 
         except Exception as e:
@@ -171,40 +188,99 @@ class SSLScanner:
                 return
 
             # Group findings by severity
-            severity_count = {'Critical': 0, 'High': 0, 'Medium': 0, 'Low': 0}
+            severity_count = {'Critical': 0, 'High': 0, 'Medium': 0, 'Low': 0, 'Info': 0}
             for finding in self.findings:
                 severity_count[finding['severity']] += 1
 
-            f.write("ISSUES FOUND:\n")
-            f.write("-" * 30 + "\n")
-            for severity, count in severity_count.items():
-                if count > 0:
-                    f.write(f"{severity}: {count} issues\n")
-
-            f.write("\nDETAILED FINDINGS:\n")
-            f.write("-" * 30 + "\n")
-            for i, finding in enumerate(self.findings, 1):
-                f.write(f"{i}. [{finding['severity']}] {finding['type']}\n")
-                if 'description' in finding:
-                    f.write(f"   Description: {finding['description']}\n")
+            # Only show actual issues, not info
+            actual_issues = sum(severity_count[s] for s in ['Critical', 'High', 'Medium', 'Low'])
+            
+            if actual_issues > 0:
+                f.write("ISSUES FOUND:\n")
+                f.write("-" * 30 + "\n")
+                for severity in ['Critical', 'High', 'Medium', 'Low']:
+                    count = severity_count[severity]
+                    if count > 0:
+                        f.write(f"{severity}: {count} issues\n")
                 f.write("\n")
 
-            # Add SSL recommendations
-            f.write("\nRECOMMENDATIONS:\n")
-            f.write("-" * 30 + "\n")
-            if severity_count['High'] > 0 or severity_count['Critical'] > 0:
-                f.write("🚨 HIGH PRIORITY:\n")
-                f.write("- Renew expired SSL certificates immediately\n")
-                f.write("- Fix SSL connection issues\n\n")
+            # Show issues first
+            issues = [f for f in self.findings if f['severity'] != 'Info']
+            if issues:
+                f.write("DETAILED FINDINGS:\n")
+                f.write("-" * 30 + "\n")
+                for i, finding in enumerate(issues, 1):
+                    f.write(f"{i}. [{finding['severity']}] {finding['type']}\n")
+                    if 'description' in finding:
+                        f.write(f"   Description: {finding['description']}\n")
+                    if 'protocols' in finding:
+                        f.write(f"   Protocols: {', '.join(finding['protocols'])}\n")
+                    f.write("\n")
+            
+            # Show informational findings separately
+            info_findings = [f for f in self.findings if f['severity'] == 'Info']
+            if info_findings:
+                f.write("INFORMATIONAL:\n")
+                f.write("-" * 30 + "\n")
+                for finding in info_findings:
+                    f.write(f"✓ {finding['type']}\n")
+                    if 'description' in finding:
+                        f.write(f"  {finding['description']}\n")
+                    f.write("\n")
 
-            if severity_count['Medium'] > 0:
-                f.write("⚠️  MEDIUM PRIORITY:\n")
-                f.write("- Disable deprecated SSL/TLS protocols (TLSv1.0, TLSv1.1)\n")
-                f.write("- Replace weak cipher suites\n")
-                f.write("- Use certificates from trusted CAs\n\n")
+            # Add SSL recommendations based on actual findings
+            if actual_issues > 0:
+                f.write("RECOMMENDATIONS:\n")
+                f.write("-" * 30 + "\n")
+                
+                if severity_count['High'] > 0 or severity_count['Critical'] > 0:
+                    f.write("🚨 HIGH PRIORITY:\n")
+                    f.write("- Renew expired SSL certificates immediately\n")
+                    f.write("- Fix SSL connection issues\n")
+                    f.write("- Address critical security vulnerabilities\n\n")
+
+                if severity_count['Medium'] > 0:
+                    f.write("⚠️  MEDIUM PRIORITY:\n")
+                    # Check what specific issues were found
+                    has_deprecated_protocols = any(f['type'] == 'Deprecated SSL/TLS Protocols' for f in issues)
+                    has_weak_ciphers = any(f['type'] == 'Weak Cipher Suite' for f in issues)
+                    
+                    if has_deprecated_protocols:
+                        f.write("- Disable deprecated SSL/TLS protocols:\n")
+                        f.write("  * TLSv1.0 - Deprecated since 2020\n")
+                        f.write("  * TLSv1.1 - Deprecated since 2020\n")
+                        f.write("  * Keep TLSv1.2 enabled (still secure and widely used)\n")
+                        f.write("  * Enable TLSv1.3 if possible (recommended)\n")
+                    if has_weak_ciphers:
+                        f.write("- Replace weak cipher suites with strong alternatives\n")
+                        f.write("  * Avoid: RC4, DES, 3DES, MD5, NULL\n")
+                        f.write("  * Use: AES-GCM, ChaCha20-Poly1305\n")
+                    f.write("- Use certificates from trusted Certificate Authorities\n")
+                    f.write("- Ensure proper certificate chain validation\n\n")
+                
+                if severity_count['Low'] > 0:
+                    f.write("ℹ️  LOW PRIORITY:\n")
+                    f.write("- Monitor SSL/TLS configuration regularly\n")
+                    f.write("- Keep certificates up to date\n")
+                    f.write("- Consider implementing Certificate Transparency monitoring\n\n")
+            else:
+                f.write("PROTOCOL INFORMATION:\n")
+                f.write("-" * 30 + "\n")
+                f.write("✅ No SSL/TLS security issues detected!\n")
+                f.write("\nBest Practices:\n")
+                f.write("- TLSv1.2 is secure and widely supported (acceptable)\n")
+                f.write("- TLSv1.3 is the latest standard (recommended if available)\n")
+                f.write("- Ensure only TLSv1.0 and TLSv1.1 are disabled\n\n")
 
         print(f"{Fore.GREEN}[+] SSL report saved to: {report_file}{Fore.RESET}")
-        print(f"{Fore.MAGENTA}[+] {Fore.CYAN}Found {len(self.findings)} SSL issues ({severity_count['High']} High, {severity_count['Medium']} Medium){Fore.RESET}")
+        
+        # Calculate actual issues (excluding Info)
+        actual_issues = sum(severity_count[s] for s in ['Critical', 'High', 'Medium', 'Low'])
+        
+        if actual_issues > 0:
+            print(f"{Fore.MAGENTA}[+] {Fore.CYAN}Found {actual_issues} SSL issues ({severity_count['High']} High, {severity_count['Medium']} Medium, {severity_count['Low']} Low){Fore.RESET}")
+        else:
+            print(f"{Fore.GREEN}[+] {Fore.CYAN}No SSL/TLS security issues found! (TLSv1.2 detected - this is secure){Fore.RESET}")
 
 def ssl_scan(target):
     """Main function to run SSL vulnerability scan"""
