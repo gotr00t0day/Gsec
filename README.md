@@ -55,7 +55,7 @@
 
 Gsec vs Popular Security Scanners:
 
-| Feature | Nikto | OWASP ZAP | Burp Free | Burp Pro | **Gsec v3.7** |
+| Feature | Nikto | OWASP ZAP | Burp Free | Burp Pro | **Gsec v3.8** |
 |---------|:-----:|:---------:|:---------:|:--------:|:-------------:|
 | **API Security Suite** | ❌ | ⚠️ Basic | ⚠️ Basic | ✅ | ✅ **Advanced** |
 | **Cloud Misconfigurations** | ❌ | ❌ | ❌ | ⚠️ Limited | ✅ **Complete** |
