@@ -46,6 +46,31 @@
      - SSRF, XSS, Host header injection and Cors Misconfiguration Scanners
      - Session Management Security Analysis (fixation, hijacking, timeout, concurrent sessions)
      - SSL/TLS Security Analysis (certificate validation, protocol support, cipher suites)
+     - **API Security Testing Suite** (BOLA/IDOR, authentication bypass, verb tampering, mass assignment, GraphQL security, rate limiting)
+     - **Cloud Misconfiguration Scanner** (AWS S3, Azure Storage, GCP buckets, exposed files, Docker/Kubernetes, metadata endpoints)
+     - **HTTP Request Smuggling Detection** (CL.TE, TE.CL, TE.TE, desync attacks, response queue poisoning)
+     - **GraphQL Security Testing** (introspection, depth DoS, batch queries, authorization bypass, injection attacks)
+
+## 🏆 Feature Comparison
+
+Gsec vs Popular Security Scanners:
+
+| Feature | Nikto | OWASP ZAP | Burp Free | Burp Pro | **Gsec v3.7** |
+|---------|:-----:|:---------:|:---------:|:--------:|:-------------:|
+| **API Security Suite** | ❌ | ⚠️ Basic | ⚠️ Basic | ✅ | ✅ **Advanced** |
+| **Cloud Misconfigurations** | ❌ | ❌ | ❌ | ⚠️ Limited | ✅ **Complete** |
+| **Request Smuggling** | ❌ | ❌ | ❌ | ✅ | ✅ **Pro-Level** |
+| **GraphQL Testing** | ❌ | ❌ | ❌ | ⚠️ Basic | ✅ **10+ Tests** |
+| **S3 Bucket Enumeration** | ❌ | ❌ | ❌ | ❌ | ✅ **25+ patterns** |
+| **BOLA/IDOR Detection** | ❌ | 🔧 Manual | 🔧 Manual | ⚠️ Semi-Auto | ✅ **Automated** |
+| **Exposed Files Scanner** | ⚠️ Basic | ⚠️ Basic | 🔧 Manual | 🔧 Manual | ✅ **50+ files** |
+| **GraphQL DoS Testing** | ❌ | ❌ | ❌ | ❌ | ✅ **3 types** |
+| **TE.TE Detection** | ❌ | ❌ | ❌ | ⚠️ Limited | ✅ **7 obfuscations** |
+| **GraphQL Auth Bypass** | ❌ | ❌ | ❌ | 🔧 Manual | ✅ **Automated** |
+| **Traditional Web Vuln Scanning** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Price** | Free | Free | Free | $💰💰💰 | **Free** |
+
+**Legend:** ✅ Full Support | ⚠️ Partial/Basic | 🔧 Manual Testing Required | ❌ Not Available
 
 <hr>
 

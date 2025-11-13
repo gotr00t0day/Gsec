@@ -5,7 +5,7 @@ from utils import param_finder, javascript_scanner, headers, wafscanner, source,
 from plugins import phpcheck, optionscheck, shellshock, robots, favicon, auth_tokens, cookies_check, sitemap, securitytxt, geolocation
 from exploits import f5bigip_scanner
 from vuln_db import hostheader_injection, nuclei_vulns, corsmisconfig, crossdomain, head_vuln, cache_poisoning, webservers_vulns, nmap_vuln, xss, broken_links
-from vuln_db import openredirect, session_management, ssl_scanner
+from vuln_db import openredirect, session_management, ssl_scanner, api_security, cloud_security, request_smuggling, graphql_security
 import argparse
 import os
 import asyncio
@@ -22,7 +22,7 @@ ssl_config.configure_ssl_verification()
 #
 ##################################################################################
 
-version = "v3.3"
+version = "v3.8"
 
 banner = fr"""
     .__________________________.
@@ -177,12 +177,16 @@ async def main():
             crawler.scan(args.target)
             api_scanner.swagger_ui(args.target)
             api_fuzzer.main(args.target)
+            api_security.api_security_scan(args.target)
+            graphql_security.graphql_security_scan(args.target)
+            cloud_security.cloud_security_scan(args.target)
             param_finder.get_params(args.target)
             javascript_scanner.spider(args.target)
             nmap_vuln.vulners_scan(args.target)
             broken_links.scan(args.target)
             xss.scan(args.target)
             openredirect.scan(args.target)
+            request_smuggling.request_smuggling_scan(args.target)
             session_management.session_management_scan(args.target)
             ssl_scanner.ssl_scan(args.target)
             #await loginscanner.main(args.target)
