@@ -82,44 +82,37 @@ class PathTraversalScanner:
             "..././..././..././etc/passwd",
             "....\\....\\....\\windows\\win.ini",
         ]
-        
-        # Detection patterns for successful traversal
+
+        # Detection patterns for successful traversal.
+        #
+        # These match the *structure* of a leaked file, not just a keyword
+        # that happens to appear in normal page content. The previous list
+        # flagged any response containing words like "password", "database",
+        # "server_name" or the substring "location{" (present in almost every
+        # site's CSS/JS), so ordinary pages and WAF blocks were reported as
+        # path traversal findings (see issue #30). Every pattern is anchored
+        # or specific enough that a match is real evidence of file disclosure.
+        # /etc/passwd is handled separately in detect_traversal_success:
+        # it requires several lines that match the passwd account structure,
+        # since a genuine file always lists many accounts (root, daemon, ...)
+        # and requiring two real lines guards against a lone passwd-shaped
+        # line in, say, a documentation page.
         self.detection_patterns = [
-            # Linux /etc/passwd patterns
-            r"root:.*?:",
-            r"daemon:.*?:",
-            r"bin:.*?:",
-            r"sys:.*?:",
-            r"nobody:.*?:",
-            r"[a-zA-Z0-9_\-]+:[x*]:[\d]+:[\d]+:",
-            
-            # Windows system files
-            r"\[boot loader\]",
-            r"\[operating systems\]",
-            r"multi\(0\)disk\(0\)rdisk\(0\)",
-            r"# Copyright.*Microsoft Corp",
-            r"# This file contains the mappings",
-            
-            # Configuration files
-            r"DocumentRoot",
-            r"ServerName",
-            r"Listen.*:80",
-            r"LoadModule",
-            r"<VirtualHost",
-            r"server_name",
-            r"location.*{",
-            
-            # Database configs
-            r"password.*[:=]",
-            r"database.*[:=]",
-            r"DB_PASSWORD",
-            r"DB_HOST",
-            
-            # Log file patterns
-            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*GET.*HTTP/",
-            r"\[\w{3}\s+\w{3}\s+\d{1,2}.*\]",
+            # Windows boot.ini / win.ini section headers and ARC paths
+            r"^\s*\[boot loader\]\s*$",
+            r"^\s*\[operating systems\]\s*$",
+            r"^\s*\[fonts\]\s*$",
+            r"^\s*\[extensions\]\s*$",
+            r"multi\(0\)disk\(0\)rdisk\(0\)partition\(",
+
+            # Windows hosts file banner (its distinctive comment lines)
+            r"This file contains the mappings of IP addresses to host names",
+
+            # Access/error log line: client IP followed by a quoted HTTP
+            # request line, as written by Apache/nginx in the common format.
+            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b.*\"(?:GET|POST|HEAD|PUT|DELETE) .+ HTTP/\d",
         ]
-        
+
     def is_valid_url(self, url: str) -> bool:
         """Validate URL format."""
         try:
@@ -215,31 +208,27 @@ class PathTraversalScanner:
         """
         try:
             content = response.text
-            
+
             # Check for detection patterns
             for pattern in self.detection_patterns:
                 if re.search(pattern, content, re.IGNORECASE | re.MULTILINE):
                     return True
-            
-            # Additional checks for specific payloads
+
+            # Additional check for /etc/passwd: require several lines that
+            # actually match the passwd account structure (name:passwd:uid:
+            # gid:gecos:home:shell). Counting lines with "6 or more colons"
+            # was too loose - JS, timestamps and MAC-address lists all clear
+            # that bar - so a genuine passwd file needs multiple real lines.
             if "etc/passwd" in payload.lower():
-                # Look for Unix passwd file structure
-                lines = content.split('\n')
-                passwd_lines = 0
-                for line in lines:
-                    if ':' in line and len(line.split(':')) >= 6:
-                        passwd_lines += 1
-                
-                if passwd_lines >= 3:  # Multiple passwd-like lines
+                passwd_line = re.compile(
+                    r"^[a-zA-Z0-9_][a-zA-Z0-9_.\-]*:[^:\n]*:\d+:\d+:[^:\n]*:[^:\n]*:[^:\n]*$",
+                    re.MULTILINE,
+                )
+                if len(passwd_line.findall(content)) >= 2:
                     return True
-            
-            elif "win.ini" in payload.lower() or "boot.ini" in payload.lower():
-                # Look for Windows system file indicators
-                if any(indicator in content.lower() for indicator in ['[boot loader]', '[fonts]', '[extensions]']):
-                    return True
-            
+
             return False
-            
+
         except Exception as e:
             logger.error(f"Error in traversal detection: {str(e)}")
             return False
